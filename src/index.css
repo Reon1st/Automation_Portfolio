@@ -1,0 +1,771 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   DESIGN SYSTEM - SINGLE SOURCE OF TRUTH
+   ============================================
+   All colors, spacing, and design tokens defined here.
+   To change the theme, only modify this section.
+   All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* ===========================================
+       COLOR PALETTE - Dark Theme
+       =========================================== */
+    --background: 220 15% 8%;          /* Deep charcoal */
+    --foreground: 0 0% 88%;            /* Light Gray */
+
+    --card: 220 15% 12%;               /* Slightly lighter charcoal */
+    --card-foreground: 0 0% 85%;       /* Light Gray */
+
+    --popover: 220 15% 10%;            /* Dark charcoal */
+    --popover-foreground: 0 0% 88%;    /* Light Gray */
+
+    --primary: 195 85% 65%;            /* Softer cyan */
+    --primary-foreground: 220 15% 8%;  /* Dark for contrast */
+
+    --secondary: 220 8% 18%;           /* Muted dark gray */
+    --secondary-foreground: 0 0% 85%;  /* Light gray */
+
+    --muted: 220 10% 15%;              /* Subtle dark */
+    --muted-foreground: 0 0% 65%;      /* Medium-light gray */
+
+    --accent: 195 70% 60%;             /* Balanced cyan */
+    --accent-foreground: 220 15% 8%;   /* Dark for contrast */
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 220 8% 20%;              /* Subtle border */
+    --input: 220 12% 14%;              /* Input background */
+    --ring: 195 70% 60%;               /* Focus ring */
+
+    --radius: 0.5rem;
+
+    /* ===========================================
+       SIDEBAR COLORS
+       =========================================== */
+    --sidebar-background: 220 15% 6%;
+    --sidebar-foreground: 0 0% 88%;
+    --sidebar-primary: 195 70% 60%;
+    --sidebar-primary-foreground: 220 15% 6%;
+    --sidebar-accent: 220 10% 16%;
+    --sidebar-accent-foreground: 0 0% 85%;
+    --sidebar-border: 220 8% 22%;
+    --sidebar-ring: 195 70% 60%;
+
+    /* ===========================================
+       DESIGN TOKENS - Spacing & Layout
+       =========================================== */
+    --section-padding-y: 6rem;
+    --section-padding-y-sm: 4rem;
+    --container-padding-x: 1.5rem;
+    --card-padding: 2rem;
+    --card-border-radius: 0.75rem;
+    --button-border-radius: 0.5rem;
+
+    /* ===========================================
+       DESIGN TOKENS - Transitions
+       =========================================== */
+    --transition-fast: 150ms;
+    --transition-default: 300ms;
+    --transition-slow: 500ms;
+    --transition-easing: cubic-bezier(0.4, 0.0, 0.2, 1);
+
+    /* ===========================================
+       DESIGN TOKENS - Shadows
+       =========================================== */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    --shadow-glow: 0 0 20px hsl(var(--primary) / 0.3);
+  }
+}
+
+/* ============================================
+   PLYR VIDEO PLAYER THEME
+   ============================================ */
+.plyr {
+  --plyr-color-main: hsl(var(--primary));
+  --plyr-video-background: hsl(var(--card));
+  --plyr-menu-background: hsl(var(--card));
+  --plyr-menu-color: hsl(var(--foreground));
+  --plyr-control-radius: 0.5rem;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground mobile-container mobile-scroll;
+    overscroll-behavior: contain;
+  }
+
+  html {
+    /* scroll-behavior handled by Lenis smooth scroll engine */
+    /* Shrinks every rem-based size (type, spacing, layout) uniformly, so 100%
+       zoom reads the way 90% browser zoom did — a global density knob. */
+    font-size: 90%;
+  }
+
+  /* Performance optimization for animations */
+  .will-animate {
+    will-change: transform, opacity;
+  }
+
+  .will-animate.sa-in {
+    will-change: auto;
+  }
+
+  /* Respect reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ============================================
+   CUSTOM CURSOR
+   ============================================
+   Unlayered on purpose: Tailwind's own .cursor-pointer utility (used
+   directly on a handful of elements) lives in the utilities layer, which
+   always beats @layer base regardless of selector specificity. Unlayered
+   CSS outranks every layer, so this wins without having to hunt down and
+   strip cursor-pointer off every element that has it.
+   ============================================ */
+body {
+  cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path transform="translate(4,4)" fill="%2300CBFF" stroke="%230B0D12" stroke-width="0.6" stroke-linejoin="round" stroke-linecap="round" d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87a.5.5 0 0 0 .35-.85L6.35 2.85a.5.5 0 0 0-.85.35Z"></path></svg>') 9 7, auto;
+}
+
+/* Text-editable regions keep the native beam cursor; clickable elements get
+   the custom pointing-hand cursor instead of the plain arrow. */
+input, textarea, select, [contenteditable="true"] {
+  cursor: text;
+}
+
+a, button, [role="button"], .cursor-pointer, label[for], summary {
+  cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path transform="translate(4,4)" fill="%2300CBFF" stroke="%230B0D12" stroke-width="0.6" stroke-linejoin="round" stroke-linecap="round" d="M10 11V8.99c0-.88.59-1.64 1.44-1.86h.05A1.99 1.99 0 0 1 14 9.05V12v-2c0-.88.6-1.65 1.46-1.87h.05A1.98 1.98 0 0 1 18 10.06V13v-1.94a2 2 0 0 1 1.51-1.94h0A2 2 0 0 1 22 11.06V14c0 .6-.08 1.27-.21 1.97a7.96 7.96 0 0 1-7.55 6.48 54.98 54.98 0 0 1-4.48 0 7.96 7.96 0 0 1-7.55-6.48C2.08 15.27 2 14.59 2 14v-1.49c0-1.11.9-2.01 2.01-2.01h0a2 2 0 0 1 2.01 2.03l-.01.97v-10c0-1.1.9-2 2-2h0a2 2 0 0 1 2 2V11Z"></path></svg>') 12 5, pointer;
+}
+
+/* Fullscreen content (e.g. video player) needs the real OS cursor for its
+   native controls — our custom cursor would otherwise still inherit in. */
+:fullscreen, :fullscreen *,
+:-webkit-full-screen, :-webkit-full-screen * {
+  cursor: auto !important;
+}
+
+/* ============================================
+   KEYFRAMES - Single Definitions
+   ============================================
+   All animations defined once. Use animation 
+   classes below to apply them.
+*/
+
+/* Floating & Movement */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes scroll-hint-nudge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes flowing-down {
+  0% { transform: translateY(-6px); opacity: 0; }
+  50% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(6px); opacity: 0; }
+}
+
+@keyframes slide-in-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-down {
+  0% { transform: translateY(-20px); opacity: 0; }
+  100% { transform: translateY(20px); opacity: 1; }
+}
+
+/* Glow & Pulse Effects */
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px hsl(var(--primary) / 0.3); }
+  50% { box-shadow: 0 0 40px hsl(var(--primary) / 0.6), 0 0 60px hsl(var(--accent) / 0.3); }
+}
+
+@keyframes ambient-pulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.2); }
+}
+
+@keyframes ripple {
+  0% { box-shadow: 0 0 0 0 hsl(var(--accent) / 0.5); }
+  100% { box-shadow: 0 0 0 8px hsl(var(--accent) / 0); }
+}
+
+@keyframes pulse-border {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(var(--accent) / 0.4); }
+  50% { box-shadow: 0 0 0 8px hsl(var(--accent) / 0); }
+}
+
+@keyframes tech-glow {
+  0%, 100% { 
+    box-shadow: 0 0 10px hsl(var(--accent) / 0.3), 
+                0 0 20px hsl(var(--accent) / 0.1),
+                inset 0 0 10px hsl(var(--accent) / 0.1);
+  }
+  50% { 
+    box-shadow: 0 0 20px hsl(var(--accent) / 0.6), 
+                0 0 40px hsl(var(--accent) / 0.3),
+                inset 0 0 15px hsl(var(--accent) / 0.2);
+  }
+}
+
+/* Gradient & Color Shifts */
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes shimmer-slide {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes circuit-flow {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
+
+/* Scroll & Progress */
+@keyframes scroll-infinite {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes scroll-infinite-smooth {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes progress-slide {
+  0% { width: 0%; }
+  25%, 100% { width: 100%; }
+}
+
+@keyframes mouse-wheel {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(4px); opacity: 0.4; }
+}
+
+@keyframes chevron-sequence {
+  0%, 20% { opacity: 0; transform: translateY(-5px); }
+  40% { opacity: 1; transform: translateY(0); }
+  60%, 100% { opacity: 0; transform: translateY(5px); }
+}
+
+/* Interactive Effects */
+@keyframes magnetic-hover {
+  0% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.05) rotate(1deg); }
+  100% { transform: scale(1.02) rotate(0deg); }
+}
+
+@keyframes liquid-morph {
+  0%, 100% { border-radius: 50% 50% 50% 50%; }
+  25% { border-radius: 60% 40% 60% 40%; }
+  50% { border-radius: 40% 60% 40% 60%; }
+  75% { border-radius: 50% 50% 60% 40%; }
+}
+
+@keyframes press-scale {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes cursor-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+@layer utilities {
+  /* Mobile Optimizations */
+  .touch-manipulation {
+    touch-action: manipulation;
+  }
+
+  .mobile-optimized {
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+
+  @supports (-webkit-overflow-scrolling: touch) {
+    .mobile-scroll {
+      -webkit-overflow-scrolling: touch;
+    }
+  }
+
+  .mobile-container {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+  }
+
+  /* Stagger Animation Delays */
+  .stagger-100 { animation-delay: 100ms; }
+  .stagger-200 { animation-delay: 200ms; }
+  .stagger-300 { animation-delay: 300ms; }
+  .stagger-400 { animation-delay: 400ms; }
+  .stagger-500 { animation-delay: 500ms; }
+
+  /* Hover Effects */
+  .hover-lift {
+    transition: transform var(--transition-default) var(--transition-easing);
+  }
+  .hover-lift:hover {
+    transform: translateY(-4px);
+  }
+
+  .hover-glow {
+    transition: all var(--transition-default) var(--transition-easing);
+  }
+  .hover-glow:hover {
+    box-shadow: 0 8px 30px hsl(var(--primary) / 0.3);
+    transform: translateY(-2px);
+  }
+
+  .hover-scale {
+    transition: transform var(--transition-default) var(--transition-easing);
+  }
+  .hover-scale:hover {
+    transform: scale(1.02);
+  }
+
+  /* Scroll Animation States (JS-controlled) */
+  html.js .sa-init {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  html.js .sa-in {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity var(--transition-slow) var(--transition-easing),
+                transform var(--transition-slow) var(--transition-easing);
+    will-change: transform, opacity;
+  }
+
+  html.js .sa-child-init {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  /* Animate on scroll base */
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: none;
+  }
+  
+  .animate-on-scroll.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.6s var(--transition-easing);
+  }
+
+  /* Avatar loading states */
+  .avatar-loading-fix {
+    background-color: hsl(var(--secondary));
+    transition: background-color var(--transition-default) ease, opacity var(--transition-default) ease;
+  }
+
+  .avatar-loading-fix img {
+    opacity: 0;
+    transition: opacity var(--transition-default) ease;
+  }
+
+  .avatar-loading-fix img[data-loaded="true"] {
+    opacity: 1;
+  }
+
+  /* Mobile calendar */
+  @media (max-width: 768px) {
+    .calendar-mobile-height {
+      min-height: 400px !important;
+      max-height: 600px;
+    }
+  }
+
+  /* Reduced motion - disable complex animations */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-slide-up,
+    .animate-scale-fade-in,
+    .animate-cascade-up,
+    html.js .sa-init,
+    html.js .sa-in,
+    html.js .sa-child-init {
+      animation: none !important;
+      transition: none !important;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  /* Gradient utilities */
+  .bg-gradient-radial {
+    background: radial-gradient(circle, var(--tw-gradient-stops));
+  }
+
+}
+
+/* ============================================
+   ANIMATION CLASSES
+   ============================================ */
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.animate-gradient-shift {
+  animation: gradient-shift 15s ease infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+.animate-slide-down {
+  animation: slide-down 4s ease-in-out infinite;
+}
+
+.animate-scroll-infinite {
+  animation: scroll-infinite 20s linear infinite;
+}
+
+.animate-scroll-infinite-premium {
+  animation: scroll-infinite-smooth 20s linear infinite;
+  will-change: transform;
+}
+
+.animate-ambient-pulse {
+  animation: ambient-pulse 5s ease-in-out infinite;
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+.glow-effect {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.pulse-glow {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite, glow 2s ease-in-out infinite;
+}
+
+.hover\:pause:hover {
+  animation-play-state: paused;
+}
+
+/* ============================================
+   COMPONENT STYLES
+   ============================================ */
+
+/* Gradient Background */
+.gradient-bg {
+  background: linear-gradient(-45deg, hsl(var(--background)), hsl(var(--card)), hsl(var(--muted)), hsl(var(--background)));
+  background-size: 400% 400%;
+  animation: gradient-shift 15s ease infinite;
+}
+
+/* Glass Effect */
+.glass-effect {
+  background: hsl(var(--card) / 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid hsl(var(--border));
+}
+
+/* Enhanced Card - Single Definition */
+.enhanced-card {
+  @apply transition-all duration-300;
+  backdrop-filter: blur(10px);
+  border: 1px solid hsl(var(--border) / 0.2);
+  background: linear-gradient(135deg, hsl(var(--card) / 0.8), hsl(var(--card) / 0.4));
+}
+
+.enhanced-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border-color: hsl(var(--accent) / 0.5);
+}
+
+/* Service Card */
+.service-card {
+  position: relative;
+  overflow: hidden;
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--card-border-radius);
+  transition: all var(--transition-default) ease;
+}
+
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.03), transparent);
+  transition: left 0.6s ease;
+}
+
+.service-card:hover::before {
+  left: 100%;
+}
+
+.service-card:hover {
+  background: hsl(var(--accent));
+  transform: translateY(-2px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Testimonial Card */
+.enhanced-testimonial-card {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--card-border-radius);
+  transition: all var(--transition-default) ease;
+}
+
+.enhanced-testimonial-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border-color: hsl(var(--accent) / 0.5);
+}
+
+/* Shimmer Badge */
+.shimmer-badge {
+  background: linear-gradient(90deg, hsl(var(--muted)), hsl(var(--accent)), hsl(var(--muted)));
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+  color: hsl(var(--muted-foreground));
+}
+
+/* Text Effects */
+.neon-glow {
+  color: hsl(var(--foreground));
+  font-weight: 600;
+}
+
+.text-hover-transition {
+  color: hsl(var(--muted-foreground));
+  transition: color var(--transition-default) ease;
+}
+
+.text-hover-transition:hover {
+  color: hsl(var(--foreground));
+}
+
+.header-hover:hover,
+.theme-text-hover:hover {
+  color: hsl(var(--accent));
+  transition: color var(--transition-default) ease;
+}
+
+/* Interactive Elements */
+.magnetic-element {
+  @apply transition-all duration-300 ease-out;
+  will-change: transform;
+}
+
+.magnetic-element:hover {
+  animation: magnetic-hover 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tilt-card {
+  @apply transition-all duration-200;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.liquid-button {
+  @apply relative overflow-hidden;
+  animation: liquid-morph 4s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite;
+}
+
+.liquid-button::before {
+  @apply absolute inset-0 bg-gradient-to-r from-primary to-accent opacity-0 transition-opacity duration-300;
+  content: '';
+}
+
+.liquid-button:hover::before {
+  @apply opacity-20;
+}
+
+.elastic-click {
+  @apply active:scale-95;
+  transition: transform 0.1s cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+.elastic-click:active {
+  animation: press-scale 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.parallax-element {
+  @apply transition-transform duration-100;
+  will-change: transform;
+}
+
+/* ============================================
+   SCROLL INDICATOR STYLES
+   ============================================ */
+.tech-mouse {
+  position: relative;
+  background: hsl(var(--card));
+  border: 2px solid hsl(var(--accent) / 0.4);
+  border-radius: 16px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(10px);
+}
+
+.tech-mouse:hover {
+  border-color: hsl(var(--accent));
+  animation: tech-glow 2s ease-in-out infinite;
+  transform: translateY(-2px);
+}
+
+.tech-mouse::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  background: linear-gradient(45deg, 
+    hsl(var(--accent) / 0.1), 
+    hsl(var(--primary) / 0.1), 
+    hsl(var(--accent) / 0.1)
+  );
+  background-size: 200% 200%;
+  border-radius: 16px;
+  animation: circuit-flow 3s linear infinite;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity var(--transition-default) ease;
+}
+
+.tech-mouse:hover::before {
+  opacity: 1;
+}
+
+.scroll-wheel {
+  animation: mouse-wheel 3.5s ease-in-out infinite;
+}
+
+.scroll-arrows {
+  position: relative;
+}
+
+.scroll-arrows::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 20px;
+  background: linear-gradient(to bottom, hsl(var(--accent)), transparent);
+  animation: scroll-hint-nudge 3.5s ease-in-out infinite;
+}
+
+.flow-indicator {
+  position: relative;
+  width: 2px;
+  height: 30px;
+  background: linear-gradient(to bottom, 
+    transparent, 
+    hsl(var(--accent) / 0.3), 
+    hsl(var(--accent) / 0.8), 
+    hsl(var(--accent) / 0.3), 
+    transparent
+  );
+}
+
+.flow-dot {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: hsl(var(--accent));
+  border-radius: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  animation: flowing-down 3.5s ease-in-out infinite;
+}
+
+.floating-dots {
+  position: absolute;
+  pointer-events: none;
+}
+
+.floating-dots::before,
+.floating-dots::after {
+  content: '';
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: hsl(var(--accent) / 0.6);
+  border-radius: 50%;
+  animation: float 4s ease-in-out infinite;
+}
+
+.floating-dots::before {
+  top: -30px;
+  left: -15px;
+  animation-delay: 0s;
+}
+
+.floating-dots::after {
+  top: -25px;
+  right: -15px;
+  animation-delay: 1s;
+}
+
+.chevron-indicators {
+  position: relative;
+  height: 24px;
+}
