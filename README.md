@@ -1,73 +1,40 @@
-# Welcome to your Lovable project
+# Reon Martin — AI Systems Consultant
 
-## Project info
+**Live portfolio for an AI-automation consulting practice.** Not a template, not a demo shell — the systems shown here (support triage, ops dashboards, invoice/onboarding automation, client websites) were built and shipped, and this repo is the actual source, not a polished excerpt of it.
 
-**URL**: https://lovable.dev/projects/aa40ee9d-0ec7-4571-ba5e-7e4dd66d8615
+## What this site is
 
-## How can I edit this code?
+I build AI-powered systems for service businesses: AI support agents, CRM/business automation, live dashboards you can actually monitor (not a black box), and conversion-focused websites. The site is organized around that — an Automation Projects section (AI Support Ticket Triage, an AI Operations Dashboard, Invoice Automation, Client Onboarding Automation) and a Websites section (a fine-dining site with a real availability-checked reservation system, a home-services site with an AI-generated live quote, a performance-shop site with real contact-form delivery).
 
-There are several ways of editing your application.
+Every project shown links through to the real thing where possible — a live deployment, a demo video, or a screenshot walkthrough of the actual flow — not mockups.
 
-**Use Lovable**
+## Why this is public
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/aa40ee9d-0ec7-4571-ba5e-7e4dd66d8615) and start prompting.
+This is my own project, not client work — nothing here is under an NDA or confidentiality obligation, so there's no reason to keep it closed. Two concrete reasons I pushed it to GitHub:
 
-Changes made via Lovable will be committed automatically to this repo.
+- **Proof of work, not just a claim.** Anyone evaluating me for a project can read the actual code — component structure, TypeScript usage, how a real third-party integration (Cal.com, Supabase) gets wired in — instead of taking "I build production systems" on faith.
+- **A real backup.** This used to live only inside a hosted builder. It now has its own git history and its own remote, independent of any single platform.
 
-**Use your preferred IDE**
+## Tech stack
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+- **Frontend:** Vite, React, TypeScript, Tailwind CSS, shadcn/ui
+- **Booking:** Cal.com embed
+- **Backend (testimonials only):** Supabase (Postgres + edge functions) — the availability status shown on the site is computed client-side from a fixed weekly schedule, no backend involved
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+## Running locally
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+git clone https://github.com/Reon1st/Automation_Portfolio.git
+cd Automation_Portfolio
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+You'll need your own `.env` (see the Supabase client setup under `src/integrations/supabase/`) if you want the testimonials admin panel to work — the public site itself renders fine without it.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## Contact
 
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/aa40ee9d-0ec7-4571-ba5e-7e4dd66d8615) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- **Upwork:** https://www.upwork.com/freelancers/~0133dfaffaaaf4cc5a
+- **LinkedIn:** https://www.linkedin.com/in/reon-martin-5bb8b7364/
+- **OnlineJobs.PH:** https://www.onlinejobs.ph/jobseekers/info/2718705
+- **Email:** reonfirst@gmail.com
