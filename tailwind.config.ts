@@ -92,6 +92,10 @@ export default {
 					'0%, 100%': { transform: 'translateY(0px)' },
 					'50%': { transform: 'translateY(-10px)' }
 				},
+				'marquee': {
+					'0%': { transform: 'translateX(0)' },
+					'100%': { transform: 'translateX(-50%)' }
+				},
 				'glow': {
 					'0%, 100%': { boxShadow: '0 0 20px rgba(0, 255, 255, 0.3)' },
 					'50%': { boxShadow: '0 0 40px rgba(0, 255, 255, 0.6)' }
@@ -274,6 +278,7 @@ export default {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'float': 'float 6s ease-in-out infinite',
+				'marquee': 'marquee 28s linear infinite',
 				'glow': 'glow 2s ease-in-out infinite alternate',
 				'gradient-shift': 'gradient-shift 15s ease infinite',
 				'shimmer': 'shimmer 2s infinite',
