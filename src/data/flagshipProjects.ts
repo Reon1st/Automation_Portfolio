@@ -234,7 +234,7 @@ export const webShowcaseProjects: WebShowcaseProject[] = [
     title: "Kayumanggi, Fine Dining in BGC",
     tagline: "Checks if there's actually room before it says yes",
     description:
-      "A fine dining site for a fictional restaurant in BGC, built around a food tour through Manila, Tokyo, Paris, and Rome. The reservation form does real work behind the scenes. It checks actual seat availability before confirming a booking, and if the restaurant's full that night, the guest gets an email back with the real open times instead of just a flat no.",
+      "A fine dining concept site for a BGC restaurant, built around a food tour through Manila, Tokyo, Paris, and Rome. The reservation form does real work behind the scenes. It checks actual seat availability before confirming a booking, and if the restaurant's full that night, the guest gets an email back with the real open times instead of just a flat no.",
     stack: ["Next.js", "GSAP", "Airtable", "Brevo"],
     media: {
       screenshots: [

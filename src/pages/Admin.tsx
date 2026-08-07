@@ -8,7 +8,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Eye, EyeOff, Plus, Pencil, Trash2, Star, MessageSquareQuote, ArrowUp, ArrowDown, Copy, Sparkles } from 'lucide-react';
+import { Eye, EyeOff, Plus, Pencil, Trash2, Star, MessageSquareQuote, ArrowUp, ArrowDown, Copy, Sparkles, CircleDot } from 'lucide-react';
+
+type SiteStatus = 'auto' | 'available' | 'unavailable';
 
 interface TestimonialRow {
   id: string;
@@ -35,6 +37,10 @@ const Admin = () => {
   const [adminPassword, setAdminPassword] = useState(''); // stored for edge function calls
   const [showPassword, setShowPassword] = useState(false);
 
+  // Availability state
+  const [siteStatus, setSiteStatus] = useState<SiteStatus>('auto');
+  const [statusLoading, setStatusLoading] = useState(false);
+
   // Testimonials state
   const [testimonials, setTestimonials] = useState<TestimonialRow[]>([]);
   const [showForm, setShowForm] = useState(false);
@@ -56,6 +62,7 @@ const Admin = () => {
   useEffect(() => {
     if (isAuthenticated) {
       fetchTestimonials();
+      fetchSiteStatus();
     }
   }, [isAuthenticated]);
 
@@ -76,6 +83,27 @@ const Admin = () => {
     } catch {
       toast.error('Invalid password');
     }
+  };
+
+  // --- Availability ---
+  const fetchSiteStatus = async () => {
+    const { data } = await supabase.from('site_status').select('status').limit(1).maybeSingle();
+    setSiteStatus(data?.status === 'available' || data?.status === 'unavailable' ? data.status : 'auto');
+  };
+
+  const updateSiteStatus = async (status: SiteStatus) => {
+    setStatusLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke('manage-site-status', {
+        body: { password: adminPassword, status }
+      });
+      if (error || data?.error) throw new Error(data?.error || error?.message);
+      setSiteStatus(status);
+      toast.success(`Availability set to ${status}`);
+    } catch (err: any) {
+      toast.error(err.message || 'Failed to update availability');
+    }
+    setStatusLoading(false);
   };
 
   // --- Testimonials via edge function ---
@@ -191,6 +219,39 @@ const Admin = () => {
           <h1 className="text-3xl font-bold">Admin Panel</h1>
           <p className="text-muted-foreground">Manage your site settings and content</p>
         </div>
+
+        {/* Availability */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <CircleDot className="w-5 h-5 text-primary" />
+              Availability
+            </CardTitle>
+            <CardDescription>
+              Auto follows your class schedule. Force a state to override it (e.g. swamped outside class hours, or free during a class slot that got cancelled).
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="inline-flex rounded-lg border border-border overflow-hidden">
+              {(['auto', 'available', 'unavailable'] as SiteStatus[]).map((s) => (
+                <button
+                  key={s}
+                  disabled={statusLoading}
+                  onClick={() => updateSiteStatus(s)}
+                  className={`px-4 py-2 text-sm font-medium capitalize transition-colors disabled:opacity-50 ${
+                    siteStatus === s
+                      ? s === 'unavailable'
+                        ? 'bg-destructive text-destructive-foreground'
+                        : 'bg-primary text-primary-foreground'
+                      : 'bg-transparent text-muted-foreground hover:bg-muted/50'
+                  }`}
+                >
+                  {s === 'auto' ? 'Auto' : s}
+                </button>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
 
         {/* Testimonials Management */}
         <Card>

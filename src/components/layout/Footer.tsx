@@ -103,7 +103,7 @@ const Footer: React.FC = () => {
 
             <div className="p-3 rounded-xl bg-card/40 border border-border/30">
               <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">
-                Hours ({SITE_CONFIG.timezone})
+                Live hours ({SITE_CONFIG.timezone})
               </p>
               <div className="space-y-1 text-xs">
                 {AVAILABILITY.schedule.map(item => <div key={item.day} className="flex justify-between text-muted-foreground">
@@ -111,6 +111,9 @@ const Footer: React.FC = () => {
                     <span>{item.hours}</span>
                   </div>)}
               </div>
+              <p className="text-xs text-muted-foreground/70 mt-2 pt-2 border-t border-border/30">
+                Outside these? I'm still usually responding within the hour — this is just when I'm live for a call.
+              </p>
             </div>
 
             <div className="flex flex-wrap gap-1.5">
