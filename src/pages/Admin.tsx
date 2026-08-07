@@ -26,6 +26,21 @@ interface TestimonialRow {
   display_order: number;
 }
 
+// supabase.functions.invoke() only gives a generic "non-2xx status code"
+// message on error — the actual reason our function sent back is in the
+// raw response body, which needs to be read separately.
+const extractFnError = async (error: any): Promise<string> => {
+  if (error?.context && typeof error.context.json === 'function') {
+    try {
+      const body = await error.context.json();
+      if (body?.error) return body.error;
+    } catch {
+      // fall through to generic message
+    }
+  }
+  return error?.message || 'Edge function error';
+};
+
 const emptyForm = {
   name: '', role: '', company: '', text: '', rating: 5,
   platform: 'manual', platform_url: '', avatar_url: '', is_visible: true, display_order: 0
@@ -54,7 +69,7 @@ const Admin = () => {
     const { data: result, error } = await supabase.functions.invoke('manage-testimonials', {
       body: { action, password: adminPassword, data }
     });
-    if (error) throw new Error(error.message || 'Edge function error');
+    if (error) throw new Error(await extractFnError(error));
     if (result?.error) throw new Error(result.error);
     return result;
   };
@@ -97,7 +112,8 @@ const Admin = () => {
       const { data, error } = await supabase.functions.invoke('manage-site-status', {
         body: { password: adminPassword, status }
       });
-      if (error || data?.error) throw new Error(data?.error || error?.message);
+      if (error) throw new Error(await extractFnError(error));
+      if (data?.error) throw new Error(data.error);
       setSiteStatus(status);
       toast.success(`Availability set to ${status}`);
     } catch (err: any) {
