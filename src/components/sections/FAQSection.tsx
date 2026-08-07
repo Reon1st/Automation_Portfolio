@@ -1,5 +1,5 @@
 import React from "react";
-import { HelpCircle, Timer, DollarSign, ShieldCheck, Globe, Wrench, CheckCircle } from "lucide-react";
+import { HelpCircle, Timer, DollarSign, ShieldCheck, CheckCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import FloatingElements from "@/components/shared/FloatingElements";
@@ -22,11 +22,12 @@ const faqData = [
           </div>
           <div className="flex items-center gap-2">
             <CheckCircle className="h-4 w-4 text-primary" />
-            <span><strong>Full AI systems</strong> (dashboard + automations) — project-based, scoped together</span>
+            <span><strong>Full AI systems</strong> (multiple connected automations) — project-based, scoped together</span>
           </div>
         </div>
         <p className="text-sm bg-primary/5 p-3 rounded-lg border border-primary/20">
-          The discovery call is free and ends with a fixed quote — no commitment until you see the number.
+          I don't have a long client history to point you to yet, so I'll put the risk on me instead of you:
+          if what I deliver doesn't do what we agreed it would, you don't pay for it.
         </p>
       </div>
     ),
@@ -37,18 +38,13 @@ const faqData = [
     question: "How long does a build take?",
     answer: (
       <div className="pl-9 space-y-3">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <CheckCircle className="h-4 w-4 text-primary" />
-            <span><strong>Single workflows:</strong> 1–3 days</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <CheckCircle className="h-4 w-4 text-primary" />
-            <span><strong>Full AI systems:</strong> 1–3 weeks depending on scope</span>
-          </div>
-        </div>
+        <p>
+          As fast as the project genuinely allows, no artificial waiting around. Simple workflows are usually
+          a matter of days. Anything with real complexity gets a straight, specific estimate on the discovery
+          call, not a guess before I've actually seen the scope.
+        </p>
         <p className="text-sm bg-muted/20 p-3 rounded-lg">
-          You get test versions and updates throughout — never a silent gap and then a big reveal.
+          I'll keep you updated consistently throughout the project, not just when it's done.
         </p>
       </div>
     ),
@@ -60,50 +56,21 @@ const faqData = [
     answer: (
       <div className="pl-9 space-y-3">
         <p>
-          Every system I ship logs its runs, so failures are visible instead of silent — and for full systems,
-          you can see every run's status yourself in your dashboard.
+          Contact me right away and I'll get on it.
         </p>
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <CheckCircle className="h-4 w-4 text-primary" />
+            <span><strong>My mistake, my fix:</strong> a bug, or the system not doing what we agreed — fixed free, no argument</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <CheckCircle className="h-4 w-4 text-primary" />
+            <span><strong>Outside my control:</strong> a third-party API changing, the code being edited after handoff, or new business needs — a separate, quoted fix</span>
+          </div>
+        </div>
         <p className="text-sm bg-muted/20 p-3 rounded-lg">
-          I fix what I ship. Handoff includes a support window, and ongoing support is available if you want it.
-        </p>
-      </div>
-    ),
-  },
-  {
-    id: "nontechnical",
-    icon: HelpCircle,
-    question: "Do I need to understand the tech?",
-    answer: (
-      <div className="pl-9 space-y-3">
-        <p>
-          No. You describe the bottleneck in plain English; I handle the technical side. Full systems come with a
-          dashboard and built-in guide pages, and handoff is a walkthrough — not a document dump.
-        </p>
-      </div>
-    ),
-  },
-  {
-    id: "tools",
-    icon: Wrench,
-    question: "Do I need paid plans for the tools involved?",
-    answer: (
-      <div className="pl-9 space-y-3">
-        <p>
-          Sometimes — high-volume workflows or premium integrations can need paid tiers. I audit your requirements
-          first and recommend the cheapest setup that actually fits, before anything is built.
-        </p>
-      </div>
-    ),
-  },
-  {
-    id: "integrations",
-    icon: Globe,
-    question: "Can you work with the tools I already use?",
-    answer: (
-      <div className="pl-9 space-y-3">
-        <p className="font-medium text-foreground">
-          Almost certainly — anything with an API or webhook can be connected: Gmail, Sheets, CRMs, e-commerce
-          platforms, and custom software included.
+          That free-fix coverage runs 14 days after handoff. After that, or for anything outside it, ongoing
+          support is available if you want it.
         </p>
       </div>
     ),

@@ -1,5 +1,5 @@
 import React from "react";
-import { MapPin, Clock, Zap } from "lucide-react";
+import { MapPin, Clock, Zap, Github } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { UpworkIcon, LinkedInIcon } from "@/components/UpdatedSocialIcons";
@@ -44,9 +44,9 @@ const HeroSection: React.FC = () => {
                   automate operations, and cut repetitive work — without ripping out the tools you already run on.
                 </p>
                 <p className="text-sm leading-relaxed max-w-2xl text-muted-foreground">
-                  From AI support agents and smart booking systems to CRM automation, live dashboards,
-                  and conversion-focused websites — every system ships with a{" "}
-                  <span className="text-primary font-medium">dashboard you can actually see into</span>, not a black box.
+                  I build AI support agents, smart booking systems, CRM automation, live dashboards, and
+                  conversion-focused websites — each one{" "}
+                  <span className="text-primary font-medium">scoped to what the business actually needs</span>.
                 </p>
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground/80 pt-1">
                   {["AI Systems", "CRM Automation", "Websites", "AI Agents", "Business Automation"].map((tag, i, arr) => (
@@ -101,6 +101,12 @@ const HeroSection: React.FC = () => {
                 <a href={SOCIAL_LINKS.upwork.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                   <UpworkIcon className="h-4 w-4" />
                   Upwork
+                </a>
+              </Button>
+              <Button variant="outline" size="sm" asChild className="border-primary/40 hover:border-primary/60 hover:bg-primary/10 hover:text-primary transition-all duration-300 hover-lift">
+                <a href={SOCIAL_LINKS.github.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                  <Github className="h-4 w-4" />
+                  GitHub
                 </a>
               </Button>
             </div>

@@ -31,6 +31,11 @@ export const SOCIAL_LINKS = {
     label: "OnlineJobs.PH",
     description: "View my profile",
   },
+  github: {
+    url: "https://github.com/Reon1st",
+    label: "GitHub",
+    description: "See the actual code",
+  },
   caseStudies: {
     url: "https://fortunate-cat.super.site",
     label: "Case Studies",
@@ -88,7 +93,7 @@ export const ANIMATION_PRESETS = {
   stagger: {
     services: { count: 6, delay: 100 },
     portfolio: { count: 3, delay: 80 },
-    faq: { count: 6, delay: 60 },
+    faq: { count: 3, delay: 60 },
     hero: { count: 4, delay: 150 },
   },
 };

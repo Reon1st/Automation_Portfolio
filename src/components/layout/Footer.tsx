@@ -1,5 +1,5 @@
 import React from "react";
-import { Mail, Calendar, MapPin, BookOpen, ArrowUpRight } from "lucide-react";
+import { Mail, Calendar, MapPin, BookOpen, ArrowUpRight, Github } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { UpworkIcon, LinkedInIcon } from "@/components/UpdatedSocialIcons";
 import { OnlineJobsPHIcon } from "@/components/OnlineJobsPHIcon";
@@ -85,6 +85,8 @@ const Footer: React.FC = () => {
             <FooterLink href={SOCIAL_LINKS.upwork.url} icon={<UpworkIcon className="h-4 w-4 text-primary" />} title={SOCIAL_LINKS.upwork.label} description={SOCIAL_LINKS.upwork.description} />
             
             <FooterLink href={SOCIAL_LINKS.onlinejobsph.url} icon={<OnlineJobsPHIcon className="h-4 w-4 text-primary" />} title={SOCIAL_LINKS.onlinejobsph.label} description={SOCIAL_LINKS.onlinejobsph.description} />
+
+            <FooterLink href={SOCIAL_LINKS.github.url} icon={<Github className="h-4 w-4 text-primary" />} title={SOCIAL_LINKS.github.label} description={SOCIAL_LINKS.github.description} />
           </div>
 
           {/* Availability */}
