@@ -202,15 +202,13 @@ const About = () => {
           <div ref={caseStudyAnimation.ref as any}>
             <Card className="border border-primary/20 bg-card/95 backdrop-blur-sm max-w-3xl mx-auto">
               <CardContent className="p-8 md:p-10 text-center space-y-4">
-                <div className="inline-flex items-center gap-2 px-4 py-2 bg-accent/10 border border-accent/20 rounded-full">
-                  <BookOpen className="w-4 h-4 text-accent" />
-                  <span className="font-semibold text-accent tracking-wider uppercase text-xs">
-                    How I Actually Work
-                  </span>
+                <div className="inline-flex items-center gap-2">
+                  <BookOpen className="w-5 h-5 text-accent" />
+                  <h3 className="text-lg font-bold text-foreground">Hey, curious how I actually work?</h3>
                 </div>
                 <p className="text-muted-foreground leading-relaxed max-w-xl mx-auto">
-                  A running, honest log across every project — the calls I made, what broke, what I'd do differently.
-                  Not a highlight reel, the actual process, if you want a real read on how I think before you commit to working together.
+                  I keep an honest log across every project — what worked, what broke, what I'd do differently.
+                  No highlight reel, just the real process. Worth a look if you're into that kind of thing before we hop on a call.
                 </p>
                 <a
                   href={SOCIAL_LINKS.caseStudies.url}
@@ -218,7 +216,7 @@ const About = () => {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-lg text-sm font-medium bg-muted/30 hover:bg-primary hover:text-primary-foreground transition-all duration-300"
                 >
-                  Read the case studies <ArrowUpRight className="h-3.5 w-3.5" />
+                  Check it out <ArrowUpRight className="h-3.5 w-3.5" />
                 </a>
               </CardContent>
             </Card>

@@ -29,7 +29,7 @@ const ContactSection: React.FC = () => {
           {/* Subtle divider */}
           <div className="mt-6 flex items-center justify-center gap-4">
             <div className="h-px w-16 bg-border" />
-            <span className="text-xs text-muted-foreground/60 uppercase tracking-widest">Free · 30 min · No commitment</span>
+            <span className="text-xs text-muted-foreground/60 uppercase tracking-widest">No pressure, just a quick chat</span>
             <div className="h-px w-16 bg-border" />
           </div>
         </div>

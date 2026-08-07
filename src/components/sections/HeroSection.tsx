@@ -1,9 +1,10 @@
 import React from "react";
-import { MapPin, Clock, Zap, Github } from "lucide-react";
+import { MapPin, Clock, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { UpworkIcon, LinkedInIcon } from "@/components/UpdatedSocialIcons";
 import { OnlineJobsPHIcon } from "@/components/OnlineJobsPHIcon";
+import { GitHubIcon } from "@/components/PlatformIcons";
 import AvailabilityIndicator from "@/components/AvailabilityIndicator";
 import EnhancedAvailabilityIndicator from "@/components/EnhancedAvailabilityIndicator";
 import FloatingElements from "@/components/shared/FloatingElements";
@@ -105,7 +106,7 @@ const HeroSection: React.FC = () => {
               </Button>
               <Button variant="outline" size="sm" asChild className="border-primary/40 hover:border-primary/60 hover:bg-primary/10 hover:text-primary transition-all duration-300 hover-lift">
                 <a href={SOCIAL_LINKS.github.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                  <Github className="h-4 w-4" />
+                  <GitHubIcon className="h-4 w-4" />
                   GitHub
                 </a>
               </Button>

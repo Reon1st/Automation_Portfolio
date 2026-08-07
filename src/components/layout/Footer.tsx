@@ -1,8 +1,9 @@
 import React from "react";
-import { Mail, Calendar, MapPin, BookOpen, ArrowUpRight, Github } from "lucide-react";
+import { MapPin, ArrowUpRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { UpworkIcon, LinkedInIcon } from "@/components/UpdatedSocialIcons";
 import { OnlineJobsPHIcon } from "@/components/OnlineJobsPHIcon";
+import { GmailIcon, CalIcon, NotionIcon, GitHubIcon } from "@/components/PlatformIcons";
 import AvailabilityIndicator from "@/components/AvailabilityIndicator";
 import FloatingElements from "@/components/shared/FloatingElements";
 import { SITE_CONFIG, SOCIAL_LINKS, AVAILABILITY } from "@/lib/constants";
@@ -64,11 +65,11 @@ const Footer: React.FC = () => {
               </h3>
             </div>
             
-            <FooterLink href={`mailto:${SITE_CONFIG.email}`} icon={<Mail className="h-4 w-4 text-primary" />} title="Email" description={SITE_CONFIG.email} external={false} />
-            
-            <FooterLink href="#contact" icon={<Calendar className="h-4 w-4 text-primary" />} title="Schedule Call" description="Book a free consultation" external={false} />
-            
-            <FooterLink href={SOCIAL_LINKS.caseStudies.url} icon={<BookOpen className="h-4 w-4 text-primary" />} title={SOCIAL_LINKS.caseStudies.label} description={SOCIAL_LINKS.caseStudies.description} />
+            <FooterLink href={`mailto:${SITE_CONFIG.email}`} icon={<GmailIcon className="h-8 w-8" />} title="Email" description={SITE_CONFIG.email} external={false} />
+
+            <FooterLink href="#contact" icon={<CalIcon className="h-8 w-8" />} title="Schedule Call" description="Book a free consultation" external={false} />
+
+            <FooterLink href={SOCIAL_LINKS.caseStudies.url} icon={<NotionIcon className="h-8 w-8" />} title={SOCIAL_LINKS.caseStudies.label} description={SOCIAL_LINKS.caseStudies.description} />
           </div>
 
           {/* Professional Profiles */}
@@ -80,13 +81,13 @@ const Footer: React.FC = () => {
               </h3>
             </div>
             
-            <FooterLink href={SOCIAL_LINKS.linkedin.url} icon={<LinkedInIcon className="h-4 w-4 text-primary" />} title={SOCIAL_LINKS.linkedin.label} description={SOCIAL_LINKS.linkedin.description} />
-            
-            <FooterLink href={SOCIAL_LINKS.upwork.url} icon={<UpworkIcon className="h-4 w-4 text-primary" />} title={SOCIAL_LINKS.upwork.label} description={SOCIAL_LINKS.upwork.description} />
-            
-            <FooterLink href={SOCIAL_LINKS.onlinejobsph.url} icon={<OnlineJobsPHIcon className="h-4 w-4 text-primary" />} title={SOCIAL_LINKS.onlinejobsph.label} description={SOCIAL_LINKS.onlinejobsph.description} />
+            <FooterLink href={SOCIAL_LINKS.linkedin.url} icon={<LinkedInIcon className="h-8 w-8" />} title={SOCIAL_LINKS.linkedin.label} description={SOCIAL_LINKS.linkedin.description} />
 
-            <FooterLink href={SOCIAL_LINKS.github.url} icon={<Github className="h-4 w-4 text-primary" />} title={SOCIAL_LINKS.github.label} description={SOCIAL_LINKS.github.description} />
+            <FooterLink href={SOCIAL_LINKS.upwork.url} icon={<UpworkIcon className="h-8 w-8" />} title={SOCIAL_LINKS.upwork.label} description={SOCIAL_LINKS.upwork.description} />
+
+            <FooterLink href={SOCIAL_LINKS.onlinejobsph.url} icon={<OnlineJobsPHIcon className="h-8 w-8" />} title={SOCIAL_LINKS.onlinejobsph.label} description={SOCIAL_LINKS.onlinejobsph.description} />
+
+            <FooterLink href={SOCIAL_LINKS.github.url} icon={<GitHubIcon className="h-8 w-8" />} title={SOCIAL_LINKS.github.label} description={SOCIAL_LINKS.github.description} />
           </div>
 
           {/* Availability */}
