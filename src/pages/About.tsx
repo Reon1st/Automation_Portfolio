@@ -1,9 +1,6 @@
-import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
-import Autoplay from "embla-carousel-autoplay";
-import { ArrowLeft, Zap, BookOpen, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, BookOpen, ArrowUpRight, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
@@ -11,12 +8,35 @@ import { skills } from "@/data/skills";
 import Footer from "@/components/layout/Footer";
 import WavesBackground from "@/components/WavesBackground";
 import { SOCIAL_LINKS } from "@/lib/constants";
+
+const STORY_STEPS = [
+  {
+    title: "Kid on a screen",
+    body: "Before I could walk, I was already glued to one.",
+  },
+  {
+    title: "Years of gaming",
+    body: "Video games ate the rest of my childhood.",
+  },
+  {
+    title: "Sick of \"normal\"",
+    body: "Got tired of living a plain, cookie-cutter life.",
+  },
+  {
+    title: "All in on AI",
+    body: "Got interested in AI, and just went all in.",
+  },
+];
+
 const About = () => {
   const navigate = useNavigate();
-  const autoplay = useRef(Autoplay({ delay: 3500, stopOnInteraction: true }));
 
   // Animation hooks
   const introAnimation = useScrollAnimation({
+    variant: 'fade',
+    triggerOnce: true
+  });
+  const storyAnimation = useScrollAnimation({
     variant: 'fade',
     triggerOnce: true
   });
@@ -60,10 +80,6 @@ const About = () => {
 
       {/* Subtle horizontal scan line */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute w-full h-px bg-gradient-to-r from-transparent via-primary/15 to-transparent animate-pulse" style={{
-        top: '35%',
-        animationDuration: '6s'
-      }} />
         <div className="absolute w-full h-px bg-gradient-to-r from-transparent via-accent/10 to-transparent animate-pulse" style={{
         top: '65%',
         animationDuration: '8s',
@@ -111,8 +127,8 @@ const About = () => {
                 <h1 className="text-4xl font-bold text-foreground sm:text-3xl">
                   Reon Martin
                 </h1>
-                <p className="text-base text-foreground/90 max-w-xl mx-auto leading-relaxed">
-                  AI Systems Consultant based in Manila. Freelance, project-based, currently juggling this with college.
+                <p className="text-lg sm:text-xl font-semibold text-primary tracking-tight">
+                  College Student Who's Into AI
                 </p>
               </div>
             </div>
@@ -130,59 +146,68 @@ const About = () => {
             </div>
           </div>
 
-          {/* Skills Showcase */}
-          <div>
-            <div ref={skillsHeaderAnimation.ref as any} className="mb-10 text-center">
+          {/* My Story */}
+          <div ref={storyAnimation.ref as any}>
+            <div className="mb-12 text-center">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-4">
-                <Zap className="w-4 h-4 text-primary" />
+                <Sparkles className="w-4 h-4 text-primary" />
                 <span className="font-semibold text-primary tracking-wider uppercase text-xs">
-                  Tech Stack
+                  My Story
                 </span>
               </div>
-
-              <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient-shift mb-3 sm:text-2xl">
-                Tools & Platforms I Work With
+              <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient-shift max-w-xl mx-auto">
+                "Screen-obsessed before I could even walk."
               </h2>
             </div>
 
-            <div ref={skillsContentAnimation.ref as any} className="px-8 sm:px-12">
-              <Carousel opts={{ align: "start", loop: true }} plugins={[autoplay.current]} className="w-full">
-                <CarouselContent>
-                  {skills.map((skill) => (
-                    <CarouselItem key={skill.name} className="basis-full sm:basis-1/2 lg:basis-1/4">
-                      <Card className="group relative h-full bg-gradient-to-br from-card/95 via-card/90 to-card/95 backdrop-blur-sm border border-primary/20 hover:border-primary/40 transition-all duration-500 hover:shadow-[0_20px_50px_hsl(var(--primary)/0.3)] overflow-hidden">
-                        {/* Background Glow Effect */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10 max-w-5xl mx-auto">
+              {STORY_STEPS.map((step, i) => (
+                <div key={step.title} className="text-left">
+                  <span className="pointer-events-none select-none block text-6xl sm:text-7xl font-extrabold text-primary/10 leading-none mb-2">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="font-bold text-foreground mb-1">{step.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{step.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
 
-                        <CardContent className="p-8 flex flex-col items-center space-y-4 relative z-10">
-                          {/* Icon Container */}
-                          <div className="relative w-24 h-24 flex items-center justify-center group-hover:scale-110 transition-all duration-500">
-                            <div className="relative w-20 h-20 transition-all duration-300">
-                              <skill.Icon className="w-full h-full" />
-                            </div>
-                          </div>
+          {/* Section Divider */}
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-primary/10"></div>
+            </div>
+            <div className="relative flex justify-center">
+              <div className="bg-background px-6">
+                <div className="w-2 h-2 bg-accent/30 rounded-full"></div>
+              </div>
+            </div>
+          </div>
 
-                          {/* Skill Name */}
-                          <h3 className="font-bold text-foreground group-hover:text-primary transition-colors duration-300 tracking-tight text-lg">{skill.name}</h3>
+          {/* Skills Showcase */}
+          <div>
+            <div ref={skillsHeaderAnimation.ref as any} className="mb-6 max-w-5xl mx-auto">
+              <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                Tools & Platforms
+              </span>
+            </div>
 
-                          {/* Level pill */}
-                          <span className="text-[11px] font-medium text-muted-foreground/80 tracking-wide">
-                            {skill.level}
-                          </span>
-
-                          {/* Expertise Description */}
-                          <p className="text-sm text-muted-foreground text-center group-hover:text-foreground transition-colors duration-300 leading-relaxed min-h-[3rem] flex items-center">{skill.expertise}</p>
-
-                          {/* Animated Line - Inside card, below description */}
-                          <div className="w-0 h-0.5 bg-gradient-to-r from-primary via-accent to-primary group-hover:w-2/3 transition-all duration-700 ease-out" />
-                        </CardContent>
-                      </Card>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                <CarouselPrevious />
-                <CarouselNext />
-              </Carousel>
+            <div
+              ref={skillsContentAnimation.ref as any}
+              className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_5%,black_95%,transparent)]"
+            >
+              <div className="flex w-max gap-4 animate-marquee hover:[animation-play-state:paused]">
+                {[...skills, ...skills].map((skill, i) => (
+                  <div
+                    key={`${skill.name}-${i}`}
+                    className="flex items-center gap-3 shrink-0 px-5 py-3 rounded-xl border border-primary/20 bg-card/60 backdrop-blur-sm"
+                  >
+                    <skill.Icon className="w-6 h-6 shrink-0" />
+                    <span className="text-sm font-medium text-foreground whitespace-nowrap">{skill.name}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
