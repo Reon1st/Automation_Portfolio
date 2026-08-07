@@ -37,4 +37,4 @@ You'll need your own `.env` (see the Supabase client setup under `src/integratio
 - **Upwork:** https://www.upwork.com/freelancers/~0133dfaffaaaf4cc5a
 - **LinkedIn:** https://www.linkedin.com/in/reon-martin-5bb8b7364/
 - **OnlineJobs.PH:** https://www.onlinejobs.ph/jobseekers/info/2718705
-- **Email:** reonfirst@gmail.com
+- **Email:** reonfirst [ dot ] gmail [ dot ] com
