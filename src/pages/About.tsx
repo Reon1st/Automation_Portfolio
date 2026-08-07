@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, BookOpen, ArrowUpRight, Sparkles } from "lucide-react";
+import { ArrowLeft, BookOpen, ArrowUpRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
@@ -150,7 +150,6 @@ const About = () => {
           <div ref={storyAnimation.ref as any}>
             <div className="mb-12 text-center">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-4">
-                <Sparkles className="w-4 h-4 text-primary" />
                 <span className="font-semibold text-primary tracking-wider uppercase text-xs">
                   My Story
                 </span>

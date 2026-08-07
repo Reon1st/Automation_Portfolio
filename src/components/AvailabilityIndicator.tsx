@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { isInClassNow } from '@/lib/classStatus';
+import React from 'react';
+import { useAvailabilityStatus } from '@/hooks/useAvailabilityStatus';
 
 interface AvailabilityIndicatorProps {
   className?: string;
@@ -10,12 +10,7 @@ const AvailabilityIndicator: React.FC<AvailabilityIndicatorProps> = ({
   className = "",
   variant = 'default'
 }) => {
-  const [isAvailable, setIsAvailable] = useState(() => !isInClassNow());
-
-  useEffect(() => {
-    const id = setInterval(() => setIsAvailable(!isInClassNow()), 60_000);
-    return () => clearInterval(id);
-  }, []);
+  const isAvailable = useAvailabilityStatus();
 
   if (variant === 'compact') {
     return (

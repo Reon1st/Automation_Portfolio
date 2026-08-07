@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { isInClassNow } from '@/lib/classStatus';
+import React from 'react';
+import { useAvailabilityStatus } from '@/hooks/useAvailabilityStatus';
 import { useMagneticHover } from '@/hooks/useAdvancedAnimations';
 
 interface EnhancedAvailabilityIndicatorProps {
@@ -11,16 +11,11 @@ const EnhancedAvailabilityIndicator: React.FC<EnhancedAvailabilityIndicatorProps
   className = "",
   variant = 'default'
 }) => {
-  const [isAvailable, setIsAvailable] = useState(() => !isInClassNow());
+  const isAvailable = useAvailabilityStatus();
   const { ref: magneticRef, isHovering } = useMagneticHover({
     intensity: 0.2,
     duration: 200
   });
-
-  useEffect(() => {
-    const id = setInterval(() => setIsAvailable(!isInClassNow()), 60_000);
-    return () => clearInterval(id);
-  }, []);
 
   if (variant === 'premium') {
     return (
