@@ -11,23 +11,26 @@ const faqData = [
   {
     id: "cost",
     icon: DollarSign,
-    question: "What does an automation project cost?",
+    question: "Website, funnel, automation — what's it cost?",
     answer: (
       <div className="pl-9 space-y-3">
-        <p>It depends on scope, and I'll always tell you before we start:</p>
+        <p>Depends what we're building, and I'll always tell you the number before anything starts — no surprise invoices.</p>
         <div className="space-y-2">
           <div className="flex items-center gap-2">
             <CheckCircle className="h-4 w-4 text-primary" />
-            <span><strong>Single workflows</strong> (n8n, GHL, Zapier) — small fixed-price builds</span>
+            <span><strong>Automation:</strong> we hop on a call, figure out what it'd actually take to build right, and price it around how much manual work it saves you</span>
           </div>
           <div className="flex items-center gap-2">
             <CheckCircle className="h-4 w-4 text-primary" />
-            <span><strong>Full AI systems</strong> (multiple connected automations) — project-based, scoped together</span>
+            <span><strong>GHL funnels:</strong> let's get it live first — once leads start coming in and you're seeing real ROI, we land on a price that makes sense</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <CheckCircle className="h-4 w-4 text-primary" />
+            <span><strong>Custom websites:</strong> start with a working prototype, you take it for a spin, then we settle on a fair number together</span>
           </div>
         </div>
         <p className="text-sm bg-primary/5 p-3 rounded-lg border border-primary/20">
-          I don't have a long client history to point you to yet, so I'll put the risk on me instead of you:
-          if what I deliver doesn't do what we agreed it would, you don't pay for it.
+          No long client list to point to yet, so I'm putting the risk on me: doesn't do what we agreed, you don't pay.
         </p>
       </div>
     ),
