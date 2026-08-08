@@ -1,4 +1,14 @@
 
+-- Reset: this migration replaces the earlier role-based testimonials schema
+-- and the original contact_submissions/site_status tables with a simpler
+-- password-protected-admin design. On the original project this drop was
+-- run manually outside of migration history; made explicit here so this
+-- migration replays cleanly on a fresh database.
+DROP TABLE IF EXISTS public.testimonials CASCADE;
+DROP TYPE IF EXISTS public.testimonial_platform;
+DROP TABLE IF EXISTS public.site_status CASCADE;
+DROP TABLE IF EXISTS public.contact_submissions CASCADE;
+
 -- Testimonials
 CREATE TABLE public.testimonials (
   id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
