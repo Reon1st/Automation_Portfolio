@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { isRateLimited, recordFailedAttempt, clearAttempts } from './_rateLimit';
 
 const VALID_STATUSES = ['auto', 'available', 'unavailable'];
 
@@ -7,11 +8,17 @@ export default async function handler(req: any, res: any) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  if (isRateLimited(req)) {
+    return res.status(429).json({ error: 'Too many failed attempts. Try again later.' });
+  }
+
   const { password, status } = req.body;
 
   if (!process.env.ADMIN_PASSWORD || password !== process.env.ADMIN_PASSWORD) {
+    recordFailedAttempt(req);
     return res.status(401).json({ error: 'Unauthorized' });
   }
+  clearAttempts(req);
   if (!VALID_STATUSES.includes(status)) {
     return res.status(400).json({ error: `Invalid status: ${status}` });
   }
