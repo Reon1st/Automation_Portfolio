@@ -26,19 +26,15 @@ interface TestimonialRow {
   display_order: number;
 }
 
-// supabase.functions.invoke() only gives a generic "non-2xx status code"
-// message on error — the actual reason our function sent back is in the
-// raw response body, which needs to be read separately.
-const extractFnError = async (error: any): Promise<string> => {
-  if (error?.context && typeof error.context.json === 'function') {
-    try {
-      const body = await error.context.json();
-      if (body?.error) return body.error;
-    } catch {
-      // fall through to generic message
-    }
-  }
-  return error?.message || 'Edge function error';
+const callApi = async (path: string, body: any) => {
+  const res = await fetch(path, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  });
+  const result = await res.json().catch(() => ({}));
+  if (!res.ok || result?.error) throw new Error(result?.error || `Request failed (${res.status})`);
+  return result;
 };
 
 const emptyForm = {
@@ -64,15 +60,8 @@ const Admin = () => {
   const [tLoading, setTLoading] = useState(false);
   const [previewId, setPreviewId] = useState<string | null>(null);
 
-  // Edge function helper
-  const callManage = async (action: string, data?: any) => {
-    const { data: result, error } = await supabase.functions.invoke('manage-testimonials', {
-      body: { action, password: adminPassword, data }
-    });
-    if (error) throw new Error(await extractFnError(error));
-    if (result?.error) throw new Error(result.error);
-    return result;
-  };
+  const callManage = (action: string, data?: any) =>
+    callApi('/api/manage-testimonials', { action, password: adminPassword, data });
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -83,15 +72,8 @@ const Admin = () => {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Validate password against edge function
     try {
-      const { data, error } = await supabase.functions.invoke('manage-testimonials', {
-        body: { action: 'list', password }
-      });
-      if (error || data?.error) {
-        toast.error('Invalid password');
-        return;
-      }
+      await callApi('/api/manage-testimonials', { action: 'list', password });
       setAdminPassword(password);
       setIsAuthenticated(true);
       toast.success('Welcome to the admin panel');
@@ -109,11 +91,7 @@ const Admin = () => {
   const updateSiteStatus = async (status: SiteStatus) => {
     setStatusLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke('manage-site-status', {
-        body: { password: adminPassword, status }
-      });
-      if (error) throw new Error(await extractFnError(error));
-      if (data?.error) throw new Error(data.error);
+      await callApi('/api/manage-site-status', { password: adminPassword, status });
       setSiteStatus(status);
       toast.success(`Availability set to ${status}`);
     } catch (err: any) {
