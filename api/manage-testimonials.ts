@@ -1,15 +1,22 @@
 import { createClient } from '@supabase/supabase-js';
+import { isRateLimited, recordFailedAttempt, clearAttempts } from './_rateLimit';
 
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  if (isRateLimited(req)) {
+    return res.status(429).json({ error: 'Too many failed attempts. Try again later.' });
+  }
+
   const { action, password, data } = req.body;
 
   if (!process.env.ADMIN_PASSWORD || password !== process.env.ADMIN_PASSWORD) {
+    recordFailedAttempt(req);
     return res.status(401).json({ error: 'Unauthorized' });
   }
+  clearAttempts(req);
 
   const supabase = createClient(process.env.VITE_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 
