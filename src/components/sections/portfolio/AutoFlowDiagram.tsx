@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { FileSignature, ClipboardList, CalendarCheck, ShieldCheck } from "lucide-react";
+import { LucideIcon } from "lucide-react";
 
-const steps = [
-  { icon: FileSignature, label: "Contract sent", detail: "Personalized contract PDF emailed first" },
-  { icon: ClipboardList, label: "Survey sent", detail: "Onboarding survey link goes out next" },
-  { icon: CalendarCheck, label: "Booking sent", detail: "Client gets the booking link last" },
-  { icon: ShieldCheck, label: "Fail-safe", detail: "Any failed step stops the rest — never a broken half-sequence" },
-];
+export interface FlowStep {
+  icon: LucideIcon;
+  label: string;
+  detail: string;
+}
 
-const OnboardingFlowInteractive: React.FC = () => {
+interface AutoFlowDiagramProps {
+  steps: FlowStep[];
+}
+
+const AutoFlowDiagram: React.FC<AutoFlowDiagramProps> = ({ steps }) => {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
 
@@ -18,7 +21,7 @@ const OnboardingFlowInteractive: React.FC = () => {
       setActive((prev) => (prev + 1) % steps.length);
     }, 1800);
     return () => clearInterval(interval);
-  }, [paused]);
+  }, [paused, steps.length]);
 
   return (
     <div
@@ -26,7 +29,30 @@ const OnboardingFlowInteractive: React.FC = () => {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div className="flex items-center justify-between gap-2">
+      {/* Mobile: top-to-bottom list — no connector, gap alone reads as sequence */}
+      <div className="flex flex-col gap-3.5 sm:hidden">
+        {steps.map((step, i) => (
+          <button
+            key={step.label}
+            onClick={() => setActive(i)}
+            className={`flex items-center gap-3 text-left transition-all duration-300 ${
+              active === i ? "text-primary" : "text-muted-foreground"
+            }`}
+          >
+            <div
+              className={`p-2.5 rounded-xl border flex-shrink-0 transition-all duration-300 ${
+                active === i ? "bg-primary/15 border-primary/40 shadow-md shadow-primary/20" : "bg-background/40 border-border/40"
+              }`}
+            >
+              <step.icon className="h-5 w-5" />
+            </div>
+            <span className="text-[11px] font-medium leading-tight">{step.label}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Desktop: horizontal row with a growing connector line between nodes */}
+      <div className="hidden sm:flex items-center justify-between gap-2">
         {steps.map((step, i) => (
           <div className="contents" key={step.label}>
             <button
@@ -50,9 +76,10 @@ const OnboardingFlowInteractive: React.FC = () => {
           </div>
         ))}
       </div>
+
       <p className="text-xs text-muted-foreground text-center mt-4">{steps[active].detail}</p>
     </div>
   );
 };
 
-export default OnboardingFlowInteractive;
+export default AutoFlowDiagram;

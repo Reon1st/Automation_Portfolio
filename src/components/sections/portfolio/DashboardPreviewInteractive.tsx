@@ -62,7 +62,7 @@ const DashboardPreviewInteractive: React.FC = () => {
 
   return (
     <div className="rounded-lg border border-primary/20 bg-gradient-to-br from-primary/5 via-card/60 to-accent/5 p-4">
-      <div className="flex gap-1.5 mb-3">
+      <div className="flex flex-wrap justify-center gap-1.5 mb-3">
         {tabs.map((tab) => (
           <button
             key={tab.id}

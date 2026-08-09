@@ -116,6 +116,9 @@
     /* Shrinks every rem-based size (type, spacing, layout) uniformly, so 100%
        zoom reads the way 90% browser zoom did — a global density knob. */
     font-size: 90%;
+    /* body's overflow-x:hidden doesn't clip position:fixed descendants (e.g. the
+       portaled Dialog) — this does, closing off the page-level horizontal scroll. */
+    overflow-x: hidden;
   }
 
   /* Performance optimization for animations */
