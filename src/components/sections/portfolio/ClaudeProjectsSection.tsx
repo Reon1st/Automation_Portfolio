@@ -1,22 +1,56 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, AlertCircle, Cog, Gift, TrendingUp, ChevronLeft, ChevronRight, ZoomIn, ExternalLink, PlayCircle, MonitorSmartphone, Images } from "lucide-react";
+import {
+  CheckCircle,
+  AlertCircle,
+  Cog,
+  Gift,
+  TrendingUp,
+  ChevronLeft,
+  ChevronRight,
+  ZoomIn,
+  ExternalLink,
+  PlayCircle,
+  MonitorSmartphone,
+  Images,
+  FileSignature,
+  ClipboardList,
+  CalendarCheck,
+  ShieldCheck,
+  FileEdit,
+  FileText,
+  Mail,
+  HardDrive,
+} from "lucide-react";
 import FloatingElements from "@/components/shared/FloatingElements";
 import SectionHeader from "@/components/shared/SectionHeader";
 import { flagshipProjects, FlagshipProject } from "@/data/flagshipProjects";
 import { ProjectDetailModal, ProjectDetailData } from "./ProjectDetailModal";
 import TriageFlowDiagram from "./TriageFlowDiagram";
 import DashboardPreviewInteractive from "./DashboardPreviewInteractive";
-import InvoiceFlowInteractive from "./InvoiceFlowInteractive";
-import OnboardingFlowInteractive from "./OnboardingFlowInteractive";
+import AutoFlowDiagram from "./AutoFlowDiagram";
 import SupportReplyInteractive from "./SupportReplyInteractive";
+
+const onboardingSteps = [
+  { icon: FileSignature, label: "Contract sent", detail: "Personalized contract PDF emailed first" },
+  { icon: ClipboardList, label: "Survey sent", detail: "Onboarding survey link goes out next" },
+  { icon: CalendarCheck, label: "Booking sent", detail: "Client gets the booking link last" },
+  { icon: ShieldCheck, label: "Fail-safe", detail: "Any failed step stops the rest — never a broken half-sequence" },
+];
+
+const invoiceSteps = [
+  { icon: FileEdit, label: "Form filled", detail: "Client and invoice details entered once" },
+  { icon: FileText, label: "PDF generated", detail: "Branded invoice built automatically" },
+  { icon: Mail, label: "Gmail drafted", detail: "Ready to send, no copy-paste" },
+  { icon: HardDrive, label: "Filed to Drive", detail: "A copy saved for your records" },
+];
 
 const interactiveVisuals: Record<string, React.ReactNode> = {
   "support-triage": <TriageFlowDiagram />,
   "ops-dashboard": <DashboardPreviewInteractive />,
-  "invoice-automation": <InvoiceFlowInteractive />,
-  "client-onboarding": <OnboardingFlowInteractive />,
+  "invoice-automation": <AutoFlowDiagram steps={invoiceSteps} />,
+  "client-onboarding": <AutoFlowDiagram steps={onboardingSteps} />,
 };
 
 const processStepVisuals: Record<string, Record<string, React.ReactNode>> = {
@@ -104,8 +138,11 @@ const ClaudeProjectsSection: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  const handleNext = () => setCurrentIndex((prev) => (prev + 1) % flagshipProjects.length);
-  const handlePrev = () => setCurrentIndex((prev) => (prev === 0 ? flagshipProjects.length - 1 : prev - 1));
+  // On mobile the image and details stack vertically, so switching projects from the
+  // bottom footer would otherwise strand the user below the new project's image.
+  const scrollToTop = () => sectionRef.current?.scrollIntoView({ behavior: "instant", block: "start" });
+  const handleNext = () => { setCurrentIndex((prev) => (prev + 1) % flagshipProjects.length); scrollToTop(); };
+  const handlePrev = () => { setCurrentIndex((prev) => (prev === 0 ? flagshipProjects.length - 1 : prev - 1)); scrollToTop(); };
 
   return (
     <section

@@ -37,26 +37,24 @@ const ProcessWalkthrough: React.FC<ProcessWalkthroughProps> = ({ title, steps, o
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center gap-1 overflow-x-auto pb-1">
+      <div className="flex items-start justify-center flex-wrap gap-x-1 gap-y-3 pb-1">
         {visibleSteps.map((step, i) => (
-          <div className="contents" key={step.label}>
-            <button
-              onClick={() => setActive(i)}
-              className={`flex flex-col items-center gap-1 flex-shrink-0 px-2 py-1.5 rounded-lg transition-all duration-300 ${
-                active === i ? "text-primary bg-primary/10" : "text-muted-foreground hover:text-foreground"
+          <button
+            key={step.label}
+            onClick={() => setActive(i)}
+            className={`flex flex-col items-center gap-1.5 flex-shrink-0 w-[100px] py-2 rounded-lg transition-all duration-300 ${
+              active === i ? "text-primary bg-primary/10" : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            <span
+              className={`flex items-center justify-center h-6 w-6 rounded-full border text-[11px] font-semibold transition-all duration-300 ${
+                active === i ? "border-primary bg-primary/15" : "border-border/50"
               }`}
             >
-              <span
-                className={`flex items-center justify-center h-6 w-6 rounded-full border text-[11px] font-semibold transition-all duration-300 ${
-                  active === i ? "border-primary bg-primary/15" : "border-border/50"
-                }`}
-              >
-                {i + 1}
-              </span>
-              <span className="text-[11px] font-medium whitespace-nowrap">{step.label}</span>
-            </button>
-            {i < visibleSteps.length - 1 && <div className="w-4 h-px bg-border/40 flex-shrink-0" aria-hidden />}
-          </div>
+              {i + 1}
+            </span>
+            <span className="text-[11px] font-medium text-center leading-relaxed px-1">{step.label}</span>
+          </button>
         ))}
       </div>
 
