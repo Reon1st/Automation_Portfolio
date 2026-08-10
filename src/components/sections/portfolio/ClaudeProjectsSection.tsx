@@ -138,11 +138,8 @@ const ClaudeProjectsSection: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
-  // On mobile the image and details stack vertically, so switching projects from the
-  // bottom footer would otherwise strand the user below the new project's image.
-  const scrollToTop = () => sectionRef.current?.scrollIntoView({ behavior: "instant", block: "start" });
-  const handleNext = () => { setCurrentIndex((prev) => (prev + 1) % flagshipProjects.length); scrollToTop(); };
-  const handlePrev = () => { setCurrentIndex((prev) => (prev === 0 ? flagshipProjects.length - 1 : prev - 1)); scrollToTop(); };
+  const handleNext = () => setCurrentIndex((prev) => (prev + 1) % flagshipProjects.length);
+  const handlePrev = () => setCurrentIndex((prev) => (prev === 0 ? flagshipProjects.length - 1 : prev - 1));
 
   return (
     <section

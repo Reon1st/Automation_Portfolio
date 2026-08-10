@@ -116,9 +116,17 @@
     /* Shrinks every rem-based size (type, spacing, layout) uniformly, so 100%
        zoom reads the way 90% browser zoom did — a global density knob. */
     font-size: 90%;
-    /* body's overflow-x:hidden doesn't clip position:fixed descendants (e.g. the
-       portaled Dialog) — this does, closing off the page-level horizontal scroll. */
-    overflow-x: hidden;
+    /* Do NOT put an explicit overflow-x here. html previously had
+       overflow-x:hidden (added to clip position:fixed descendants like the
+       portaled Dialog, which body's own overflow-x:hidden doesn't clip) — but
+       ANY explicit overflow-x on html makes html itself the page's scroll
+       container instead of body (browsers propagate body's overflow to the
+       viewport only while html is left at the default visible). That
+       reassignment broke touch-swipe scrolling on Android/mobile entirely
+       (confirmed via bisect + isolated testing — reproduced with both
+       overflow-x:hidden and overflow-x:clip). If horizontally-overflowing
+       fixed content becomes a problem again, fix it at the source (constrain
+       that specific element's width) rather than reintroducing this. */
   }
 
   /* Performance optimization for animations */
