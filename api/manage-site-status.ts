@@ -1,5 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
-import { isRateLimited, recordFailedAttempt, clearAttempts } from './_rateLimit';
+import { isRateLimited, recordFailedAttempt, clearAttempts } from './_rateLimit.js';
 
 const VALID_STATUSES = ['auto', 'available', 'unavailable'];
 
