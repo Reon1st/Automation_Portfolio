@@ -9,12 +9,7 @@ const ContactSection: React.FC = () => {
     rootMargin: "0px 0px -80px 0px",
     duration: 600
   });
-  return <section id="contact" className="py-6 md:py-8 px-6 md:px-8 relative bg-gradient-to-b from-background via-background to-background/95">
-      {/* Smooth transition from portfolio */}
-      <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-background to-transparent pointer-events-none" />
-      {/* Transition to footer */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-b from-transparent to-card/30 pointer-events-none" />
-
+  return <section id="contact" className="py-6 md:py-8 px-6 md:px-8 relative">
       <div className="container mx-auto">
         {/* Clean Header — kept narrow regardless of the calendar's width */}
         <div ref={headerAnimation.ref as React.RefObject<HTMLDivElement>} className="max-w-4xl mx-auto text-center mb-8">

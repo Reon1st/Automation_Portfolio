@@ -21,20 +21,15 @@ export const SOCIAL_LINKS = {
     label: "LinkedIn",
     description: "Connect professionally",
   },
-  upwork: {
-    url: "https://www.upwork.com/freelancers/~0133dfaffaaaf4cc5a",
-    label: "Upwork",
-    description: "Hire me directly",
-  },
-  onlinejobsph: {
-    url: "https://www.onlinejobs.ph/jobseekers/info/2718705",
-    label: "OnlineJobs.PH",
-    description: "View my profile",
-  },
   github: {
     url: "https://github.com/Reon1st",
     label: "GitHub",
     description: "See the actual code",
+  },
+  x: {
+    url: "https://x.com/reonbuilds",
+    label: "X (Twitter)",
+    description: "Follow the build journey",
   },
   caseStudies: {
     url: "https://fortunate-cat.super.site",

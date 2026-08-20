@@ -2,6 +2,9 @@ import { GoHighLevelIcon, N8NIcon, ClaudeIcon, RobotIcon } from "@/components/Pl
 
 export interface Service {
   icon: React.ComponentType<{ className?: string }>;
+  // Icons with a baked-in square background (Claude, GHL) fill the tile edge-to-edge;
+  // transparent glyphs (n8n, robot) stay centered at glyph size.
+  iconFill?: boolean;
   title: string;
   description: string;
   tools: string[];
@@ -10,30 +13,32 @@ export interface Service {
 export const services: Service[] = [
   {
     icon: ClaudeIcon,
+    iconFill: true,
     title: "Claude | Code | Cowork",
     description:
-      "Claude does the thinking, real code does the work — built directly with the person shipping it, not handed off to an account manager. The repetitive stuff (emails, follow-ups, data entry) turns into a system that actually holds up, not just a demo.",
+      "Claude thinks, I build — direct, no account manager in between. A second brain, a personal assistant, an ops system for your whole business — built around whatever you actually need.",
     tools: ["Claude AI", "Next.js", "Trigger.dev", "Composio", "RAG / Vector Search"],
   },
   {
     icon: GoHighLevelIcon,
-    title: "GoHighLevel — CRM & Marketing",
+    iconFill: true,
+    title: "GoHighLevel CRM",
     description:
-      "Everything your sales side needs in one place: CRM setup, automation integrations, AI agents, funnels and landing pages that convert, and SMS + email campaigns that follow up so you don't have to.",
+      "Your whole sales side in one system — CRM, funnels, AI agents, and follow-ups that fire on their own so leads don't go cold.",
     tools: ["GoHighLevel", "Funnels", "SMS & Email Campaigns", "AI Agents"],
   },
   {
     icon: N8NIcon,
     title: "n8n Workflow Automation",
     description:
-      "Connect the tools you already use. Emails sorted automatically, spreadsheets that update themselves, and data moved between your apps without the copy-paste.",
+      "Connect the tools you already run — n8n doesn't care what the job is. Emails, sheets, alerts, entire workflows: whatever moves between your apps can run itself.",
     tools: ["n8n", "Gmail", "Google Sheets", "Webhooks & APIs"],
   },
   {
     icon: RobotIcon,
     title: "AI Chatbots & Voice Agents",
     description:
-      "Chatbots that handle round-the-clock questions and pre-qualify leads before a human needs to step in — now expanding into voice: agents that can hold an actual phone conversation, not just answer with text.",
+      "Chatbots that answer and pre-qualify leads around the clock, now stretching into voice — agents that sound so human, most callers never clock they're talking to a bot.",
     tools: ["Claude AI", "n8n Agents", "GoHighLevel AI", "Voice AI"],
   },
 ];

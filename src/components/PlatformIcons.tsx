@@ -15,6 +15,7 @@ import nextjsIconSrc from "@/assets/nextjs-icon.jpg";
 import reactIconSrc from "@/assets/react-icon-v2.png";
 import composioIconSrc from "@/assets/composio-icon.jpeg";
 import vercelIconSrc from "@/assets/vercel-icon.png";
+import xIconSrc from "@/assets/x-icon.png";
 
 // loading="lazy" deliberately omitted on all of these: they sit inside a wide,
 // non-virtualized embla carousel where later slides can be thousands of
@@ -76,6 +77,10 @@ export const NotionIcon = ({ className }: { className?: string }) => (
 
 export const GitHubIcon = ({ className }: { className?: string }) => (
   <img src={githubIconSrc} alt="GitHub" className={`${className} object-contain invert`} />
+);
+
+export const XIcon = ({ className }: { className?: string }) => (
+  <img src={xIconSrc} alt="X (Twitter)" className={`${className} rounded object-contain`} />
 );
 
 export const ClaudeIcon = ({ className }: { className?: string }) => (

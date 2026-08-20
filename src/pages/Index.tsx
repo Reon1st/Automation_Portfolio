@@ -1,4 +1,3 @@
-import AutomationFlowAnimation from "@/components/AutomationFlowAnimation";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import HeroSection from "@/components/sections/HeroSection";
@@ -8,22 +7,29 @@ import WebsitesSection from "@/components/sections/portfolio/WebsitesSection";
 import TestimonialsSection from "@/components/sections/TestimonialsSection";
 import FAQSection from "@/components/sections/FAQSection";
 import ContactSection from "@/components/sections/ContactSection";
+import { GradientBackground } from "@/components/ui/dark-gradient-background";
+import SectionDivider from "@/components/shared/SectionDivider";
 const Index = () => {
-  return <div className="min-h-screen gradient-bg dark relative">
-      <AutomationFlowAnimation />
+  return <GradientBackground className="min-h-screen dark">
       <Header />
-      
+
       {/* Spacer for fixed header */}
       <div className="h-16" />
-      
+
       <HeroSection />
+      <SectionDivider />
       <ServicesSection />
+      <SectionDivider />
       <ClaudeProjectsSection />
+      <SectionDivider />
       <WebsitesSection />
       <TestimonialsSection />
+      <SectionDivider />
       <FAQSection />
+      <SectionDivider />
       <ContactSection />
+      <SectionDivider />
       <Footer />
-    </div>;
+    </GradientBackground>;
 };
 export default Index;

@@ -523,6 +523,7 @@ a, button, [role="button"], .cursor-pointer, label[for], summary {
   animation: gradient-shift 15s ease infinite;
 }
 
+
 /* Glass Effect */
 .glass-effect {
   background: hsl(var(--card) / 0.8);

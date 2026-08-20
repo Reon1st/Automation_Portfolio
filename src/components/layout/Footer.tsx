@@ -1,11 +1,10 @@
 import React from "react";
 import { MapPin, ArrowUpRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { UpworkIcon, LinkedInIcon } from "@/components/UpdatedSocialIcons";
-import { OnlineJobsPHIcon } from "@/components/OnlineJobsPHIcon";
-import { GmailIcon, CalIcon, NotionIcon, GitHubIcon } from "@/components/PlatformIcons";
+import { LinkedInIcon } from "@/components/UpdatedSocialIcons";
+import { GmailIcon, CalIcon, NotionIcon, GitHubIcon, XIcon } from "@/components/PlatformIcons";
 import AvailabilityIndicator from "@/components/AvailabilityIndicator";
-import FloatingElements from "@/components/shared/FloatingElements";
+import SectionDivider from "@/components/shared/SectionDivider";
 import { SITE_CONFIG, SOCIAL_LINKS, AVAILABILITY } from "@/lib/constants";
 interface FooterLinkProps {
   href: string;
@@ -35,13 +34,9 @@ const FooterLink: React.FC<FooterLinkProps> = ({
     </a>;
 };
 const Footer: React.FC = () => {
-  return <footer className="pt-8 pb-6 px-6 relative overflow-hidden bg-gradient-to-b from-background via-background/95 to-card/80" role="contentinfo">
-      {/* Darker layered background for depth */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/3 via-transparent to-accent/3" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,transparent_0%,hsl(var(--background)/0.8)_50%,hsl(var(--card))_100%)]" />
-      <FloatingElements variant="minimal" />
-
-      <div className="container mx-auto max-w-6xl relative z-10">
+  return <footer className="pt-8 pb-6 px-6 relative overflow-hidden" role="contentinfo">
+      {/* Charcoal panel keeps footer content readable over the cyan base of the page gradient */}
+      <div className="container mx-auto max-w-6xl relative z-10 rounded-2xl border border-white/5 bg-[#0B0D12]/95 p-6 md:p-8 shadow-2xl shadow-black/40">
         {/* Compact Header */}
         <div className="text-center mb-6">
 
@@ -53,18 +48,20 @@ const Footer: React.FC = () => {
           </p>
         </div>
 
+        <SectionDivider />
+
         {/* Content Grid - More Compact */}
-        <div className="grid md:grid-cols-3 gap-6 lg:gap-8 mb-6">
-          
+        <div className="grid md:grid-cols-3 gap-6 lg:gap-8 mt-6 mb-6">
+
           {/* Get In Touch */}
-          <div className="space-y-1">
+          <div className="space-y-1 rounded-xl border border-white/5 bg-white/[0.02] p-4">
             <div className="flex items-center gap-2 mb-4">
-              
+
               <h3 className="text-sm font-bold text-primary">
                 Contact
               </h3>
             </div>
-            
+
             <FooterLink href={`mailto:${SITE_CONFIG.email}`} icon={<GmailIcon className="h-8 w-8" />} title="Email" description={SITE_CONFIG.email} external={false} />
 
             <FooterLink href="#contact" icon={<CalIcon className="h-8 w-8" />} title="Schedule Call" description="Book a free consultation" external={false} />
@@ -73,32 +70,30 @@ const Footer: React.FC = () => {
           </div>
 
           {/* Professional Profiles */}
-          <div className="space-y-1">
+          <div className="space-y-1 rounded-xl border border-white/5 bg-white/[0.02] p-4">
             <div className="flex items-center gap-2 mb-4">
-              
+
               <h3 className="text-sm font-bold text-primary">
                 Profiles
               </h3>
             </div>
-            
+
             <FooterLink href={SOCIAL_LINKS.linkedin.url} icon={<LinkedInIcon className="h-8 w-8" />} title={SOCIAL_LINKS.linkedin.label} description={SOCIAL_LINKS.linkedin.description} />
 
-            <FooterLink href={SOCIAL_LINKS.upwork.url} icon={<UpworkIcon className="h-8 w-8" />} title={SOCIAL_LINKS.upwork.label} description={SOCIAL_LINKS.upwork.description} />
-
-            <FooterLink href={SOCIAL_LINKS.onlinejobsph.url} icon={<OnlineJobsPHIcon className="h-8 w-8" />} title={SOCIAL_LINKS.onlinejobsph.label} description={SOCIAL_LINKS.onlinejobsph.description} />
-
             <FooterLink href={SOCIAL_LINKS.github.url} icon={<GitHubIcon className="h-8 w-8" />} title={SOCIAL_LINKS.github.label} description={SOCIAL_LINKS.github.description} />
+
+            <FooterLink href={SOCIAL_LINKS.x.url} icon={<XIcon className="h-8 w-8" />} title={SOCIAL_LINKS.x.label} description={SOCIAL_LINKS.x.description} />
           </div>
 
           {/* Availability */}
-          <div className="space-y-3">
+          <div className="space-y-3 rounded-xl border border-white/5 bg-white/[0.02] p-4">
             <div className="flex items-center gap-2 mb-4">
-              
+
               <h3 className="text-sm font-bold text-primary">
                 Availability
               </h3>
             </div>
-            
+
             <AvailabilityIndicator />
 
             <div className="p-3 rounded-xl bg-card/40 border border-border/30">

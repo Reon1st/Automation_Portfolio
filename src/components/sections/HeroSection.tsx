@@ -2,12 +2,10 @@ import React from "react";
 import { MapPin, Clock, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { UpworkIcon, LinkedInIcon } from "@/components/UpdatedSocialIcons";
-import { OnlineJobsPHIcon } from "@/components/OnlineJobsPHIcon";
-import { GitHubIcon } from "@/components/PlatformIcons";
+import { LinkedInIcon } from "@/components/UpdatedSocialIcons";
+import { GitHubIcon, XIcon } from "@/components/PlatformIcons";
 import AvailabilityIndicator from "@/components/AvailabilityIndicator";
 import EnhancedAvailabilityIndicator from "@/components/EnhancedAvailabilityIndicator";
-import FloatingElements from "@/components/shared/FloatingElements";
 import { useScrollAnimation, useStaggeredChildren } from "@/hooks/useScrollAnimation";
 import { useScrollToElement } from "@/hooks/useScrollToElement";
 import profileImage from "@/assets/profile-4k.jpg";
@@ -39,10 +37,7 @@ const HeroSection: React.FC = () => {
     </div>
   );
 
-  return <section ref={heroAnimation.ref as React.RefObject<HTMLElement>} className="pt-20 pb-4 px-6 relative overflow-hidden will-animate bg-gradient-to-b from-background via-background to-background/95">
-      {/* Gradient transition to services */}
-      <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-b from-transparent to-primary/3 pointer-events-none" />
-      <FloatingElements variant="default" />
+  return <section ref={heroAnimation.ref as React.RefObject<HTMLElement>} className="pt-20 pb-4 px-6 relative overflow-hidden will-animate">
 
 
       <div className="container mx-auto max-w-6xl relative z-10">
@@ -118,27 +113,21 @@ const HeroSection: React.FC = () => {
             {/* Social Links */}
             <div className="flex flex-wrap justify-center lg:justify-start gap-2 will-animate">
               <Button variant="outline" size="sm" asChild className="border-primary/40 hover:border-primary/60 hover:bg-primary/10 hover:text-primary transition-all duration-300 hover-lift">
-                <a href={SOCIAL_LINKS.onlinejobsph.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                  <OnlineJobsPHIcon className="h-4 w-4" />
-                  OnlineJobs.PH
-                </a>
-              </Button>
-              <Button variant="outline" size="sm" asChild className="border-primary/40 hover:border-primary/60 hover:bg-primary/10 hover:text-primary transition-all duration-300 hover-lift">
                 <a href={SOCIAL_LINKS.linkedin.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                   <LinkedInIcon className="h-4 w-4" />
                   LinkedIn
                 </a>
               </Button>
               <Button variant="outline" size="sm" asChild className="border-primary/40 hover:border-primary/60 hover:bg-primary/10 hover:text-primary transition-all duration-300 hover-lift">
-                <a href={SOCIAL_LINKS.upwork.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
-                  <UpworkIcon className="h-4 w-4" />
-                  Upwork
-                </a>
-              </Button>
-              <Button variant="outline" size="sm" asChild className="border-primary/40 hover:border-primary/60 hover:bg-primary/10 hover:text-primary transition-all duration-300 hover-lift">
                 <a href={SOCIAL_LINKS.github.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
                   <GitHubIcon className="h-4 w-4" />
                   GitHub
+                </a>
+              </Button>
+              <Button variant="outline" size="sm" asChild className="border-primary/40 hover:border-primary/60 hover:bg-primary/10 hover:text-primary transition-all duration-300 hover-lift">
+                <a href={SOCIAL_LINKS.x.url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2">
+                  <XIcon className="h-4 w-4" />
+                  X (Twitter)
                 </a>
               </Button>
             </div>

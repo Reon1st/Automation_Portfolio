@@ -1,8 +1,7 @@
 import React from "react";
-import { HelpCircle, Timer, DollarSign, ShieldCheck, CheckCircle } from "lucide-react";
+import { Timer, DollarSign, ShieldCheck, CheckCircle } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import FloatingElements from "@/components/shared/FloatingElements";
 import SectionHeader from "@/components/shared/SectionHeader";
 import { useScrollAnimation, useStaggeredChildren } from "@/hooks/useScrollAnimation";
 import { ANIMATION_PRESETS } from "@/lib/constants";
@@ -86,14 +85,10 @@ const FAQSection: React.FC = () => {
   const faqItems = useStaggeredChildren(ANIMATION_PRESETS.stagger.faq.count, ANIMATION_PRESETS.stagger.faq.delay);
 
   return (
-    <section id="faq" className="py-6 md:py-8 px-4 bg-gradient-to-br from-primary/5 via-background to-accent/5 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/20 to-transparent" />
-      <FloatingElements variant="minimal" />
-
+    <section id="faq" className="py-6 md:py-8 px-4 relative overflow-hidden">
       <div className="container mx-auto max-w-4xl relative z-10">
         <div ref={headerAnimation.ref as React.RefObject<HTMLDivElement>}>
           <SectionHeader
-            badge={{ icon: HelpCircle, text: "Frequently Asked Questions" }}
             title="Got Questions? We've Got Answers"
             subtitle="Clear answers to help you understand how AI workflow automation can transform your business"
           />

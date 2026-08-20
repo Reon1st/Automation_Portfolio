@@ -23,7 +23,6 @@ import {
   Mail,
   HardDrive,
 } from "lucide-react";
-import FloatingElements from "@/components/shared/FloatingElements";
 import SectionHeader from "@/components/shared/SectionHeader";
 import { flagshipProjects, FlagshipProject } from "@/data/flagshipProjects";
 import { ProjectDetailModal, ProjectDetailData } from "./ProjectDetailModal";
@@ -145,13 +144,9 @@ const ClaudeProjectsSection: React.FC = () => {
     <section
       ref={sectionRef}
       id="portfolio"
-      className="py-8 px-6 relative overflow-hidden bg-gradient-to-b from-background/95 via-background to-background"
+      className="py-8 px-6 relative overflow-hidden"
       aria-labelledby="portfolio-heading"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--primary)/0.03)_0%,transparent_60%)]" />
-      <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
-      <FloatingElements variant="default" />
-
       <div className="container mx-auto max-w-6xl relative z-10 space-y-5">
       <div className={`transition-all duration-1000 ease-out ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}>
         <SectionHeader
