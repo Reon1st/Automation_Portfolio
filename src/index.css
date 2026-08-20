@@ -664,6 +664,62 @@ a, button, [role="button"], .cursor-pointer, label[for], summary {
 }
 
 /* ============================================
+   FOOTER REVEAL ANIMATION
+   ============================================
+   One trigger (the panel scrolling into view), one cascading motion: the
+   whole panel fades/lifts in first, then — overlapping its tail so it reads
+   as a single continuous beat, not two separate ones — the divider expands
+   from its center at the same moment the three columns part ways from that
+   same centerline. Every element's timing is declared as its own
+   transition + transition-delay off one shared .is-revealed class, so they
+   stay genuinely in sync (no JS setTimeout chain to drift). The divider
+   settles at its normal resting opacity and stays there — it's a permanent
+   divider, not a one-shot loading flourish. */
+.footer-reveal-panel {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1), transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.footer-reveal-panel.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.footer-reveal-bar {
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: 0.2s;
+}
+.footer-reveal-panel.is-revealed .footer-reveal-bar {
+  transform: scaleX(1);
+}
+
+.footer-reveal-col {
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: 0.25s;
+}
+.footer-reveal-col-left { transform: translateX(24%) scale(0.94); }
+.footer-reveal-col-center { transform: scale(0.94); }
+.footer-reveal-col-right { transform: translateX(-24%) scale(0.94); }
+
+.footer-reveal-panel.is-revealed .footer-reveal-col {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-reveal-panel,
+  .footer-reveal-bar,
+  .footer-reveal-col {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ============================================
    SCROLL INDICATOR STYLES
    ============================================ */
 .tech-mouse {

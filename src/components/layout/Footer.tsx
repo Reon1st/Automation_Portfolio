@@ -1,11 +1,45 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { MapPin, ArrowUpRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { LinkedInIcon } from "@/components/UpdatedSocialIcons";
 import { GmailIcon, CalIcon, NotionIcon, GitHubIcon, XIcon } from "@/components/PlatformIcons";
 import AvailabilityIndicator from "@/components/AvailabilityIndicator";
-import SectionDivider from "@/components/shared/SectionDivider";
 import { SITE_CONFIG, SOCIAL_LINKS, AVAILABILITY } from "@/lib/constants";
+
+// Single trigger, once the footer scrolls into view — every element's timing
+// is declared as its own CSS transition-delay off the shared .is-revealed
+// class (see index.css), so the panel fade-up, the divider wipe, and the
+// columns parting all stay genuinely in sync rather than being JS-timed.
+const useFooterReveal = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isRevealed, setIsRevealed] = useState(false);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setIsRevealed(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setIsRevealed(true);
+        observer.unobserve(element);
+      },
+      { threshold: 0.2 }
+    );
+
+    observer.observe(element);
+    return () => {
+      try { observer.unobserve(element); } catch { /* noop */ }
+    };
+  }, []);
+
+  return { ref, isRevealed };
+};
 interface FooterLinkProps {
   href: string;
   icon: React.ReactNode;
@@ -34,9 +68,10 @@ const FooterLink: React.FC<FooterLinkProps> = ({
     </a>;
 };
 const Footer: React.FC = () => {
+  const { ref: revealRef, isRevealed } = useFooterReveal();
   return <footer className="pt-8 pb-6 px-6 relative overflow-hidden" role="contentinfo">
       {/* Charcoal panel keeps footer content readable over the cyan base of the page gradient */}
-      <div className="container mx-auto max-w-6xl relative z-10 rounded-2xl border border-white/5 bg-[#0B0D12]/95 p-6 md:p-8 shadow-2xl shadow-black/40">
+      <div ref={revealRef} className={`footer-reveal-panel${isRevealed ? " is-revealed" : ""} container mx-auto max-w-6xl relative z-10 rounded-2xl border border-white/5 bg-[#0B0D12]/95 p-6 md:p-8 shadow-2xl shadow-black/40`}>
         {/* Compact Header */}
         <div className="text-center mb-6">
 
@@ -48,13 +83,16 @@ const Footer: React.FC = () => {
           </p>
         </div>
 
-        <SectionDivider />
+        {/* Divider — expands from center in sync with the columns below it */}
+        <div className="mx-auto max-w-5xl px-6 py-3" aria-hidden="true">
+          <div className="footer-reveal-bar h-px w-full bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+        </div>
 
         {/* Content Grid - More Compact */}
         <div className="grid md:grid-cols-3 gap-6 lg:gap-8 mt-6 mb-6">
 
           {/* Get In Touch */}
-          <div className="space-y-1 rounded-xl border border-white/5 bg-white/[0.02] p-4">
+          <div className="footer-reveal-col footer-reveal-col-left space-y-1 rounded-xl border border-white/5 bg-white/[0.02] p-4">
             <div className="flex items-center gap-2 mb-4">
 
               <h3 className="text-sm font-bold text-primary">
@@ -70,7 +108,7 @@ const Footer: React.FC = () => {
           </div>
 
           {/* Professional Profiles */}
-          <div className="space-y-1 rounded-xl border border-white/5 bg-white/[0.02] p-4">
+          <div className="footer-reveal-col footer-reveal-col-center space-y-1 rounded-xl border border-white/5 bg-white/[0.02] p-4">
             <div className="flex items-center gap-2 mb-4">
 
               <h3 className="text-sm font-bold text-primary">
@@ -86,7 +124,7 @@ const Footer: React.FC = () => {
           </div>
 
           {/* Availability */}
-          <div className="space-y-3 rounded-xl border border-white/5 bg-white/[0.02] p-4">
+          <div className="footer-reveal-col footer-reveal-col-right space-y-3 rounded-xl border border-white/5 bg-white/[0.02] p-4">
             <div className="flex items-center gap-2 mb-4">
 
               <h3 className="text-sm font-bold text-primary">

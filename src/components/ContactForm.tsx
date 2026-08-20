@@ -18,7 +18,7 @@ export const ContactForm = () => {
       {/* Mobile Layout */}
       <div className="md:hidden">
         <div className="text-center space-y-6">
-          <div className="rounded-xl border border-border/40 bg-card/30 p-6">
+          <div className="rounded-xl border border-border/20 bg-gradient-to-br from-card/80 to-card/40 backdrop-blur-[10px] p-6">
             <div className="space-y-4">
               <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10">
                 <Calendar className="h-5 w-5 text-primary" />
