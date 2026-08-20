@@ -50,7 +50,6 @@ export const AVAILABILITY = {
     { day: "Sunday", hours: "9 – 11 AM" },
     { day: "Tue & Thu", hours: "9 – 11:59 PM" },
   ],
-  languages: ["English", "Filipino"],
 };
 
 // Weekly class blocks (Asia/Manila time, minutes-since-midnight), 0=Sun..6=Sat.

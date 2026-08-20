@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { MapPin, ArrowUpRight } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
 import { LinkedInIcon } from "@/components/UpdatedSocialIcons";
 import { GmailIcon, CalIcon, NotionIcon, GitHubIcon, XIcon } from "@/components/PlatformIcons";
 import AvailabilityIndicator from "@/components/AvailabilityIndicator";
@@ -147,12 +146,6 @@ const Footer: React.FC = () => {
               <p className="text-xs text-muted-foreground/70 mt-2 pt-2 border-t border-border/30">
                 Outside these? I'm still usually responding within the hour — this is just when I'm live for a call.
               </p>
-            </div>
-
-            <div className="flex flex-wrap gap-1.5">
-              {AVAILABILITY.languages.map(lang => <Badge key={lang} variant="secondary" className="text-xs font-normal bg-primary/10 text-primary border border-primary/20">
-                  {lang}
-                </Badge>)}
             </div>
           </div>
         </div>
