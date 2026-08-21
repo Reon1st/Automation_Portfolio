@@ -9,10 +9,12 @@ import { LazyYouform } from "@/components/LazyYouform";
 // On the free plan there's no cross-origin signal to detect a real
 // submission, so Step 2 unlocks on an honest manual click instead.
 const RevealPrompt = ({ onReveal }: { onReveal: () => void }) => (
-  <div className="flex flex-col items-center gap-3 text-center py-2">
-    <p className="text-sm text-muted-foreground">Already filled out the form above?</p>
+  <div className="flex flex-col items-center gap-2 text-center py-2">
+    <p className="text-sm text-muted-foreground">
+      The form above already has a scheduling step — this is just an optional alternative.
+    </p>
     <Button variant="outline" onClick={onReveal} className="gap-2">
-      Show booking calendar
+      Show booking calendar anyway
       <ArrowRight className="h-4 w-4" />
     </Button>
   </div>
