@@ -17,14 +17,14 @@ const ContactSection: React.FC = () => {
             Let's Work Together
           </h2>
           <p className="text-muted-foreground max-w-xl mx-auto leading-relaxed text-sm">
-            Ready to streamline your business with smart automations?
-            Book a free call and let's discuss.
+            Tell me what's slowing your business down, and I'll show you how to fix it.
+            Fill out a quick form below, then grab a time that works for you.
           </p>
 
           {/* Subtle divider */}
           <div className="mt-6 flex items-center justify-center gap-4">
             <div className="h-px w-16 bg-border" />
-            <span className="text-xs text-muted-foreground/60 uppercase tracking-widest">No pressure, just a quick chat</span>
+            <span className="text-xs text-muted-foreground/60 uppercase tracking-widest">Two minutes, no pressure</span>
             <div className="h-px w-16 bg-border" />
           </div>
         </div>
