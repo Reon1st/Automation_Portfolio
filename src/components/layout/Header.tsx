@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X, User, ArrowRight, Settings, Briefcase, Mail, Palette } from "lucide-react";
+import { Menu, X, User, ArrowRight, Settings, Workflow, Mail, Palette, ChevronDown } from "lucide-react";
 import { NAV_ITEMS } from "@/lib/constants";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -14,9 +15,14 @@ const Header: React.FC = () => {
   }, []);
   const mobileNavIcons: Record<string, React.ElementType> = {
     "#services": Settings,
-    "#portfolio": Briefcase,
+    "#portfolio": Workflow,
     "#websites": Palette,
     "#contact": Mail
+  };
+  // "Projects" is the compact label for the desktop dropdown trigger — mobile
+  // has room for the fuller name.
+  const mobileNavLabels: Record<string, string> = {
+    "#portfolio": "Automation Projects"
   };
   return <header className={`fixed top-0 w-full z-50 transition-all duration-500 ease-out ${isScrolled || isMobileMenuOpen ? "bg-background/98 backdrop-blur-xl border-b border-border shadow-lg" : "bg-transparent border-b border-transparent"}`}>
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
@@ -28,11 +34,31 @@ const Header: React.FC = () => {
         </button>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex space-x-10">
-          {NAV_ITEMS.map(item => <a key={item.href} href={item.href} className="relative font-medium text-foreground hover:text-foreground transition-all duration-300 group">
+        <nav className="hidden md:flex space-x-10 items-center">
+          {NAV_ITEMS.map(item => {
+          // "Websites" is absorbed into the "Automation Projects" dropdown below
+          if (item.label === "Websites") return null;
+          if (item.label === "Projects") {
+            return <DropdownMenu key={item.href}>
+                <DropdownMenuTrigger className="flex items-center gap-1 font-medium text-foreground hover:text-primary transition-colors duration-300 outline-none">
+                  {item.label}
+                  <ChevronDown className="w-4 h-4" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="center">
+                  <DropdownMenuItem asChild>
+                    <a href="#portfolio">Automation</a>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <a href="#websites">Websites</a>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>;
+          }
+          return <a key={item.href} href={item.href} className="relative font-medium text-foreground hover:text-foreground transition-all duration-300 group">
               {item.label}
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-foreground transition-all duration-300 group-hover:w-full" />
-            </a>)}
+            </a>;
+        })}
         </nav>
 
         {/* About Me Button and Mobile menu */}
@@ -137,7 +163,7 @@ const Header: React.FC = () => {
               animationDelay: `${index * 50}ms`
             }}>
                   <Icon className="w-4 h-4 text-muted-foreground group-hover:text-accent transition-colors duration-300" />
-                  <span className="text-sm">{item.label}</span>
+                  <span className="text-sm">{mobileNavLabels[item.href] || item.label}</span>
                   <div className="ml-auto w-1.5 h-1.5 rounded-full bg-accent/0 group-hover:bg-accent transition-all duration-300" />
                 </a>;
           })}
