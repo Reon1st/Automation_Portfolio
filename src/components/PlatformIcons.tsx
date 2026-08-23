@@ -16,10 +16,10 @@ import reactIconSrc from "@/assets/react-icon-v2.png";
 import composioIconSrc from "@/assets/composio-icon.jpeg";
 import vercelIconSrc from "@/assets/vercel-icon.png";
 import xIconSrc from "@/assets/x-icon.png";
-import viteIconSrc from "@/assets/vite-icon.svg";
+import viteIconSrc from "@/assets/vite-icon.png";
 import brevoIconSrc from "@/assets/brevo-icon.svg";
 import airtableIconSrc from "@/assets/airtable-icon.svg";
-import resendIconSrc from "@/assets/resend-icon.svg";
+import resendIconSrc from "@/assets/resend-icon.png";
 
 // loading="lazy" deliberately omitted on all of these: they sit inside a wide,
 // non-virtualized embla carousel where later slides can be thousands of
@@ -148,5 +148,7 @@ export const AirtableIcon = ({ className }: { className?: string }) => (
 );
 
 export const ResendIcon = ({ className }: { className?: string }) => (
-  <img src={resendIconSrc} alt="Resend" className={`${className} object-contain invert`} />
+  <div className={`${className} bg-black rounded-xl flex items-center justify-center`}>
+    <img src={resendIconSrc} alt="Resend" className="w-2/3 h-2/3 object-contain" />
+  </div>
 );
