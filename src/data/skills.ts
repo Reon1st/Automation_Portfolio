@@ -12,6 +12,10 @@ import {
   SupabaseIcon,
   ComposioIcon,
   VercelIcon,
+  ViteIcon,
+  BrevoIcon,
+  AirtableIcon,
+  ResendIcon,
 } from "@/components/PlatformIcons";
 
 export type SkillCategory = "AI & Automation" | "Frontend & Motion" | "Backend & Integrations";
@@ -83,6 +87,13 @@ export const skills: Skill[] = [
     level: "🟡 Working Knowledge",
     category: "Frontend & Motion"
   },
+  {
+    name: "Vite",
+    Icon: ViteIcon,
+    expertise: "Build tooling for every React project on this site — this portfolio included",
+    level: "🟢 Solid Foundations",
+    category: "Frontend & Motion"
+  },
   // Backend & Integrations
   {
     name: "Trigger.dev",
@@ -116,6 +127,27 @@ export const skills: Skill[] = [
     name: "Vercel",
     Icon: VercelIcon,
     expertise: "Where every project on this site actually lives",
+    level: "🟡 Working Knowledge",
+    category: "Backend & Integrations"
+  },
+  {
+    name: "Airtable",
+    Icon: AirtableIcon,
+    expertise: "Structured data backend for booking & reservation systems",
+    level: "🟡 Working Knowledge",
+    category: "Backend & Integrations"
+  },
+  {
+    name: "Brevo",
+    Icon: BrevoIcon,
+    expertise: "Transactional email for booking confirmations & notifications",
+    level: "🟡 Working Knowledge",
+    category: "Backend & Integrations"
+  },
+  {
+    name: "Resend",
+    Icon: ResendIcon,
+    expertise: "Transactional email delivery for contact & lead forms",
     level: "🟡 Working Knowledge",
     category: "Backend & Integrations"
   }

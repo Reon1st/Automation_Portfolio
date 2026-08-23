@@ -16,6 +16,10 @@ import reactIconSrc from "@/assets/react-icon-v2.png";
 import composioIconSrc from "@/assets/composio-icon.jpeg";
 import vercelIconSrc from "@/assets/vercel-icon.png";
 import xIconSrc from "@/assets/x-icon.png";
+import viteIconSrc from "@/assets/vite-icon.svg";
+import brevoIconSrc from "@/assets/brevo-icon.svg";
+import airtableIconSrc from "@/assets/airtable-icon.svg";
+import resendIconSrc from "@/assets/resend-icon.svg";
 
 // loading="lazy" deliberately omitted on all of these: they sit inside a wide,
 // non-virtualized embla carousel where later slides can be thousands of
@@ -129,4 +133,20 @@ export const N8NIcon = ({ className }: { className?: string }) => (
     alt="N8N"
     className={`${className} object-contain`}
   />
+);
+
+export const ViteIcon = ({ className }: { className?: string }) => (
+  <img src={viteIconSrc} alt="Vite" className={`${className} object-contain`} />
+);
+
+export const BrevoIcon = ({ className }: { className?: string }) => (
+  <img src={brevoIconSrc} alt="Brevo" className={`${className} object-contain`} />
+);
+
+export const AirtableIcon = ({ className }: { className?: string }) => (
+  <img src={airtableIconSrc} alt="Airtable" className={`${className} object-contain`} />
+);
+
+export const ResendIcon = ({ className }: { className?: string }) => (
+  <img src={resendIconSrc} alt="Resend" className={`${className} object-contain invert`} />
 );
