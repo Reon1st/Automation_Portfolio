@@ -18,7 +18,7 @@ import vercelIconSrc from "@/assets/vercel-icon.png";
 import xIconSrc from "@/assets/x-icon.png";
 import viteIconSrc from "@/assets/vite-icon.png";
 import brevoIconSrc from "@/assets/brevo-icon.svg";
-import airtableIconSrc from "@/assets/airtable-icon.svg";
+import airtableIconSrc from "@/assets/airtable-icon.png";
 import resendIconSrc from "@/assets/resend-icon.png";
 
 // loading="lazy" deliberately omitted on all of these: they sit inside a wide,
