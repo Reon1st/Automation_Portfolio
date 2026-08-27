@@ -249,10 +249,10 @@ const WorkflowEngine: React.FC<WorkflowEngineProps> = ({ flows, onScreenshot }) 
         ))}
       </div>
 
-      <div className="flex flex-col min-[1650px]:grid min-[1650px]:grid-cols-[1fr_360px]">
-        {/* Node canvas — stacked full-width below ~1650px so nodes never shrink or scroll; on a wide-enough window
-            (a live demo, most desktop monitors) it sits beside the inspector instead, like a real split-pane editor. */}
-        <div className="relative border-b border-white/10 min-[1650px]:border-b-0 min-[1650px]:border-r flex items-center" style={gridStyle}>
+      <div className="flex flex-col lg:grid lg:grid-cols-[1fr_360px]">
+        {/* Node canvas — stacked full-width only below lg (~1024px, true tablet/phone) so nodes never shrink or scroll there;
+            at lg and up — virtually every desktop/laptop screen — it sits beside the inspector instead, like a real split-pane editor. */}
+        <div className="relative border-b border-white/10 lg:border-b-0 lg:border-r flex items-center" style={gridStyle}>
           <div className="pointer-events-none absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-[#0a0a0a] to-transparent z-10" aria-hidden />
           <div className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-[#0a0a0a] to-transparent z-10" aria-hidden />
           <div className="overflow-x-auto w-full py-8 px-6">
@@ -266,7 +266,7 @@ const WorkflowEngine: React.FC<WorkflowEngineProps> = ({ flows, onScreenshot }) 
                   <div className="flex items-center" key={`${flow.id}-${i}`}>
                     <button
                       onClick={() => inspect(i)}
-                      className={`relative w-[144px] h-[108px] min-[1650px]:w-[126px] min-[1650px]:h-[96px] flex-shrink-0 text-left rounded-xl border overflow-hidden bg-[#111]/95 shadow-md shadow-black/40 transition-all duration-300 hover:-translate-y-0.5 ${k.glow} ${
+                      className={`relative w-[144px] h-[108px] lg:w-[126px] lg:h-[96px] flex-shrink-0 text-left rounded-xl border overflow-hidden bg-[#111]/95 shadow-md shadow-black/40 transition-all duration-300 hover:-translate-y-0.5 ${k.glow} ${
                         st === "active" ? "border-white/25 scale-[1.05]" : st === "done" ? "border-white/15" : "border-white/10 opacity-80 hover:opacity-100"
                       } ${isInspected ? `ring-2 ${k.ring}` : ""}`}
                     >
@@ -286,7 +286,7 @@ const WorkflowEngine: React.FC<WorkflowEngineProps> = ({ flows, onScreenshot }) 
                     </button>
 
                     {i < steps.length - 1 && (
-                      <div className="relative flex items-center w-10 min-[1650px]:w-8 flex-shrink-0" aria-hidden>
+                      <div className="relative flex items-center w-10 lg:w-8 flex-shrink-0" aria-hidden>
                         <span className={`h-px w-full transition-colors duration-300 ${status(i + 1) !== "pending" ? kindStyle[s.kind].line : "bg-white/15"}`} />
                         {running && step === i && (
                           <span
@@ -310,7 +310,7 @@ const WorkflowEngine: React.FC<WorkflowEngineProps> = ({ flows, onScreenshot }) 
 
         {/* Inspector — click any node above to reveal its full functionality here. Full width now, laid out in two columns so text never has to stretch edge to edge. */}
         <div className="p-5 sm:p-6 bg-card/70">
-          <div className="grid md:grid-cols-2 min-[1650px]:grid-cols-1 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-1 gap-6">
             {/* Left: identity, detail, config */}
             <div className="space-y-4">
               <div className="flex items-start gap-2.5">
