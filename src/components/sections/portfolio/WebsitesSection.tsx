@@ -2,19 +2,22 @@ import React, { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { ExternalLink, PlayCircle, ZoomIn, Images } from "lucide-react";
+import { ExternalLink, PlayCircle, ZoomIn, Images, Sparkles, LayoutTemplate, Zap } from "lucide-react";
 import SectionHeader from "@/components/shared/SectionHeader";
 import { ImageZoomModal } from "@/components/ImageZoomModal";
 import VideoPlayer, { parseVideoSource } from "./VideoPlayer";
+import { WebProjectModal } from "./WebProjectModal";
 import { webShowcaseProjects } from "@/data/flagshipProjects";
 
 const shortenUrl = (url: string) => url.replace(/^https?:\/\//, "").replace(/\/$/, "");
+const STACK_PREVIEW_LIMIT = 4;
 
 const WebsitesSection: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
   const [zoom, setZoom] = useState<{ projectId: string; index: number } | null>(null);
   const [videoProjectId, setVideoProjectId] = useState<string | null>(null);
+  const [detailIndex, setDetailIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -26,6 +29,7 @@ const WebsitesSection: React.FC = () => {
   }, []);
 
   const activeVideoProject = webShowcaseProjects.find((p) => p.id === videoProjectId);
+  const detailProject = detailIndex !== null ? webShowcaseProjects[detailIndex] : null;
 
   return (
     <section
@@ -44,15 +48,21 @@ const WebsitesSection: React.FC = () => {
           />
         </div>
 
-        <div className={`grid md:grid-cols-3 gap-4 transition-all duration-1000 ease-out delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}>
-          {webShowcaseProjects.map((project) => {
+        <div className={`grid md:grid-cols-3 gap-4 items-start transition-all duration-1000 ease-out delay-200 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}>
+          {webShowcaseProjects.map((project, index) => {
             const screenshots = project.media.screenshots ?? [];
+            const extraStack = project.stack.length - STACK_PREVIEW_LIMIT;
             return (
               <Card
                 key={project.id}
                 className="border-border/50 bg-card/70 backdrop-blur-sm hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10 transition-all duration-500 flex flex-col overflow-hidden"
               >
                 <div className="relative aspect-[16/10] bg-muted/10 border-b border-border/40">
+                  {project.featured && project.badge && (
+                    <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 px-2 py-1 rounded-md bg-primary text-primary-foreground shadow-lg text-[0.65rem] font-semibold uppercase tracking-wider">
+                      <Sparkles className="h-3 w-3" /> {project.badge}
+                    </div>
+                  )}
                   {screenshots.length > 0 ? (
                     <button
                       onClick={() => setZoom({ projectId: project.id, index: 0 })}
@@ -78,27 +88,44 @@ const WebsitesSection: React.FC = () => {
                   )}
                 </div>
 
-                <CardContent className="p-4 flex flex-col gap-2 flex-grow">
+                <CardContent className="p-4 flex flex-col gap-2.5 flex-grow">
                   <div>
                     <h3 className="font-bold text-base leading-snug">{project.title}</h3>
                     <p className="text-xs font-medium text-accent mt-0.5">{project.tagline}</p>
                   </div>
 
-                  <p className="text-sm text-muted-foreground leading-relaxed flex-grow">{project.description}</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed line-clamp-3">{project.description}</p>
+
+                  {project.highlight && (
+                    <div className="flex items-start gap-2 p-2 rounded-md bg-accent/10 border border-accent/20">
+                      <Zap className="h-3.5 w-3.5 text-accent flex-shrink-0 mt-0.5" />
+                      <span className="text-xs leading-relaxed text-foreground/90">{project.highlight}</span>
+                    </div>
+                  )}
 
                   <div className="flex flex-wrap gap-1.5">
-                    {project.stack.map((tech) => (
+                    {project.stack.slice(0, STACK_PREVIEW_LIMIT).map((tech) => (
                       <Badge key={tech} variant="secondary" className="bg-accent/10 text-accent text-xs px-2 py-0.5">{tech}</Badge>
                     ))}
+                    {extraStack > 0 && (
+                      <Badge variant="secondary" className="bg-muted/30 text-muted-foreground text-xs px-2 py-0.5">+{extraStack} more</Badge>
+                    )}
                   </div>
 
-                  <div className="flex items-center gap-4 pt-2 border-t border-border/30">
+                  <div className="flex items-center gap-2 pt-2 border-t border-border/30">
+                    <button
+                      onClick={() => setDetailIndex(index)}
+                      className="flex items-center justify-center gap-1.5 flex-grow px-3 py-1.5 rounded-md text-xs font-semibold bg-primary/10 text-primary border border-primary/30 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+                    >
+                      <LayoutTemplate className="h-3.5 w-3.5" /> Inspect
+                    </button>
                     {project.media.video && (
                       <button
                         onClick={() => setVideoProjectId(project.id)}
-                        className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-primary transition-colors"
+                        aria-label="Watch demo"
+                        className="flex items-center justify-center p-1.5 rounded-md text-muted-foreground hover:text-primary hover:bg-muted/30 transition-colors flex-shrink-0"
                       >
-                        <PlayCircle className="h-3.5 w-3.5" /> Watch demo
+                        <PlayCircle className="h-4 w-4" />
                       </button>
                     )}
                     {project.media.liveUrl && (
@@ -106,9 +133,10 @@ const WebsitesSection: React.FC = () => {
                         href={project.media.liveUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1.5 text-xs font-medium text-primary hover:underline"
+                        aria-label="Open live site"
+                        className="flex items-center justify-center p-1.5 rounded-md text-muted-foreground hover:text-primary hover:bg-muted/30 transition-colors flex-shrink-0"
                       >
-                        <ExternalLink className="h-3.5 w-3.5" /> {shortenUrl(project.media.liveUrl)}
+                        <ExternalLink className="h-4 w-4" />
                       </a>
                     )}
                   </div>
@@ -131,6 +159,22 @@ const WebsitesSection: React.FC = () => {
           />
         );
       })()}
+
+      <WebProjectModal
+        isOpen={detailIndex !== null}
+        onClose={() => setDetailIndex(null)}
+        project={detailProject ?? null}
+        onPrevious={
+          detailIndex !== null
+            ? () => setDetailIndex((detailIndex - 1 + webShowcaseProjects.length) % webShowcaseProjects.length)
+            : undefined
+        }
+        onNext={
+          detailIndex !== null
+            ? () => setDetailIndex((detailIndex + 1) % webShowcaseProjects.length)
+            : undefined
+        }
+      />
 
       <Dialog open={!!videoProjectId} onOpenChange={(open) => !open && setVideoProjectId(null)}>
         <DialogContent className="max-w-3xl p-0 overflow-hidden bg-background border-border/50">

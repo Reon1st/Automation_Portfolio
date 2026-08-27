@@ -12,6 +12,8 @@ export interface FlagshipMedia {
   liveUrl?: string;
   liveLabel?: string;
   caseStudyNotes?: string;
+  /** Link to a full external case-study writeup, when one exists. */
+  caseStudyUrl?: string;
 }
 
 export interface FlagshipProject {
@@ -26,6 +28,56 @@ export interface FlagshipProject {
   media: FlagshipMedia;
 }
 
+export interface KpiItem {
+  label: string;
+  value: string;
+  detail: string;
+  primary?: boolean;
+}
+
+export interface RoiSimulation {
+  /** Always shown as the block's honesty label, e.g. "Illustrative simulation — client's own figures pending". */
+  label: string;
+  headline: string;
+  assumptions: string[];
+  categories: { title: string; detail: string }[];
+  sensitivity: {
+    columns: [string, string, string];
+    rows: [string, string, string][];
+  };
+}
+
+export type FlowPlatform = "ghl" | "n8n";
+export type FlowKind = "trigger" | "action" | "condition" | "notification" | "email" | "tag" | "pipeline" | "wait";
+
+export interface FlowKeyInfo {
+  label: string;
+  /** A string renders as one line; an array renders as a clean line-by-line list. */
+  value: string | string[];
+}
+
+export interface FlowStep {
+  kind: FlowKind;
+  /** Human step name, e.g. "Inbound Webhook received". */
+  title: string;
+  /** Platform node label, shown as a mono chip, e.g. "Create/Update Contact". */
+  node: string;
+  keyInfo: FlowKeyInfo[];
+  /** One line: what really happens at this step. */
+  detail: string;
+  /** Representative execution-log line (rendered monospace). */
+  log: string;
+  /** Optional — omit if none; a step with no screenshot still reads as complete via keyInfo + log. */
+  screenshot?: { src: string; alt: string };
+}
+
+export interface ProjectFlow {
+  id: string;
+  label: string;
+  platform: FlowPlatform;
+  steps: FlowStep[];
+}
+
 export interface WebShowcaseProject {
   id: string;
   title: string;
@@ -33,6 +85,18 @@ export interface WebShowcaseProject {
   description: string;
   stack: string[];
   media: FlagshipMedia;
+  /** Real backend workflow(s) behind the project, walked node by node. Omit if none. */
+  flows?: ProjectFlow[];
+  /** Featured builds surface extra depth (challenge/solution, KPIs, ROI) inside the catalog interface. */
+  featured?: boolean;
+  badge?: string;
+  /** One-line real outcome shown on the compact card face, e.g. a KPI restated in plain words. */
+  highlight?: string;
+  bottleneck?: string;
+  system?: string;
+  clientGets?: string[];
+  kpis?: KpiItem[];
+  roi?: RoiSimulation;
 }
 
 export const flagshipProjects: FlagshipProject[] = [
@@ -229,6 +293,275 @@ export const flagshipProjects: FlagshipProject[] = [
 ];
 
 export const webShowcaseProjects: WebShowcaseProject[] = [
+  {
+    id: "powertag",
+    title: "powerTAG, Site + Live Lead Pipeline",
+    tagline: "23 pages wired end-to-end into a working GHL pipeline",
+    description:
+      "The first website for an Australian electrical-compliance business expanding into Energy-as-a-Service. 23 pages built from the client's own finished copy, benchmarked structurally against Budderfly, with a validated lead form wired end-to-end into a GoHighLevel sales pipeline.",
+    featured: true,
+    badge: "Featured Case Study",
+    highlight: "Auto-reply in seconds, ~100% 2-day follow-up compliance — verified end-to-end into GoHighLevel.",
+    bottleneck:
+      "An established compliance firm launching a new EaaS line with no web presence, 31 pages of copy sitting in Word docs, and no way to capture or route the leads it generates.",
+    system:
+      "A 23-page static Next.js site rendered from one typed content model through a shared template (edits are data changes, not redesigns), plus a contact form feeding GHL — contact creation, goal-based tagging, instant sales notification, instant lead auto-reply, a 5-stage pipeline, a 2-business-day stalled-lead follow-up, and a 3-email newsletter nurture.",
+    clientGets: [
+      "23 SEO-optimised pages from a single content-as-data architecture — the whole site is one editable model, not 23 hand-built pages.",
+      "A lead form wired all the way into a working GHL pipeline with automated follow-up — verified end-to-end, not a mockup.",
+      "A signature \"building readout\" device — bespoke live SVG instruments as the brand's own visual language, not stock icons.",
+      "Fully responsive, accessible, motion-tuned, deployed with push-to-deploy CI.",
+    ],
+    stack: [
+      "Next.js 16 · SSG",
+      "React 19",
+      "Tailwind v4",
+      "TypeScript",
+      "Framer Motion",
+      "React Hook Form + Zod",
+      "GoHighLevel",
+      "Vercel",
+      "Analytics + Speed Insights",
+      "Content-as-data",
+    ],
+    kpis: [
+      {
+        label: "First-response time to a new lead",
+        value: "Seconds",
+        detail:
+          "Target under 5 minutes — the instant auto-reply plus sales notification delivers it in seconds. It's the metric the automation most directly and provably moves (hours → seconds) and the leading driver of B2B lead conversion.",
+        primary: true,
+      },
+      {
+        label: "Follow-up compliance rate",
+        value: "~100%",
+        detail:
+          "Share of new leads contacted within 2 business days — the 2-day stalled-lead rule takes this to ~100% versus a leaky manual process.",
+      },
+    ],
+    roi: {
+      label: "Illustrative simulation — client's own figures pending",
+      headline:
+        "~100% modelled first-year ROI, rising to 350%+ ongoing — driven by recovered leads, not admin math.",
+      assumptions: [
+        "30 leads / month",
+        "~9 min manual handling per lead",
+        "$45/hr AU loaded rate",
+        "GoHighLevel $97/mo",
+        "One-time automation build ~$1,500",
+        "Recovered-lead value ~$3,000 (conservative B2B contract)",
+      ],
+      categories: [
+        {
+          title: "Time saved",
+          detail:
+            "~9 min/lead eliminated → 54 hours/year (~1.4 work weeks), ~$2,430/yr in recovered labour. Net-positive from year 2; roughly break-even in year 1 on time alone.",
+        },
+        {
+          title: "Cost avoided",
+          detail:
+            "No admin/VA hire to process leads, no separate email-marketing tool (nurture runs inside GHL), no separate form-backend/CRM SaaS, no server to run (SSG on Vercel) — weighed against GHL (~$97/mo) + Vercel + the one-time build.",
+        },
+        {
+          title: "Skill & knowledge growth",
+          detail:
+            "The team moves from inbox-and-spreadsheet lead handling to operating a real 5-stage CRM pipeline, and the content-as-data build lets non-developers edit all 23 pages as data, not code — a durable capability, not a developer dependency.",
+        },
+        {
+          title: "Quality & stress reduction",
+          detail:
+            "Mis-keyed CRM entries → ~0, dropped/forgotten leads → ~0, weekend leads left unanswered → ~0; follow-up compliance ~100%. The team trusts every lead is captured, segmented, acknowledged, and followed up — without anyone remembering to.",
+        },
+      ],
+      sensitivity: {
+        columns: ["Leads rescued / yr", "Year-1 ROI", "Steady-state ROI"],
+        rows: [
+          ["0 (time only)", "−9%", "+109%"],
+          ["1", "+104%", "+366%"],
+          ["2", "+216%", "+624%"],
+          ["4", "+442%", "+1,000%+"],
+        ],
+      },
+    },
+    flows: [
+      {
+        id: "lead-pipeline",
+        label: "Lead pipeline",
+        platform: "ghl",
+        steps: [
+          {
+            kind: "trigger",
+            title: "Inbound Webhook received",
+            node: "Inbound Webhook",
+            keyInfo: [
+              { label: "Method", value: "POST" },
+              { label: "Endpoint", value: "https://services.leadconnectorhq.com/hooks/•••••/webhook-trigger/•••" },
+              { label: "Payload", value: "{ company, role, sites, spend, industry, services, message }" },
+            ],
+            detail: "The site's /api/lead route forwards the validated form as JSON — a webhook is always a POST, since it's pushing a payload in, not fetching one out.",
+            log: "200 OK · payload accepted · 7 fields parsed",
+          },
+          {
+            kind: "action",
+            title: "Create / Update Contact",
+            node: "Create/Update Contact",
+            keyInfo: [
+              { label: "Mapping source", value: "Inbound Webhook Request merge-tags (not Contact)" },
+              {
+                label: "Custom fields",
+                value: [
+                  "Company",
+                  "Role",
+                  "Number of Sites",
+                  "Primary Industry",
+                  "Annual Electricity Spend",
+                  "Compliance Services",
+                  "Message",
+                  "Attached File Name",
+                ],
+              },
+              { label: "Built-in", value: "Company Name" },
+            ],
+            detail: "Upserts the lead as a contact, writing 8 custom fields mapped from the inbound request category so a fresh webhook (no contact in context yet) maps correctly.",
+            log: "contact upserted · id ••• · 8 custom fields written",
+          },
+          {
+            kind: "notification",
+            title: "Notify Sales",
+            node: "Internal Notification (Email)",
+            keyInfo: [
+              { label: "Type", value: "Internal email" },
+              { label: "To", value: "sales@[client] (Custom Email)" },
+              { label: "From", value: "Martin" },
+            ],
+            detail: "Fires an internal alert the moment a lead lands so sales never has to watch an inbox.",
+            log: "internal email queued → sales",
+          },
+          {
+            kind: "email",
+            title: "Auto-Reply to Lead",
+            node: "Email",
+            keyInfo: [
+              { label: "To", value: "the lead" },
+              { label: "Sign-off", value: "The powerTAG Team" },
+            ],
+            detail: "Instant acknowledgement to the lead — the response-time win that drives conversion.",
+            log: "auto-reply sent → lead · t+2s",
+          },
+          {
+            kind: "condition",
+            title: "Segment by goal",
+            node: "If/Else on primaryGoal",
+            keyInfo: [
+              { label: "Branches", value: "Energy · Compliance · Both · None" },
+              { label: "Applies", value: "lead-energy / lead-compliance tags" },
+            ],
+            detail: "Routes and tags the lead by what they came for, so the pipeline is pre-segmented.",
+            log: "branch=energy → tag lead-energy",
+          },
+          {
+            kind: "pipeline",
+            title: "Create Opportunity",
+            node: "Assessment Pipeline",
+            keyInfo: [
+              { label: "Stages", value: "New Lead → Contacted → Assessment Scheduled → Proposal Sent → Won/Lost" },
+            ],
+            detail: "Drops a deal card onto a 5-stage kanban; stages 2–5 are worked by hand, only the entry is automated.",
+            log: "opportunity created · stage=New Lead",
+          },
+          {
+            kind: "wait",
+            title: "2-business-day follow-up",
+            node: "Wait + Condition + Action",
+            keyInfo: [
+              { label: "Trigger", value: "opportunity created" },
+              { label: "Condition", value: "status still open after 2 business days" },
+              { label: "Action", value: "follow-up email + sales task" },
+            ],
+            detail: "Catches stalled leads automatically so none go cold — the follow-up compliance guarantee.",
+            log: "waited 2 business days · status=open → follow-up sent + task created",
+          },
+        ],
+      },
+      {
+        id: "newsletter",
+        label: "Newsletter nurture",
+        platform: "ghl",
+        steps: [
+          {
+            kind: "trigger",
+            title: "Subscribe",
+            node: "Inbound Webhook",
+            keyInfo: [
+              { label: "Method", value: "POST" },
+              { label: "Payload", value: "{ email }" },
+            ],
+            detail: "The newsletter form posts the subscriber's email into the workflow.",
+            log: "200 OK · email captured",
+          },
+          {
+            kind: "tag",
+            title: "Tag subscriber",
+            node: "Add Tag",
+            keyInfo: [{ label: "Tag", value: "newsletter-subscriber" }],
+            detail: "Tags the contact so the nurture sequence only ever targets real subscribers.",
+            log: "tag applied · newsletter-subscriber",
+          },
+          {
+            kind: "email",
+            title: "Welcome — Email 1",
+            node: "Email",
+            keyInfo: [{ label: "Template", value: "Welcome + CTA" }],
+            detail: "Confirms they're on the list with a clear first call to action.",
+            log: "email 1/3 sent",
+          },
+          {
+            kind: "wait",
+            title: "Wait",
+            node: "Wait",
+            keyInfo: [{ label: "Duration", value: "2 days" }],
+            detail: "Holds before the next touch so the sequence never feels pushy.",
+            log: "waited 2 days",
+          },
+          {
+            kind: "email",
+            title: "Educational — Email 2",
+            node: "Email",
+            keyInfo: [{ label: "Template", value: "Educational" }],
+            detail: "Delivers value content to keep the subscriber warm.",
+            log: "email 2/3 sent",
+          },
+          {
+            kind: "wait",
+            title: "Wait",
+            node: "Wait",
+            keyInfo: [{ label: "Duration", value: "~1 week" }],
+            detail: "A longer pause before the final, softer nudge.",
+            log: "waited ~1 week",
+          },
+          {
+            kind: "email",
+            title: "Soft CTA — Email 3",
+            node: "Email",
+            keyInfo: [{ label: "Template", value: "Soft CTA" }],
+            detail: "A gentle final reminder in case the earlier emails were missed.",
+            log: "email 3/3 sent",
+          },
+        ],
+      },
+    ],
+    media: {
+      screenshots: [
+        "/projects/powertag/powertag-01-hero.jpg",
+        "/projects/powertag/powertag-02-reasons.jpg",
+        "/projects/powertag/powertag-03-building-intelligence.jpg",
+        "/projects/powertag/powertag-04-model.jpg",
+        "/projects/powertag/powertag-05-assessment-form.jpg",
+      ],
+      liveUrl: "https://powertag-three.vercel.app",
+      caseStudyUrl: "https://fortunate-cat.super.site/project-1",
+    },
+  },
   {
     id: "kayumanggi",
     title: "Kayumanggi, Fine Dining in BGC",
