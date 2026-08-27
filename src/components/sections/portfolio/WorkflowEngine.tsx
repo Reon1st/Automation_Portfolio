@@ -234,7 +234,7 @@ const WorkflowEngine: React.FC<WorkflowEngineProps> = ({ flows, onScreenshot }) 
               className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-semibold bg-white/[0.06] text-foreground border border-white/15 hover:bg-white/[0.12] transition-colors"
             >
               {running ? <RotateCcw className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
-              {running ? "Stop" : step >= 0 ? "Replay" : "Run flow"}
+              {running ? "Stop" : step >= 0 ? "Execute" : "Run flow"}
             </button>
           )}
         </div>
@@ -287,10 +287,10 @@ const WorkflowEngine: React.FC<WorkflowEngineProps> = ({ flows, onScreenshot }) 
 
                     {i < steps.length - 1 && (
                       <div className="relative flex items-center w-10 flex-shrink-0" aria-hidden>
-                        <span className={`h-px w-full transition-colors duration-300 ${status(i + 1) !== "pending" ? kindStyle[steps[i + 1].kind].line : "bg-white/15"}`} />
+                        <span className={`h-px w-full transition-colors duration-300 ${status(i + 1) !== "pending" ? kindStyle[s.kind].line : "bg-white/15"}`} />
                         {running && step === i && (
                           <span
-                            className={`absolute top-1/2 h-2 w-2 rounded-full ${kindStyle[steps[i + 1].kind].dot} shadow-[0_0_8px_2px] shadow-current`}
+                            className={`absolute top-1/2 h-2 w-2 rounded-full ${kindStyle[s.kind].dot} shadow-[0_0_8px_2px] shadow-current`}
                             style={{ animation: `wf-pulse-travel ${STEP_MS}ms linear forwards` }}
                           />
                         )}
