@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import {
   LucideIcon,
   Play,
@@ -15,8 +15,9 @@ import {
   Clock,
   ZoomIn,
   ImageOff,
+  MonitorPlay,
 } from "lucide-react";
-import { ProjectFlow, FlowKind, FlowStep, FlowKeyInfo } from "@/data/flagshipProjects";
+import { ProjectFlow, FlowKind, FlowStep, FlowKeyInfo, FlowBranch } from "@/data/flagshipProjects";
 
 interface WorkflowEngineProps {
   flows: ProjectFlow[];
@@ -123,11 +124,80 @@ const FieldRows: React.FC<{ rows: FlowKeyInfo[] }> = ({ rows }) => (
   </dl>
 );
 
+// Renders the real parallel branches a condition node fans out to — curved connectors computed
+// from measured DOM positions, same shape as GHL's own branch view, just compact.
+const BranchFan: React.FC<{ source: React.RefObject<HTMLElement>; branches: FlowBranch[] }> = ({ source, branches }) => {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [paths, setPaths] = useState<string[]>([]);
+
+  useLayoutEffect(() => {
+    const compute = () => {
+      if (!wrapRef.current || !source.current) return;
+      const containerRect = wrapRef.current.getBoundingClientRect();
+      const srcRect = source.current.getBoundingClientRect();
+      const x0 = srcRect.right - containerRect.left;
+      const y0 = srcRect.top - containerRect.top + srcRect.height / 2;
+      const next = rowRefs.current.map((el) => {
+        if (!el) return "";
+        const r = el.getBoundingClientRect();
+        const x1 = r.left - containerRect.left;
+        const y1 = r.top - containerRect.top + r.height / 2;
+        const midX = x0 + (x1 - x0) / 2;
+        return `M ${x0} ${y0} C ${midX} ${y0}, ${midX} ${y1}, ${x1} ${y1}`;
+      });
+      setPaths(next);
+    };
+    compute();
+    window.addEventListener("resize", compute);
+    return () => window.removeEventListener("resize", compute);
+  }, [source, branches]);
+
+  return (
+    <div ref={wrapRef} className="relative flex flex-col justify-center gap-2.5 pl-14 flex-shrink-0 py-2">
+      <svg className="absolute inset-0 w-full h-full overflow-visible pointer-events-none" aria-hidden>
+        {paths.map(
+          (d, i) => d && <path key={i} d={d} fill="none" stroke="rgba(255,255,255,0.18)" strokeWidth={1.5} />
+        )}
+      </svg>
+      {branches.map((b, i) => (
+        <div
+          key={i}
+          ref={(el) => {
+            rowRefs.current[i] = el;
+          }}
+          className="relative flex items-center gap-2 z-10"
+        >
+          <div className="w-[168px] flex-shrink-0 rounded-lg border border-white/10 bg-[#111]/95 px-2.5 py-1.5 shadow-md shadow-black/30">
+            <div className={`text-[0.55rem] font-mono ${b.matchType === "AND" ? "text-amber-400/80" : "text-slate-400/70"}`}>
+              {"{}"} {b.matchType}
+            </div>
+            <div className="text-[0.68rem] text-foreground/85 leading-tight line-clamp-2">{b.condition}</div>
+          </div>
+          <ChevronRight className="h-3.5 w-3.5 text-white/25 flex-shrink-0" />
+          {b.appliesTag ? (
+            <div className="flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-2 flex-shrink-0">
+              <Tags className="h-3.5 w-3.5 text-emerald-400 flex-shrink-0" />
+              <span className="text-[0.66rem] font-medium leading-tight text-emerald-300">{b.outcome}</span>
+            </div>
+          ) : (
+            <div className="rounded-lg border border-white/10 bg-white/[0.03] px-2.5 py-2 flex-shrink-0">
+              <span className="text-[0.64rem] text-muted-foreground">{b.outcome}</span>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+};
+
 const WorkflowEngine: React.FC<WorkflowEngineProps> = ({ flows, onScreenshot }) => {
   const reducedMotion = usePrefersReducedMotion();
   const [flowId, setFlowId] = useState(flows[0]?.id);
   const flow = flows.find((f) => f.id === flowId) ?? flows[0];
   const steps = flow.steps;
+  const trunkBranches = steps[steps.length - 1]?.branches;
+  const branchSourceRef = useRef<HTMLButtonElement>(null);
 
   const [step, setStep] = useState(-1); // -1 idle; else last-fired index
   const [running, setRunning] = useState(false);
@@ -202,6 +272,11 @@ const WorkflowEngine: React.FC<WorkflowEngineProps> = ({ flows, onScreenshot }) 
           88% { opacity: 1; }
           100% { left: 100%; opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
         }
+        .wf-scrollbar { scrollbar-width: thin; scrollbar-color: hsl(var(--accent) / 0.4) transparent; }
+        .wf-scrollbar::-webkit-scrollbar { height: 7px; width: 7px; }
+        .wf-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); border-radius: 999px; }
+        .wf-scrollbar::-webkit-scrollbar-thumb { background: hsl(var(--accent) / 0.4); border-radius: 999px; }
+        .wf-scrollbar::-webkit-scrollbar-thumb:hover { background: hsl(var(--accent) / 0.7); }
       `}</style>
 
       {/* Console title bar */}
@@ -228,6 +303,15 @@ const WorkflowEngine: React.FC<WorkflowEngineProps> = ({ flows, onScreenshot }) 
             <span className="h-1.5 w-1.5 rounded-full bg-emerald-400/70 motion-safe:animate-pulse" aria-hidden />
             {platformLabel[flow.platform]} · {steps.length} nodes
           </span>
+          {flow.builderScreenshot && (
+            <button
+              onClick={() => onScreenshot?.(flow.builderScreenshot!.src, flow.builderScreenshot!.alt)}
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium text-muted-foreground border border-white/15 hover:text-foreground hover:bg-white/[0.06] transition-colors"
+              title="See this exact workflow in the real GoHighLevel builder"
+            >
+              <MonitorPlay className="h-3.5 w-3.5" /> View real build
+            </button>
+          )}
           {!reducedMotion && (
             <button
               onClick={running ? reset : run}
@@ -249,13 +333,15 @@ const WorkflowEngine: React.FC<WorkflowEngineProps> = ({ flows, onScreenshot }) 
         ))}
       </div>
 
-      <div className="flex flex-col lg:grid lg:grid-cols-[1fr_360px]">
+      <div className="flex flex-col lg:grid lg:grid-cols-[1fr_360px] lg:h-[440px]">
         {/* Node canvas — stacked full-width only below lg (~1024px, true tablet/phone) so nodes never shrink or scroll there;
-            at lg and up — virtually every desktop/laptop screen — it sits beside the inspector instead, like a real split-pane editor. */}
-        <div className="relative border-b border-white/10 lg:border-b-0 lg:border-r flex items-center" style={gridStyle}>
+            at lg and up — virtually every desktop/laptop screen — it sits beside the inspector instead, like a real split-pane editor.
+            Fixed height (not stretched to match the inspector) so the node row centers in a modest box instead of floating in a
+            huge blank grid when a step's inspector content runs long — the inspector scrolls internally for that instead. */}
+        <div className="relative border-b border-white/10 lg:border-b-0 lg:border-r flex items-center min-w-0 min-h-0" style={gridStyle}>
           <div className="pointer-events-none absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-[#0a0a0a] to-transparent z-10" aria-hidden />
           <div className="pointer-events-none absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-[#0a0a0a] to-transparent z-10" aria-hidden />
-          <div className="overflow-x-auto w-full py-8 px-6">
+          <div className="wf-scrollbar overflow-x-auto w-full py-8 px-6">
             <div className="flex items-center w-max mx-auto">
               {steps.map((s, i) => {
                 const st = status(i);
@@ -265,6 +351,7 @@ const WorkflowEngine: React.FC<WorkflowEngineProps> = ({ flows, onScreenshot }) 
                 return (
                   <div className="flex items-center" key={`${flow.id}-${i}`}>
                     <button
+                      ref={i === steps.length - 1 ? branchSourceRef : undefined}
                       onClick={() => inspect(i)}
                       className={`relative w-[144px] h-[108px] lg:w-[126px] lg:h-[96px] flex-shrink-0 text-left rounded-xl border overflow-hidden bg-[#111]/95 shadow-md shadow-black/40 transition-all duration-300 hover:-translate-y-0.5 ${k.glow} ${
                         st === "active" ? "border-white/25 scale-[1.05]" : st === "done" ? "border-white/15" : "border-white/10 opacity-80 hover:opacity-100"
@@ -304,12 +391,14 @@ const WorkflowEngine: React.FC<WorkflowEngineProps> = ({ flows, onScreenshot }) 
                   </div>
                 );
               })}
+              {trunkBranches && <BranchFan source={branchSourceRef} branches={trunkBranches} />}
             </div>
           </div>
         </div>
 
-        {/* Inspector — click any node above to reveal its full functionality here. Full width now, laid out in two columns so text never has to stretch edge to edge. */}
-        <div className="p-5 sm:p-6 bg-card/70">
+        {/* Inspector — click any node above to reveal its full functionality here. Full width now, laid out in two columns so text never has to stretch edge to edge.
+            Scrolls internally at lg+ instead of stretching the row — some steps (the branch condition, anything with a screenshot) run long. */}
+        <div className="wf-scrollbar p-5 sm:p-6 bg-card/70 lg:overflow-y-auto lg:min-h-0">
           <div className="grid md:grid-cols-2 lg:grid-cols-1 gap-6">
             {/* Left: identity, detail, config */}
             <div className="space-y-4">

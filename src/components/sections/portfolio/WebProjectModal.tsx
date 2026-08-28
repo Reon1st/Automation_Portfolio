@@ -15,7 +15,7 @@ import {
   Cog,
   CheckCircle,
   TrendingUp,
-  FlaskConical,
+  Calculator,
   Gauge,
   Workflow,
 } from "lucide-react";
@@ -78,7 +78,7 @@ export const WebProjectModal: React.FC<WebProjectModalProps> = ({ isOpen, onClos
           className="w-[97vw] max-w-[1800px] max-h-[90vh] overflow-y-auto p-0 gap-0"
         >
           {/* Window title bar — fully opaque (no backdrop-blur/alpha) so the flow engine's dark grid can never bleed through as it scrolls underneath */}
-          <div className="sticky top-0 z-10 flex items-center justify-between gap-4 px-6 py-3 border-b border-border/50 bg-card">
+          <div className="sticky top-0 z-10 flex items-center justify-between gap-4 px-6 py-3 border-b border-border/50 bg-card min-w-0">
             <div className="flex items-center gap-3 min-w-0">
               <div className="hidden sm:flex items-center gap-1.5 flex-shrink-0" aria-hidden>
                 <span
@@ -121,7 +121,7 @@ export const WebProjectModal: React.FC<WebProjectModalProps> = ({ isOpen, onClos
             </div>
           </div>
 
-          <div className="p-6 sm:p-8 space-y-8">
+          <div className="p-6 sm:p-8 space-y-8 min-w-0">
             {/* Gallery with filmstrip */}
             {screenshots.length > 0 ? (
               <div className="space-y-3">
@@ -228,7 +228,7 @@ export const WebProjectModal: React.FC<WebProjectModalProps> = ({ isOpen, onClos
                 <div className="flex items-center justify-between gap-3 flex-wrap">
                   <SectionLabel icon={TrendingUp}>Return on investment</SectionLabel>
                   <Badge variant="outline" className="border-primary/30 text-primary bg-primary/10 text-[0.65rem] gap-1">
-                    <FlaskConical className="h-3 w-3" /> {project.roi.label}
+                    <Calculator className="h-3 w-3" /> {project.roi.label}
                   </Badge>
                 </div>
                 <p className="text-base leading-relaxed text-foreground/90">{project.roi.headline}</p>
@@ -238,7 +238,7 @@ export const WebProjectModal: React.FC<WebProjectModalProps> = ({ isOpen, onClos
                   className="flex items-center gap-1.5 text-xs font-medium text-primary hover:underline"
                 >
                   <ChevronRight className={`h-3.5 w-3.5 transition-transform duration-300 ${roiOpen ? "rotate-90" : ""}`} />
-                  {roiOpen ? "Hide the model" : "Show the model, assumptions & sensitivity"}
+                  {roiOpen ? "Hide the numbers" : "Show how this is calculated"}
                 </button>
 
                 {roiOpen && (
@@ -279,7 +279,7 @@ export const WebProjectModal: React.FC<WebProjectModalProps> = ({ isOpen, onClos
                       </table>
                     </div>
                     <p className="text-[0.7rem] text-muted-foreground/80 italic">
-                      Figures are a model, not a measured outcome — the −9% row shows the automation earns its keep on lead-recovery, not admin time alone.
+                      Worst case, zero leads rescued, and it's still within 9% of paying for itself on time savings alone. Rescue even one a year and it's profitable several times over.
                     </p>
                   </div>
                 )}

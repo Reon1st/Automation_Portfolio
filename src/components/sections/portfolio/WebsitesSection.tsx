@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import { ExternalLink, PlayCircle, ZoomIn, Images, Sparkles, LayoutTemplate, Zap } from "lucide-react";
+import { ExternalLink, PlayCircle, ZoomIn, Zap } from "lucide-react";
 import SectionHeader from "@/components/shared/SectionHeader";
-import { ImageZoomModal } from "@/components/ImageZoomModal";
 import VideoPlayer, { parseVideoSource } from "./VideoPlayer";
 import { WebProjectModal } from "./WebProjectModal";
 import { webShowcaseProjects } from "@/data/flagshipProjects";
@@ -15,7 +15,6 @@ const STACK_PREVIEW_LIMIT = 4;
 const WebsitesSection: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-  const [zoom, setZoom] = useState<{ projectId: string; index: number } | null>(null);
   const [videoProjectId, setVideoProjectId] = useState<string | null>(null);
   const [detailIndex, setDetailIndex] = useState<number | null>(null);
 
@@ -55,31 +54,26 @@ const WebsitesSection: React.FC = () => {
             return (
               <Card
                 key={project.id}
-                className="border-border/50 bg-card/70 backdrop-blur-sm hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10 transition-all duration-500 flex flex-col overflow-hidden"
+                onClick={() => setDetailIndex(index)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setDetailIndex(index);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
+                aria-label={`View case study: ${project.title}`}
+                className="border-border/50 bg-card/70 backdrop-blur-sm hover:border-primary/40 hover:shadow-xl hover:shadow-primary/10 transition-all duration-500 flex flex-col overflow-hidden cursor-pointer"
               >
-                <div className="relative aspect-[16/10] bg-muted/10 border-b border-border/40">
-                  {project.featured && project.badge && (
-                    <div className="absolute top-3 left-3 z-10 flex items-center gap-1.5 px-2 py-1 rounded-md bg-primary text-primary-foreground shadow-lg text-[0.65rem] font-semibold uppercase tracking-wider">
-                      <Sparkles className="h-3 w-3" /> {project.badge}
-                    </div>
-                  )}
+                <div className="relative aspect-[16/10] bg-muted/10 border-b border-border/40 group">
                   {screenshots.length > 0 ? (
-                    <button
-                      onClick={() => setZoom({ projectId: project.id, index: 0 })}
-                      className="group w-full h-full block"
-                    >
-                      <img
-                        src={screenshots[0]}
-                        alt={project.title}
-                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
-                        draggable={false}
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end justify-end p-3">
-                        <div className="p-2 rounded-lg bg-background/80 backdrop-blur-md border border-border/50 shadow-lg flex items-center gap-1.5 text-xs text-muted-foreground">
-                          <Images className="h-3.5 w-3.5" /> {screenshots.length > 1 ? `${screenshots.length} shots` : "View"}
-                        </div>
-                      </div>
-                    </button>
+                    <img
+                      src={screenshots[0]}
+                      alt={project.title}
+                      className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                      draggable={false}
+                    />
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-center px-4">
                       <ZoomIn className="h-8 w-8 text-muted-foreground/40" />
@@ -112,53 +106,44 @@ const WebsitesSection: React.FC = () => {
                     )}
                   </div>
 
-                  <div className="flex items-center gap-2 pt-2 border-t border-border/30">
-                    <button
-                      onClick={() => setDetailIndex(index)}
-                      className="flex items-center justify-center gap-1.5 flex-grow px-3 py-1.5 rounded-md text-xs font-semibold bg-primary/10 text-primary border border-primary/30 hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
-                    >
-                      <LayoutTemplate className="h-3.5 w-3.5" /> Inspect
-                    </button>
-                    {project.media.video && (
-                      <button
-                        onClick={() => setVideoProjectId(project.id)}
-                        aria-label="Watch demo"
-                        className="flex items-center justify-center p-1.5 rounded-md text-muted-foreground hover:text-primary hover:bg-muted/30 transition-colors flex-shrink-0"
-                      >
-                        <PlayCircle className="h-4 w-4" />
-                      </button>
-                    )}
-                    {project.media.liveUrl && (
-                      <a
-                        href={project.media.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="Open live site"
-                        className="flex items-center justify-center p-1.5 rounded-md text-muted-foreground hover:text-primary hover:bg-muted/30 transition-colors flex-shrink-0"
-                      >
-                        <ExternalLink className="h-4 w-4" />
-                      </a>
-                    )}
-                  </div>
+                  {(project.media.video || project.media.liveUrl) && (
+                    <div className="flex items-center gap-2 pt-1">
+                      {project.media.video && (
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setVideoProjectId(project.id);
+                          }}
+                          aria-label="Watch demo"
+                          className="flex items-center justify-center h-9 w-9 rounded-md border border-border/50 text-muted-foreground hover:text-primary hover:border-primary/40 hover:bg-primary/5 transition-colors flex-shrink-0"
+                        >
+                          <PlayCircle className="h-4 w-4" />
+                        </button>
+                      )}
+                      {project.media.liveUrl && (
+                        <Button
+                          asChild
+                          size="sm"
+                          className="flex-grow font-semibold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300"
+                        >
+                          <a
+                            href={project.media.liveUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            Visit Website <ExternalLink className="h-3.5 w-3.5" />
+                          </a>
+                        </Button>
+                      )}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             );
           })}
         </div>
       </div>
-
-      {zoom && (() => {
-        const project = webShowcaseProjects.find((p) => p.id === zoom.projectId);
-        const screenshots = project?.media.screenshots ?? [];
-        return (
-          <ImageZoomModal
-            isOpen={!!zoom}
-            onClose={() => setZoom(null)}
-            images={screenshots.map((src) => ({ src, alt: project?.title ?? "" }))}
-            initialIndex={zoom.index}
-          />
-        );
-      })()}
 
       <WebProjectModal
         isOpen={detailIndex !== null}

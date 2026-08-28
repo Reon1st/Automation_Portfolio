@@ -36,7 +36,7 @@ export interface KpiItem {
 }
 
 export interface RoiSimulation {
-  /** Always shown as the block's honesty label, e.g. "Illustrative simulation — client's own figures pending". */
+  /** Shown as the block's badge, e.g. "Projected — based on 30 leads/month". Name the real input driving the number, not a hedge. */
   label: string;
   headline: string;
   assumptions: string[];
@@ -56,6 +56,17 @@ export interface FlowKeyInfo {
   value: string | string[];
 }
 
+export interface FlowBranch {
+  /** Condition box text, e.g. `primaryGoal is "Energy"`. */
+  condition: string;
+  /** "AND" for a real filter branch, "NONE" for the catch-all else path — matches GHL's own branch badge. */
+  matchType: "AND" | "NONE";
+  /** Downstream chip label, e.g. "Energy Tag" or "No tag applied". */
+  outcome: string;
+  /** Whether the outcome chip renders as an actual tag-apply node vs a plain end pill. */
+  appliesTag: boolean;
+}
+
 export interface FlowStep {
   kind: FlowKind;
   /** Human step name, e.g. "Inbound Webhook received". */
@@ -69,6 +80,8 @@ export interface FlowStep {
   log: string;
   /** Optional — omit if none; a step with no screenshot still reads as complete via keyInfo + log. */
   screenshot?: { src: string; alt: string };
+  /** Only on a trunk-ending condition step — fans out into the real parallel branches instead of a single "next" node. */
+  branches?: FlowBranch[];
 }
 
 export interface ProjectFlow {
@@ -76,6 +89,8 @@ export interface ProjectFlow {
   label: string;
   platform: FlowPlatform;
   steps: FlowStep[];
+  /** The real, unedited screenshot of this workflow inside the platform's own builder — proof the diagram isn't invented. Reusable across any future automation project. */
+  builderScreenshot?: { src: string; alt: string };
 }
 
 export interface WebShowcaseProject {
@@ -296,21 +311,21 @@ export const webShowcaseProjects: WebShowcaseProject[] = [
   {
     id: "powertag",
     title: "powerTAG, Site + Live Lead Pipeline",
-    tagline: "23 pages wired end-to-end into a working GHL pipeline",
+    tagline: "23 pages live, every lead answered and followed up on its own",
     description:
-      "The first website for an Australian electrical-compliance business expanding into Energy-as-a-Service. 23 pages built from the client's own finished copy, benchmarked structurally against Budderfly, with a validated lead form wired end-to-end into a GoHighLevel sales pipeline.",
+      "This compliance firm was launching a brand-new energy service with no way to catch, route, or follow up on the leads it would bring in. Every enquiry would've just sat in an inbox. So we built a real sales automation instead: instant replies, automatic tagging, and a 2-day follow-up guarantee, all running behind a 23-page site.",
     featured: true,
     badge: "Featured Case Study",
-    highlight: "Auto-reply in seconds, ~100% 2-day follow-up compliance — verified end-to-end into GoHighLevel.",
+    highlight: "Every lead gets answered in seconds and followed up within 2 days. The automation remembers, so nobody has to.",
     bottleneck:
-      "An established compliance firm launching a new EaaS line with no web presence, 31 pages of copy sitting in Word docs, and no way to capture or route the leads it generates.",
+      "This compliance firm was launching a brand-new energy-services offering with no system behind it. No way to catch a lead the moment it came in, nothing routing it anywhere, nobody notified, no safety net if it went quiet. On top of that, 31 pages of finished copy had nowhere to go.",
     system:
-      "A 23-page static Next.js site rendered from one typed content model through a shared template (edits are data changes, not redesigns), plus a contact form feeding GHL — contact creation, goal-based tagging, instant sales notification, instant lead auto-reply, a 5-stage pipeline, a 2-business-day stalled-lead follow-up, and a 3-email newsletter nurture.",
+      "A real sales automation now runs behind every enquiry: an instant reply to the lead, an instant alert to sales, automatic tagging by what they're interested in, a 5-stage deal tracker, and a safety net that catches any lead gone quiet for more than 2 business days. Anyone not ready yet gets a 3-email nurture instead. All of it sits behind 23 pages built around the client's own copy, so future edits are just a content change, not a redevelopment project.",
     clientGets: [
-      "23 SEO-optimised pages from a single content-as-data architecture — the whole site is one editable model, not 23 hand-built pages.",
-      "A lead form wired all the way into a working GHL pipeline with automated follow-up — verified end-to-end, not a mockup.",
-      "A signature \"building readout\" device — bespoke live SVG instruments as the brand's own visual language, not stock icons.",
-      "Fully responsive, accessible, motion-tuned, deployed with push-to-deploy CI.",
+      "A contact form that runs the real sales pipeline, tested end-to-end in production, not a mockup.",
+      "Every lead gets tagged, routed, and tracked through a 5-stage pipeline on its own. Nobody has to remember to follow up.",
+      "23 SEO-ready pages feeding the pipeline, easy to edit later without a rebuild.",
+      "A live \"building readout\" widget: custom SVG instruments showing presence, environment, and energy, not stock icons.",
     ],
     stack: [
       "Next.js 16 · SSG",
@@ -329,20 +344,20 @@ export const webShowcaseProjects: WebShowcaseProject[] = [
         label: "First-response time to a new lead",
         value: "Seconds",
         detail:
-          "Target under 5 minutes — the instant auto-reply plus sales notification delivers it in seconds. It's the metric the automation most directly and provably moves (hours → seconds) and the leading driver of B2B lead conversion.",
+          "Target was under 5 minutes. The instant auto-reply and sales notification get there in seconds instead, and speed to first contact is one of the biggest levers in whether a lead converts at all.",
         primary: true,
       },
       {
         label: "Follow-up compliance rate",
         value: "~100%",
         detail:
-          "Share of new leads contacted within 2 business days — the 2-day stalled-lead rule takes this to ~100% versus a leaky manual process.",
+          "Share of new leads contacted within 2 business days. The 2-day stalled-lead rule pushes this to about 100%, versus a leaky manual process.",
       },
     ],
     roi: {
-      label: "Illustrative simulation — client's own figures pending",
+      label: "Projected, based on 30 leads/month",
       headline:
-        "~100% modelled first-year ROI, rising to 350%+ ongoing — driven by recovered leads, not admin math.",
+        "Pays for itself in year one, then returns roughly 3.5x every year after. That's from leads that stop slipping through the cracks, not from counting minutes saved.",
       assumptions: [
         "30 leads / month",
         "~9 min manual handling per lead",
@@ -355,22 +370,22 @@ export const webShowcaseProjects: WebShowcaseProject[] = [
         {
           title: "Time saved",
           detail:
-            "~9 min/lead eliminated → 54 hours/year (~1.4 work weeks), ~$2,430/yr in recovered labour. Net-positive from year 2; roughly break-even in year 1 on time alone.",
+            "Cuts about 9 minutes of manual handling off every lead, roughly 54 hours back a year, worth about $2,430 in labour. Breaks even on time alone by year one, clearly profitable from year two.",
         },
         {
           title: "Cost avoided",
           detail:
-            "No admin/VA hire to process leads, no separate email-marketing tool (nurture runs inside GHL), no separate form-backend/CRM SaaS, no server to run (SSG on Vercel) — weighed against GHL (~$97/mo) + Vercel + the one-time build.",
+            "No admin hire needed just to process leads, no separate email tool since the nurture runs inside GHL, no extra CRM to license. Just GHL at about $97 a month and the one-time build. The site itself costs nothing extra to host.",
         },
         {
           title: "Skill & knowledge growth",
           detail:
-            "The team moves from inbox-and-spreadsheet lead handling to operating a real 5-stage CRM pipeline, and the content-as-data build lets non-developers edit all 23 pages as data, not code — a durable capability, not a developer dependency.",
+            "The team moves from an inbox-and-spreadsheet routine to running a real automated pipeline. Leads tag, route, and escalate themselves. Editing the 23 pages that feed it is just a bonus.",
         },
         {
           title: "Quality & stress reduction",
           detail:
-            "Mis-keyed CRM entries → ~0, dropped/forgotten leads → ~0, weekend leads left unanswered → ~0; follow-up compliance ~100%. The team trusts every lead is captured, segmented, acknowledged, and followed up — without anyone remembering to.",
+            "Mis-keyed entries, dropped leads, and unanswered weekend inquiries all drop to basically zero. Every lead gets captured, tagged, and followed up on its own. Nobody has to remember to do it.",
         },
       ],
       sensitivity: {
@@ -388,6 +403,10 @@ export const webShowcaseProjects: WebShowcaseProject[] = [
         id: "lead-pipeline",
         label: "Lead pipeline",
         platform: "ghl",
+        builderScreenshot: {
+          src: "/projects/powertag/flow/flow-build-lead-pipeline.png",
+          alt: "The real 'New assessment request' workflow open in the GoHighLevel builder, unedited",
+        },
         steps: [
           {
             kind: "trigger",
@@ -395,124 +414,175 @@ export const webShowcaseProjects: WebShowcaseProject[] = [
             node: "Inbound Webhook",
             keyInfo: [
               { label: "Method", value: "POST" },
+              { label: "Filters", value: "None applied, every submission enrolls" },
               { label: "Endpoint", value: "https://services.leadconnectorhq.com/hooks/•••••/webhook-trigger/•••" },
-              { label: "Payload", value: "{ company, role, sites, spend, industry, services, message }" },
+              { label: "Payload", value: "{ name, email, phone, company, role, sites, industry, spend, services, message, fileName }" },
             ],
-            detail: "The site's /api/lead route forwards the validated form as JSON — a webhook is always a POST, since it's pushing a payload in, not fetching one out.",
-            log: "200 OK · payload accepted · 7 fields parsed",
+            detail: "The moment someone submits the assessment form on the live site, it posts straight into this webhook. No queue, no polling, it starts in the same second.",
+            log: "200 OK · payload accepted · fields parsed",
+            screenshot: { src: "/projects/powertag/flow/flow-form-submitted.jpg", alt: "The assessment form on the live site, right after a real submission" },
           },
           {
             kind: "action",
             title: "Create / Update Contact",
             node: "Create/Update Contact",
             keyInfo: [
-              { label: "Mapping source", value: "Inbound Webhook Request merge-tags (not Contact)" },
+              { label: "Built-in fields", value: "Full Name · Email · Phone" },
               {
                 label: "Custom fields",
-                value: [
-                  "Company",
-                  "Role",
-                  "Number of Sites",
-                  "Primary Industry",
-                  "Annual Electricity Spend",
-                  "Compliance Services",
-                  "Message",
-                  "Attached File Name",
-                ],
+                value: ["Company", "Role", "Number of Sites", "Primary Industry", "Annual Electricity Spend", "Attached File Name"],
               },
-              { label: "Built-in", value: "Company Name" },
+              { label: "Exception", value: "Compliance Services maps straight from the webhook, not the contact record" },
+              { label: "Fix applied", value: "Business Name field also set from Company, since GHL leaves it blank otherwise" },
             ],
-            detail: "Upserts the lead as a contact, writing 8 custom fields mapped from the inbound request category so a fresh webhook (no contact in context yet) maps correctly.",
-            log: "contact upserted · id ••• · 8 custom fields written",
-          },
-          {
-            kind: "notification",
-            title: "Notify Sales",
-            node: "Internal Notification (Email)",
-            keyInfo: [
-              { label: "Type", value: "Internal email" },
-              { label: "To", value: "sales@[client] (Custom Email)" },
-              { label: "From", value: "Martin" },
-            ],
-            detail: "Fires an internal alert the moment a lead lands so sales never has to watch an inbox.",
-            log: "internal email queued → sales",
-          },
-          {
-            kind: "email",
-            title: "Auto-Reply to Lead",
-            node: "Email",
-            keyInfo: [
-              { label: "To", value: "the lead" },
-              { label: "Sign-off", value: "The powerTAG Team" },
-            ],
-            detail: "Instant acknowledgement to the lead — the response-time win that drives conversion.",
-            log: "auto-reply sent → lead · t+2s",
-          },
-          {
-            kind: "condition",
-            title: "Segment by goal",
-            node: "If/Else on primaryGoal",
-            keyInfo: [
-              { label: "Branches", value: "Energy · Compliance · Both · None" },
-              { label: "Applies", value: "lead-energy / lead-compliance tags" },
-            ],
-            detail: "Routes and tags the lead by what they came for, so the pipeline is pre-segmented.",
-            log: "branch=energy → tag lead-energy",
+            detail: "Upserts the lead as a contact. One real bug caught in testing: GHL's contact list has a \"Business name\" column that's separate from the custom Company field. Left unmapped, every new lead showed up blank. Mapping it to the same value fixed it.",
+            log: "contact upserted · business name set · 6 custom fields written",
+            screenshot: { src: "/projects/powertag/flow/flow-contact-created.jpg", alt: "The resulting contact row in GoHighLevel, business name and tags populated" },
           },
           {
             kind: "pipeline",
             title: "Create Opportunity",
-            node: "Assessment Pipeline",
+            node: "Create Opportunity",
             keyInfo: [
-              { label: "Stages", value: "New Lead → Contacted → Assessment Scheduled → Proposal Sent → Won/Lost" },
+              { label: "Pipeline", value: "Assessment Pipeline" },
+              { label: "Stages", value: "New Lead → Contacted → Assessment Scheduled → Proposal Sent → Won" },
             ],
-            detail: "Drops a deal card onto a 5-stage kanban; stages 2–5 are worked by hand, only the entry is automated.",
+            detail: "Drops a deal card onto the pipeline in the New Lead stage, right after the contact exists. Stages 2 to 5 are worked by hand, only the entry is automated.",
             log: "opportunity created · stage=New Lead",
+            screenshot: { src: "/projects/powertag/flow/flow-opportunity-created.jpg", alt: "New opportunity card sitting in the New Lead stage of the Assessment Pipeline" },
+          },
+          {
+            kind: "notification",
+            title: "Notify Sales",
+            node: "Notify Sales – New Assessment Request",
+            keyInfo: [
+              { label: "Type", value: "Internal email" },
+              { label: "Contains", value: "Every field from the form, plain text, ready to act on" },
+              { label: "From", value: "Martin" },
+            ],
+            detail: "Fires an internal alert the moment a lead lands so sales never has to watch an inbox for one.",
+            log: "internal email sent → sales team",
+            screenshot: { src: "/projects/powertag/flow/flow-sales-notification.jpg", alt: "Internal notification email received by the sales team with the lead's full submission" },
+          },
+          {
+            kind: "email",
+            title: "Auto-Reply to Lead",
+            node: "Auto-Reply Email follow up",
+            keyInfo: [
+              { label: "To", value: "the lead" },
+              { label: "Sign-off", value: "The powerTAG Team" },
+            ],
+            detail: "An instant acknowledgement to the lead. It's the response-time win that drives conversion.",
+            log: "auto-reply sent → lead · t+2s",
+            screenshot: { src: "/projects/powertag/flow/flow-auto-reply.jpg", alt: "The real auto-reply email, received in the lead's inbox seconds after submitting" },
+          },
+          {
+            kind: "condition",
+            title: "Segment by goal",
+            node: "Condition",
+            keyInfo: [{ label: "Reads", value: "primaryGoal" }],
+            detail: "Splits the lead into one of four paths by what they actually asked for, so the right tag gets applied downstream instead of one generic label.",
+            log: "branch=Energy → Energy Tag",
+            branches: [
+              { condition: "primaryGoal is \"Energy\"", matchType: "AND", outcome: "Energy Tag", appliesTag: true },
+              { condition: "primaryGoal is \"Compliance\"", matchType: "AND", outcome: "Lead-Compliance Tag", appliesTag: true },
+              { condition: "primaryGoal is \"Both\"", matchType: "AND", outcome: "Energy and compliance Tag", appliesTag: true },
+              { condition: "When none of the conditions are met", matchType: "NONE", outcome: "No tag applied", appliesTag: false },
+            ],
+          },
+        ],
+      },
+      {
+        id: "assessment-follow-up",
+        label: "Assessment pipeline follow up",
+        platform: "ghl",
+        builderScreenshot: {
+          src: "/projects/powertag/flow/flow-build-follow-up.png",
+          alt: "The real 'Assessment Pipeline Follow-up' workflow open in the GoHighLevel builder, unedited",
+        },
+        steps: [
+          {
+            kind: "trigger",
+            title: "Opportunity Created",
+            node: "Opportunity Created",
+            keyInfo: [{ label: "Fires when", value: "any new opportunity lands in the Assessment Pipeline" }],
+            detail: "A separate workflow that watches the pipeline itself, not the form, so a lead can't fall through the cracks no matter how it entered.",
+            log: "workflow enrolled · opportunity=New Lead",
+            screenshot: { src: "/projects/powertag/flow/flow-opportunity-created.jpg", alt: "The opportunity card in the Assessment Pipeline that fires this workflow" },
           },
           {
             kind: "wait",
-            title: "2-business-day follow-up",
-            node: "Wait + Condition + Action",
+            title: "Wait",
+            node: "Wait (Default Path)",
+            keyInfo: [{ label: "Duration", value: "2 business days" }],
+            detail: "Long enough for sales to actually work the lead, short enough that a stalled one doesn't go cold.",
+            log: "waiting · 2 business days",
+          },
+          {
+            kind: "condition",
+            title: "Still untouched?",
+            node: "Condition",
             keyInfo: [
-              { label: "Trigger", value: "opportunity created" },
-              { label: "Condition", value: "status still open after 2 business days" },
-              { label: "Action", value: "follow-up email + sales task" },
+              { label: "Checks", value: "Pipeline stage is still [Assessment Pipeline] – New Lead" },
+              { label: "Branches", value: "Still new Lead · None" },
             ],
-            detail: "Catches stalled leads automatically so none go cold — the follow-up compliance guarantee.",
-            log: "waited 2 business days · status=open → follow-up sent + task created",
+            detail: "If the deal moved forward, the follow-up never fires. This only catches the ones sitting untouched.",
+            log: "condition evaluated · branch=Still new Lead",
+          },
+          {
+            kind: "email",
+            title: "Email Follow Up",
+            node: "Email Follow Up",
+            keyInfo: [{ label: "To", value: "the lead" }],
+            detail: "A low-pressure check-in goes out on its own, so the lead never has to wonder if they were forgotten.",
+            log: "follow-up email sent → lead",
+            screenshot: { src: "/projects/powertag/flow/flow-followup-email.jpg", alt: "The real 2-day follow-up email, received by a stalled lead's inbox" },
           },
         ],
       },
       {
         id: "newsletter",
-        label: "Newsletter nurture",
+        label: "Newsletter email campaign automation",
         platform: "ghl",
+        builderScreenshot: {
+          src: "/projects/powertag/flow/flow-build-newsletter.png",
+          alt: "The real 'Email Campaign Automation' workflow open in the GoHighLevel builder, unedited",
+        },
         steps: [
           {
             kind: "trigger",
-            title: "Subscribe",
+            title: "Newsletter signup",
             node: "Inbound Webhook",
             keyInfo: [
               { label: "Method", value: "POST" },
               { label: "Payload", value: "{ email }" },
             ],
-            detail: "The newsletter form posts the subscriber's email into the workflow.",
+            detail: "Markets the wider Energy-as-a-Service offering to people who aren't ready to book an assessment yet. Someone enters their email on the site, and that's where staying in touch starts.",
             log: "200 OK · email captured",
+            screenshot: { src: "/projects/powertag/flow/flow-newsletter-signup.jpg", alt: "The newsletter signup block on the live site, right after a real submission" },
+          },
+          {
+            kind: "action",
+            title: "Create Contact",
+            node: "Create contact",
+            keyInfo: [{ label: "Built-in fields", value: "Email" }],
+            detail: "Upserts the subscriber as a contact before tagging, same as the lead pipeline. Every automation on this site works off a real GHL contact, never a mailing-list-only record.",
+            log: "contact upserted",
           },
           {
             kind: "tag",
-            title: "Tag subscriber",
-            node: "Add Tag",
+            title: "Add Newsletter tag",
+            node: "Add Newsletter tag",
             keyInfo: [{ label: "Tag", value: "newsletter-subscriber" }],
             detail: "Tags the contact so the nurture sequence only ever targets real subscribers.",
             log: "tag applied · newsletter-subscriber",
           },
           {
             kind: "email",
-            title: "Welcome — Email 1",
-            node: "Email",
-            keyInfo: [{ label: "Template", value: "Welcome + CTA" }],
-            detail: "Confirms they're on the list with a clear first call to action.",
+            title: "First Nurture Email",
+            node: "First Nurture Email",
+            keyInfo: [{ label: "Sends", value: "Immediately after signup" }],
+            detail: "Confirms they're on the list with a clear first call to action, while the signup is still top of mind.",
             log: "email 1/3 sent",
           },
           {
@@ -525,11 +595,12 @@ export const webShowcaseProjects: WebShowcaseProject[] = [
           },
           {
             kind: "email",
-            title: "Educational — Email 2",
-            node: "Email",
-            keyInfo: [{ label: "Template", value: "Educational" }],
-            detail: "Delivers value content to keep the subscriber warm.",
+            title: "Second Nurture email",
+            node: "Second Nurture email (after 2 Days)",
+            keyInfo: [{ label: "Subject", value: "\"The real cost of a lapsed compliance program\"" }],
+            detail: "Real drafted content, not filler. It makes the case for staying on top of compliance and links straight to the assessment for anyone ready to look closer.",
             log: "email 2/3 sent",
+            screenshot: { src: "/projects/powertag/flow/flow-newsletter-second-nurture.jpg", alt: "The real second nurture email, received 2 days after signup" },
           },
           {
             kind: "wait",
@@ -541,22 +612,26 @@ export const webShowcaseProjects: WebShowcaseProject[] = [
           },
           {
             kind: "email",
-            title: "Soft CTA — Email 3",
-            node: "Email",
-            keyInfo: [{ label: "Template", value: "Soft CTA" }],
-            detail: "A gentle final reminder in case the earlier emails were missed.",
+            title: "Soft CTA (Final nurture)",
+            node: "Soft CTA (Final nurture)",
+            keyInfo: [{ label: "Subject", value: "\"Worth five minutes?\"" }],
+            detail: "A low-pressure last touch for anyone who missed the earlier emails or wasn't ready yet. No hard sell, just an easy way back in whenever the timing works.",
             log: "email 3/3 sent",
+            screenshot: { src: "/projects/powertag/flow/flow-newsletter-soft-cta.jpg", alt: "The real final soft-CTA email, received about a week after the second nurture email" },
           },
         ],
       },
     ],
     media: {
       screenshots: [
-        "/projects/powertag/powertag-01-hero.jpg",
-        "/projects/powertag/powertag-02-reasons.jpg",
-        "/projects/powertag/powertag-03-building-intelligence.jpg",
-        "/projects/powertag/powertag-04-model.jpg",
-        "/projects/powertag/powertag-05-assessment-form.jpg",
+        "/projects/powertag/powertag-home-01-hero.jpg",
+        "/projects/powertag/powertag-energy-as-service-01-hero.jpg",
+        "/projects/powertag/powertag-building-intelligence-01-hero.jpg",
+        "/projects/powertag/powertag-smart-monitoring-02-features.jpg",
+        "/projects/powertag/powertag-demand-response-01-hero.jpg",
+        "/projects/powertag/powertag-compliance-02-services.jpg",
+        "/projects/powertag/powertag-aged-care-01-hero.jpg",
+        "/projects/powertag/powertag-automotive-dealership-01-hero.jpg",
       ],
       liveUrl: "https://powertag-three.vercel.app",
       caseStudyUrl: "https://fortunate-cat.super.site/project-1",

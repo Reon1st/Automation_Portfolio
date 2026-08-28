@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "ai-color-palette",
+        "value": "bg-indigo-500/15 text-indigo-400 border-indigo-500/30",
+        "files": [
+          "src/components/sections/portfolio/WorkflowEngine.tsx"
+        ],
+        "createdAt": "2026-08-28T21:59:07.496Z",
+        "reason": "Pre-existing 8-way categorical node-kind color system (rose/sky/amber/fuchsia/cyan/emerald/indigo/slate) predating this session; indigo is one deliberate hue distinguishing the pipeline kind, not a generic AI purple-gradient aesthetic"
+      }
+    ]
+  }
+}
