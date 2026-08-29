@@ -584,6 +584,7 @@ export const webShowcaseProjects: WebShowcaseProject[] = [
             keyInfo: [{ label: "Sends", value: "Immediately after signup" }],
             detail: "Confirms they're on the list with a clear first call to action, while the signup is still top of mind.",
             log: "email 1/3 sent",
+            screenshot: { src: "/projects/powertag/flow/flow-newsletter-first-nurture.png", alt: "The real first nurture email, received right after signup" },
           },
           {
             kind: "wait",
