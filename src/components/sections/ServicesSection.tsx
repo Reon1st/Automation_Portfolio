@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Layers, ArrowUpRight, Wrench } from "lucide-react";
+import { ArrowUpRight, Wrench, ChevronDown } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import SectionHeader from "@/components/shared/SectionHeader";
 import { useScrollAnimation, useStaggeredChildren } from "@/hooks/useScrollAnimation";
 import { services, Service } from "@/data/services";
@@ -75,42 +74,41 @@ const CardBody: React.FC<{ service: Service; noteOpen: boolean }> = ({ service, 
           <div
             className={`w-full overflow-hidden transition-all duration-300 ease-out ${noteOpen ? "max-h-24 opacity-100" : "max-h-0 opacity-0"}`}
           >
-            <p className="text-left text-[0.75rem] text-amber-300/90 leading-relaxed border-t border-amber-400/20 pt-2">
+            <p className="text-left text-[0.75rem] text-amber-300/90 leading-relaxed">
               {(m as Extract<Service["metric"], { kind: "count" }>).devNote}
             </p>
           </div>
         )}
 
-        {/* Tools */}
-        <div className="space-y-1.5 pt-3 border-t border-border/50 w-full mt-auto">
-          <div className="flex items-center justify-center gap-1.5">
-            <Layers className="h-3 w-3 text-primary" />
-            <h4 className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">Tech Stack</h4>
-          </div>
+        {/* Footer: the action leads, then tools trail as a quiet signal — no eyebrow label */}
+        <div className="w-full mt-auto pt-3 border-t border-border/40 space-y-2.5">
+          {isLiveNumber && (
+            <span className="inline-flex items-center gap-1 text-[0.72rem] font-semibold text-primary group-hover:gap-1.5 transition-all">
+              View the build <ArrowUpRight className="h-3.5 w-3.5" />
+            </span>
+          )}
+          {isDev && (
+            <span className="inline-flex items-center gap-1 text-[0.72rem] font-medium text-muted-foreground/80">
+              {noteOpen ? "Hide" : "What's coming"}
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${noteOpen ? "rotate-180" : ""}`} />
+            </span>
+          )}
+          {m.kind === "foundation" && (
+            <span className="inline-flex items-center gap-1 text-[0.72rem] font-semibold text-primary group-hover:gap-1.5 transition-all">
+              See what it powers <ArrowUpRight className="h-3.5 w-3.5" />
+            </span>
+          )}
           <div className="flex flex-wrap justify-center gap-1">
             {service.tools.map((tool) => (
-              <Badge
+              <span
                 key={tool}
-                variant="secondary"
-                className="bg-gradient-to-r from-primary/10 to-primary/20 text-primary border border-primary/30 px-1.5 py-0.5 text-[10px] leading-none font-semibold"
+                className="rounded-md border border-border/40 bg-muted/20 px-1.5 py-0.5 text-[0.62rem] font-medium text-muted-foreground/70"
               >
                 {tool}
-              </Badge>
+              </span>
             ))}
           </div>
         </div>
-
-        {/* Affordance line — only where clicking does something */}
-        {isLiveNumber && (
-          <span className="inline-flex items-center gap-1 text-[0.7rem] font-semibold text-primary/90 group-hover:text-primary transition-colors">
-            View the build <ArrowUpRight className="h-3 w-3" />
-          </span>
-        )}
-        {isDev && (
-          <span className="text-[0.7rem] font-medium text-muted-foreground/70">
-            {noteOpen ? "Hide" : "What's coming"}
-          </span>
-        )}
       </div>
     </>
   );

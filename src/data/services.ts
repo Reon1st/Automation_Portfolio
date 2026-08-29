@@ -35,12 +35,12 @@ export const services: Service[] = [
     iconFill: true,
     title: "GoHighLevel CRM",
     description:
-      "Your whole sales side in one system — CRM, funnels, AI agents, and follow-ups that fire on their own so leads don't go cold.",
-    tools: ["GoHighLevel", "Funnels", "SMS & Email Campaigns", "AI Agents"],
+      "The sales engine behind powerTAG — every enquiry captured, routed to sales, and chased until it converts or goes cold.",
+    tools: ["Funnels", "Pipelines", "SMS & Email", "AI Agents"],
     metric: {
       kind: "count",
       platform: "ghl",
-      unit: "GoHighLevel automations live",
+      unit: "automations live",
       devNote: "",
     },
   },
@@ -49,11 +49,11 @@ export const services: Service[] = [
     title: "n8n Workflow Automation",
     description:
       "Connect the tools you already run — n8n doesn't care what the job is. Emails, sheets, alerts, entire workflows: whatever moves between your apps can run itself.",
-    tools: ["n8n", "Gmail", "Google Sheets", "Webhooks & APIs"],
+    tools: ["Gmail", "Google Sheets", "Webhooks & APIs"],
     metric: {
       kind: "count",
       platform: "n8n",
-      unit: "n8n workflows live",
+      unit: "workflows live",
       devNote: "Building real n8n workflows now — this fills in the moment one ships.",
     },
   },
@@ -62,11 +62,11 @@ export const services: Service[] = [
     title: "AI Chatbots & Voice Agents",
     description:
       "Chatbots that answer and pre-qualify leads around the clock, now stretching into voice — agents that sound so human, most callers never clock they're talking to a bot.",
-    tools: ["Claude AI", "n8n Agents", "GoHighLevel AI", "Voice AI"],
+    tools: ["Claude AI", "GoHighLevel AI", "ElevenLabs Voice"],
     metric: {
       kind: "count",
       platform: "agents",
-      unit: "chat & voice agents live",
+      unit: "agents live",
       devNote: "A voice agent is in the works in ElevenLabs — landing here once it's live.",
     },
   },
