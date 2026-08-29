@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { useSmoothScroll } from "./hooks/useSmoothScroll";
 import Index from "./pages/Index";
@@ -16,6 +16,13 @@ import Drafts from "./pages/Drafts";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
+
+// The generic /react import (correct for this Vite SPA) doesn't auto-detect the route the way
+// Next.js/Remix/etc. do, so every event buckets as "Unknown" in the dashboard unless we pass it.
+const SpeedInsightsRoute = () => {
+  const location = useLocation();
+  return <SpeedInsights route={location.pathname} />;
+};
 
 const App = () => {
   useSmoothScroll();
@@ -36,9 +43,9 @@ const App = () => {
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <SpeedInsightsRoute />
         </BrowserRouter>
         <Analytics />
-        <SpeedInsights />
       </TooltipProvider>
     </ThemeProvider>
   </QueryClientProvider>
