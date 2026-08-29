@@ -126,7 +126,13 @@ const FieldRows: React.FC<{ rows: FlowKeyInfo[] }> = ({ rows }) => (
 
 // Renders the real parallel branches a condition node fans out to — curved connectors computed
 // from measured DOM positions, same shape as GHL's own branch view, just compact.
-const BranchFan: React.FC<{ source: React.RefObject<HTMLElement>; branches: FlowBranch[] }> = ({ source, branches }) => {
+const BranchFan: React.FC<{
+  source: React.RefObject<HTMLElement>;
+  branches: FlowBranch[];
+  activeBranch: number | null;
+  traveling: boolean;
+  runToken: number;
+}> = ({ source, branches, activeBranch, traveling, runToken }) => {
   const wrapRef = useRef<HTMLDivElement>(null);
   const rowRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [paths, setPaths] = useState<string[]>([]);
@@ -156,37 +162,67 @@ const BranchFan: React.FC<{ source: React.RefObject<HTMLElement>; branches: Flow
   return (
     <div ref={wrapRef} className="relative flex flex-col justify-center gap-2.5 pl-14 flex-shrink-0 py-2">
       <svg className="absolute inset-0 w-full h-full overflow-visible pointer-events-none" aria-hidden>
-        {paths.map(
-          (d, i) => d && <path key={i} d={d} fill="none" stroke="rgba(255,255,255,0.18)" strokeWidth={1.5} />
+        {paths.map((d, i) => {
+          const isActive = i === activeBranch;
+          return (
+            d && (
+              <path
+                key={i}
+                d={d}
+                fill="none"
+                stroke={isActive ? "rgba(251,191,36,0.85)" : "rgba(255,255,255,0.18)"}
+                strokeWidth={isActive ? 2 : 1.5}
+              />
+            )
+          );
+        })}
+        {traveling && activeBranch !== null && paths[activeBranch] && (
+          <circle key={runToken} r={4} fill="#fbbf24">
+            <animateMotion dur={`${STEP_MS}ms`} path={paths[activeBranch]} fill="freeze" />
+            <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.12;0.88;1" dur={`${STEP_MS}ms`} fill="freeze" />
+          </circle>
         )}
       </svg>
-      {branches.map((b, i) => (
-        <div
-          key={i}
-          ref={(el) => {
-            rowRefs.current[i] = el;
-          }}
-          className="relative flex items-center gap-2 z-10"
-        >
-          <div className="w-[168px] flex-shrink-0 rounded-lg border border-white/10 bg-[#111]/95 px-2.5 py-1.5 shadow-md shadow-black/30">
-            <div className={`text-[0.55rem] font-mono ${b.matchType === "AND" ? "text-amber-400/80" : "text-slate-400/70"}`}>
-              {"{}"} {b.matchType}
+      {branches.map((b, i) => {
+        const isActive = i === activeBranch;
+        return (
+          <div
+            key={i}
+            ref={(el) => {
+              rowRefs.current[i] = el;
+            }}
+            className="relative flex items-center gap-2 z-10"
+          >
+            <div
+              className={`w-[168px] flex-shrink-0 rounded-lg border px-2.5 py-1.5 shadow-md shadow-black/30 transition-colors duration-300 ${
+                isActive ? "border-amber-400/50 bg-[#161207]" : "border-white/10 bg-[#111]/95"
+              }`}
+            >
+              <div className={`text-[0.55rem] font-mono ${b.matchType === "AND" ? "text-amber-400/80" : "text-slate-400/70"}`}>
+                {"{}"} {b.matchType}
+              </div>
+              <div className="text-[0.68rem] text-foreground/85 leading-tight line-clamp-2">{b.condition}</div>
             </div>
-            <div className="text-[0.68rem] text-foreground/85 leading-tight line-clamp-2">{b.condition}</div>
+            <ChevronRight className={`h-3.5 w-3.5 flex-shrink-0 ${isActive ? "text-amber-400/70" : "text-white/25"}`} />
+            {b.appliesTag ? (
+              <div
+                className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-2 flex-shrink-0 transition-shadow duration-300 ${
+                  isActive
+                    ? "border-emerald-400/60 bg-emerald-500/15 shadow-[0_0_16px_-3px_rgba(52,211,153,0.7)]"
+                    : "border-emerald-500/30 bg-emerald-500/10"
+                }`}
+              >
+                <Tags className="h-3.5 w-3.5 text-emerald-400 flex-shrink-0" />
+                <span className="text-[0.66rem] font-medium leading-tight text-emerald-300">{b.outcome}</span>
+              </div>
+            ) : (
+              <div className="rounded-lg border border-white/10 bg-white/[0.03] px-2.5 py-2 flex-shrink-0">
+                <span className="text-[0.64rem] text-muted-foreground">{b.outcome}</span>
+              </div>
+            )}
           </div>
-          <ChevronRight className="h-3.5 w-3.5 text-white/25 flex-shrink-0" />
-          {b.appliesTag ? (
-            <div className="flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-2 flex-shrink-0">
-              <Tags className="h-3.5 w-3.5 text-emerald-400 flex-shrink-0" />
-              <span className="text-[0.66rem] font-medium leading-tight text-emerald-300">{b.outcome}</span>
-            </div>
-          ) : (
-            <div className="rounded-lg border border-white/10 bg-white/[0.03] px-2.5 py-2 flex-shrink-0">
-              <span className="text-[0.64rem] text-muted-foreground">{b.outcome}</span>
-            </div>
-          )}
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };
@@ -199,10 +235,12 @@ const WorkflowEngine: React.FC<WorkflowEngineProps> = ({ flows, onScreenshot }) 
   const trunkBranches = steps[steps.length - 1]?.branches;
   const branchSourceRef = useRef<HTMLButtonElement>(null);
 
-  const [step, setStep] = useState(-1); // -1 idle; else last-fired index
+  const [step, setStep] = useState(-1); // -1 idle; else last-fired index (can exceed steps.length-1 while traveling a branch)
   const [running, setRunning] = useState(false);
   const [inspected, setInspected] = useState(0);
+  const [activeBranch, setActiveBranch] = useState<number | null>(null); // which AND branch the last run landed on
   const timer = useRef<ReturnType<typeof setInterval>>();
+  const runToken = useRef(0); // bumped per run() so the branch pulse's SVG animation restarts each time
 
   const clearTimer = () => {
     if (timer.current) clearInterval(timer.current);
@@ -214,24 +252,38 @@ const WorkflowEngine: React.FC<WorkflowEngineProps> = ({ flows, onScreenshot }) 
     setStep(-1);
     setRunning(false);
     setInspected(0);
+    setActiveBranch(null);
   }, [flowId]);
 
   useEffect(() => () => clearTimer(), []);
 
   const run = () => {
     clearTimer();
+    runToken.current += 1;
+    // Land on a random AND branch so the trunk's condition node visibly resolves to one of
+    // its real outcomes each run, instead of always the same one.
+    const andBranches = trunkBranches
+      ?.map((b, i) => (b.matchType === "AND" ? i : -1))
+      .filter((i) => i >= 0) ?? [];
+    const chosenBranch = andBranches.length ? andBranches[Math.floor(Math.random() * andBranches.length)] : null;
+    const totalTicks = steps.length + (chosenBranch !== null ? 1 : 0);
     setStep(0);
     setInspected(0);
+    setActiveBranch(null);
     setRunning(true);
     timer.current = setInterval(() => {
       setStep((prev) => {
         const next = prev + 1;
-        if (next >= steps.length) {
+        if (next >= totalTicks) {
           clearTimer();
           setRunning(false);
           return steps.length - 1;
         }
-        setInspected(next);
+        if (next < steps.length) {
+          setInspected(next);
+        } else {
+          setActiveBranch(chosenBranch);
+        }
         return next;
       });
     }, STEP_MS);
@@ -242,6 +294,7 @@ const WorkflowEngine: React.FC<WorkflowEngineProps> = ({ flows, onScreenshot }) 
     setStep(-1);
     setRunning(false);
     setInspected(0);
+    setActiveBranch(null);
   };
 
   const inspect = (i: number) => {
@@ -257,10 +310,11 @@ const WorkflowEngine: React.FC<WorkflowEngineProps> = ({ flows, onScreenshot }) 
     return "pending";
   };
 
-  const activeStep = steps[inspected];
+  const activeStep = steps[inspected] ?? steps[steps.length - 1];
   const meta = kindStyle[activeStep.kind];
   const ActiveIcon = meta.icon;
   const firedLogs = step < 0 ? [] : steps.slice(0, step + 1).map((s) => s.log);
+  const travelingBranch = running && step === steps.length;
   const kindsInFlow = Array.from(new Set(steps.map((s) => s.kind)));
 
   return (
@@ -391,7 +445,15 @@ const WorkflowEngine: React.FC<WorkflowEngineProps> = ({ flows, onScreenshot }) 
                   </div>
                 );
               })}
-              {trunkBranches && <BranchFan source={branchSourceRef} branches={trunkBranches} />}
+              {trunkBranches && (
+                <BranchFan
+                  source={branchSourceRef}
+                  branches={trunkBranches}
+                  activeBranch={activeBranch}
+                  traveling={travelingBranch}
+                  runToken={runToken.current}
+                />
+              )}
             </div>
           </div>
         </div>

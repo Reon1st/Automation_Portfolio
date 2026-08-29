@@ -11,6 +11,15 @@
         ],
         "createdAt": "2026-08-28T21:59:07.496Z",
         "reason": "Pre-existing 8-way categorical node-kind color system (rose/sky/amber/fuchsia/cyan/emerald/indigo/slate) predating this session; indigo is one deliberate hue distinguishing the pipeline kind, not a generic AI purple-gradient aesthetic"
+      },
+      {
+        "rule": "ai-color-palette",
+        "value": "*",
+        "files": [
+          "src/components/sections/portfolio/WorkflowEngine.tsx"
+        ],
+        "createdAt": "2026-08-29T05:15:23.272Z",
+        "reason": "8-way categorical node-kind legend (rose/sky/amber/fuchsia/cyan/emerald/indigo/slate), each hue is a required distinct category not a decorative gradient; pre-existing design, not touched by this session's bugfix"
       }
     ]
   }
