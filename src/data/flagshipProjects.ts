@@ -130,7 +130,7 @@ export const flagshipProjects: FlagshipProject[] = [
       "Every ticket and decision logged in your dashboard",
     ],
     roi: "No helpdesk subscription or extra support hire needed just to keep up with routine tickets — the routine volume gets handled inside a system you already own, freeing your team for the tickets that actually need a human.",
-    stack: ["Claude AI", "RAG / Vector Search", "Trigger.dev", "Gmail (Composio)", "MongoDB"],
+    stack: ["Claude Code", "RAG / Vector Search", "Trigger.dev", "Gmail (Composio)", "MongoDB"],
     media: {
       process: [
         {
@@ -189,7 +189,7 @@ export const flagshipProjects: FlagshipProject[] = [
       "Built-in guide pages so your team can self-serve",
     ],
     roi: "No dev retainer needed just to confirm things are running — status is self-verifying, so oversight that used to cost time (or a contractor) comes built into the same login.",
-    stack: ["Next.js", "Trigger.dev", "MongoDB", "NextAuth", "Composio"],
+    stack: ["Claude Code", "Next.js", "Trigger.dev", "MongoDB", "NextAuth", "Composio"],
     media: {
       screenshots: [
         "/projects/dashboard/dashboard-dark.png",
@@ -216,7 +216,7 @@ export const flagshipProjects: FlagshipProject[] = [
       "Your branding, bank details, tax rate & currency — set once, applied to every invoice",
     ],
     roi: "No monthly invoicing subscription to budget for — this is a one-time build you own outright, so there's no recurring SaaS fee eating into margins invoice after invoice.",
-    stack: ["Trigger.dev", "PDF Generation", "Gmail + Drive (Composio)", "Next.js"],
+    stack: ["Claude Code", "Trigger.dev", "PDF Generation", "Gmail + Drive (Composio)", "Next.js"],
     media: {
       process: [
         {
@@ -266,7 +266,7 @@ export const flagshipProjects: FlagshipProject[] = [
       "One trigger runs the entire flow, whether you land one client a month or ten",
     ],
     roi: "No more manually tracking who got what after closing a deal — every new client gets the same fast, professional welcome that builds trust right when it matters most, instead of leaving them wondering if you forgot about them.",
-    stack: ["Trigger.dev", "PDF Generation", "Gmail (Composio)", "Next.js"],
+    stack: ["Claude Code", "Trigger.dev", "PDF Generation", "Gmail (Composio)", "Next.js"],
     media: {
       process: [
         {
@@ -328,6 +328,7 @@ export const webShowcaseProjects: WebShowcaseProject[] = [
       "A live \"building readout\" widget: custom SVG instruments showing presence, environment, and energy, not stock icons.",
     ],
     stack: [
+      "Claude Code",
       "Next.js 16 · SSG",
       "React 19",
       "Tailwind v4",
@@ -644,7 +645,7 @@ export const webShowcaseProjects: WebShowcaseProject[] = [
     tagline: "Checks if there's actually room before it says yes",
     description:
       "A fine dining concept site for a BGC restaurant, built around a food tour through Manila, Tokyo, Paris, and Rome. The reservation form does real work behind the scenes. It checks actual seat availability before confirming a booking, and if the restaurant's full that night, the guest gets an email back with the real open times instead of just a flat no.",
-    stack: ["Next.js", "GSAP", "Airtable", "Brevo"],
+    stack: ["Claude Code", "Next.js", "GSAP", "Airtable", "Brevo"],
     media: {
       screenshots: [
         "/projects/kayumanggi/kayumanggi-01-hero.png",
@@ -663,7 +664,7 @@ export const webShowcaseProjects: WebShowcaseProject[] = [
     tagline: "Give people a real price before they even call",
     description:
       "A plumbing site built around one problem: people don't want to wait on a callback just to hear a ballpark number. Fill out the job form and an AI gives a live price range right there, not a number pulled from a lookup table. Move forward with it and the job gets saved straight to a spreadsheet so it never gets lost in an inbox.",
-    stack: ["Next.js", "Claude Haiku", "Composio"],
+    stack: ["Claude Code", "Next.js", "Composio"],
     media: {
       screenshots: [
         "/projects/profix/profix-01-hero.png",
@@ -682,7 +683,7 @@ export const webShowcaseProjects: WebShowcaseProject[] = [
     tagline: "All the motion, none of the silence",
     description:
       "A performance-shop site that scrolls like a highlight reel from top to bottom. The contact form isn't just for show either. It emails the shop the second someone reaches out, and sends that person a quick, personal reply back too, so nobody's left wondering if it actually went through.",
-    stack: ["React", "Vite", "Tailwind", "GSAP", "Resend"],
+    stack: ["Claude Code", "React", "Vite", "Tailwind", "GSAP", "Resend"],
     media: {
       screenshots: [
         "/projects/revv-dynamics/revv-01-hero.png",

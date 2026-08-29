@@ -140,6 +140,42 @@ const ClaudeProjectsSection: React.FC = () => {
   const handleNext = () => setCurrentIndex((prev) => (prev + 1) % flagshipProjects.length);
   const handlePrev = () => setCurrentIndex((prev) => (prev === 0 ? flagshipProjects.length - 1 : prev - 1));
 
+  // Open the matching flagship project when the URL hash is #flagship-<id> (set by the Services
+  // metric cards' project picker, or arriving via a shared link) — mirrors WebsitesSection's
+  // #case-<id> mechanism, distinct prefix so the two never collide.
+  useEffect(() => {
+    let openTimer: ReturnType<typeof setTimeout>;
+    const syncFromHash = () => {
+      const match = window.location.hash.match(/^#flagship-(.+)$/);
+      if (!match) {
+        clearTimeout(openTimer);
+        return;
+      }
+      const idx = flagshipProjects.findIndex((p) => p.id === match[1]);
+      if (idx < 0) return;
+
+      sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      openTimer = setTimeout(() => {
+        setCurrentIndex(idx);
+        setDetailInitialTab("visual");
+        setIsDetailOpen(true);
+      }, 450);
+    };
+    syncFromHash();
+    window.addEventListener("hashchange", syncFromHash);
+    return () => {
+      clearTimeout(openTimer);
+      window.removeEventListener("hashchange", syncFromHash);
+    };
+  }, []);
+
+  const closeDetail = () => {
+    if (window.location.hash.startsWith("#flagship-")) {
+      history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+    setIsDetailOpen(false);
+  };
+
   return (
     <section
       ref={sectionRef}
@@ -275,7 +311,7 @@ const ClaudeProjectsSection: React.FC = () => {
 
       <ProjectDetailModal
         isOpen={isDetailOpen}
-        onClose={() => setIsDetailOpen(false)}
+        onClose={closeDetail}
         project={toDetailData(project)}
         initialTab={detailInitialTab}
         onPrevious={handlePrev}

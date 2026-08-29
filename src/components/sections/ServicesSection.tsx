@@ -1,24 +1,17 @@
 import React, { useState } from "react";
-import { ArrowUpRight, Wrench, ChevronDown } from "lucide-react";
+import { ArrowUpRight, Wrench, ChevronDown, ZoomIn } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import SectionHeader from "@/components/shared/SectionHeader";
 import { useScrollAnimation, useStaggeredChildren } from "@/hooks/useScrollAnimation";
 import { services, Service } from "@/data/services";
-import { countByPlatform, targetProjectFor } from "@/data/automationsRegistry";
+import { countByPlatform, projectsForPlatform } from "@/data/automationsRegistry";
+import { flagshipProjects, webShowcaseProjects } from "@/data/flagshipProjects";
 import { ANIMATION_PRESETS } from "@/lib/constants";
 
-// Renders the number/badge that leads each card. A "count" metric resolves its number
-// from the registry: 0 → "In Development" pill, >0 → the live number.
+// Renders the number/badge that leads each card: 0 → "In Development" pill, >0 → the live number.
 const MetricFace: React.FC<{ service: Service }> = ({ service }) => {
-  const m = service.metric;
-  if (m.kind === "foundation") {
-    return (
-      <span className="inline-flex items-center gap-1.5 rounded-full border border-primary/40 bg-primary/10 px-3 py-1 text-[0.7rem] font-bold uppercase tracking-widest text-primary">
-        {m.badge}
-      </span>
-    );
-  }
-  const count = countByPlatform(m.platform);
+  const count = countByPlatform(service.metric.platform);
   if (count === 0) {
     return (
       <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-amber-400/10 px-3 py-1 text-[0.7rem] font-bold uppercase tracking-widest text-amber-400">
@@ -27,24 +20,21 @@ const MetricFace: React.FC<{ service: Service }> = ({ service }) => {
     );
   }
   return (
-    <div className="flex flex-col items-center">
-      <span className="text-4xl font-extrabold leading-none text-primary">{count}</span>
-      <span className="mt-1 text-[0.62rem] font-semibold uppercase tracking-widest text-muted-foreground">{m.unit}</span>
+    <div className="flex flex-col items-center gap-1">
+      <span className="text-4xl font-extrabold tabular-nums tracking-tight leading-none text-primary">{count}</span>
+      <span className="text-[0.62rem] font-semibold uppercase tracking-widest text-muted-foreground">{service.metric.unit}</span>
     </div>
   );
 };
 
-// The inner card content, shared by all three card wrappers (anchor / open-build / reveal-note).
+// The inner card content, shared by every card.
 const CardBody: React.FC<{ service: Service; noteOpen: boolean }> = ({ service, noteOpen }) => {
-  const m = service.metric;
-  const count = m.kind === "count" ? countByPlatform(m.platform) : 0;
-  const isLiveNumber = m.kind === "count" && count > 0;
-  const isDev = m.kind === "count" && count === 0;
+  const count = countByPlatform(service.metric.platform);
+  const isLiveNumber = count > 0;
+  const isDev = count === 0;
 
   return (
     <>
-      {/* Animated border gradient */}
-      <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/40 to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 rounded-lg animate-gradient-shift" />
       <div className="absolute inset-[2px] bg-gradient-to-br from-card/95 to-card/80 rounded-lg" />
 
       <div className="relative p-5 h-full flex flex-col items-center text-center space-y-3.5">
@@ -64,8 +54,8 @@ const CardBody: React.FC<{ service: Service; noteOpen: boolean }> = ({ service, 
           <MetricFace service={service} />
         </div>
 
-        {/* Short description (clamped so the card doesn't grow taller than before) */}
-        <p className="w-full text-left text-[0.8rem] text-foreground/75 dark:text-muted-foreground leading-relaxed line-clamp-2 flex-grow">
+        {/* Short description — kept brief enough to read in full, not a truncated fragment */}
+        <p className="w-full text-left text-sm text-foreground/85 leading-relaxed line-clamp-3 flex-grow">
           {service.description}
         </p>
 
@@ -74,9 +64,7 @@ const CardBody: React.FC<{ service: Service; noteOpen: boolean }> = ({ service, 
           <div
             className={`w-full overflow-hidden transition-all duration-300 ease-out ${noteOpen ? "max-h-24 opacity-100" : "max-h-0 opacity-0"}`}
           >
-            <p className="text-left text-[0.75rem] text-amber-300/90 leading-relaxed">
-              {(m as Extract<Service["metric"], { kind: "count" }>).devNote}
-            </p>
+            <p className="text-left text-[0.75rem] text-amber-300/90 leading-relaxed">{service.metric.devNote}</p>
           </div>
         )}
 
@@ -84,18 +72,13 @@ const CardBody: React.FC<{ service: Service; noteOpen: boolean }> = ({ service, 
         <div className="w-full mt-auto pt-3 border-t border-border/40 space-y-2.5">
           {isLiveNumber && (
             <span className="inline-flex items-center gap-1 text-[0.72rem] font-semibold text-primary group-hover:gap-1.5 transition-all">
-              View the build <ArrowUpRight className="h-3.5 w-3.5" />
+              View the builds <ArrowUpRight className="h-3.5 w-3.5" />
             </span>
           )}
           {isDev && (
             <span className="inline-flex items-center gap-1 text-[0.72rem] font-medium text-muted-foreground/80">
               {noteOpen ? "Hide" : "What's coming"}
               <ChevronDown className={`h-3.5 w-3.5 transition-transform duration-300 ${noteOpen ? "rotate-180" : ""}`} />
-            </span>
-          )}
-          {m.kind === "foundation" && (
-            <span className="inline-flex items-center gap-1 text-[0.72rem] font-semibold text-primary group-hover:gap-1.5 transition-all">
-              See what it powers <ArrowUpRight className="h-3.5 w-3.5" />
             </span>
           )}
           <div className="flex flex-wrap justify-center gap-1">
@@ -117,6 +100,86 @@ const CardBody: React.FC<{ service: Service; noteOpen: boolean }> = ({ service, 
 const cardShell =
   "service-card relative border-2 border-primary/30 bg-card/40 backdrop-blur-xl hover:border-primary/60 hover:shadow-2xl hover:shadow-primary/30 hover:-translate-y-2 transition-all duration-700 overflow-hidden h-full";
 
+// Looks a project up in whichever array its registry entry says it lives in — flagship
+// (automation) projects and website projects have different id spaces and different shapes.
+const findProject = (projectId: string, source: "automation" | "website") =>
+  source === "automation"
+    ? flagshipProjects.find((p) => p.id === projectId)
+    : webShowcaseProjects.find((p) => p.id === projectId);
+
+// Some flagship projects (support-triage, invoice-automation, client-onboarding) store their
+// real images under step-by-step `process` captions instead of a top-level `screenshots` array —
+// fall back to the first process image so every project gets a real thumbnail, not a placeholder.
+const findThumbnail = (project: NonNullable<ReturnType<typeof findProject>>) =>
+  project.media.screenshots?.[0] ?? project.media.process?.find((step) => step.images?.length)?.images?.[0];
+
+// The one real "so what" line under the description — a website project's own authored highlight,
+// or an automation project's first real client-facing benefit. Never invented, always pulled from
+// data that already exists on the project.
+const findProofLine = (project: NonNullable<ReturnType<typeof findProject>>) =>
+  ("highlight" in project && project.highlight) || project.clientGets?.[0];
+
+// The single click behavior for every live-number card, always — never a direct open, even with
+// one project behind it. That means adding a second project behind any platform later needs zero
+// changes here: the list this dialog scrolls just grows from one row to two. Each row shows the
+// registry's own category + one-liner, not the project's generic tagline, so builds stay
+// distinct from each other instead of reading as repeats of the same pitch.
+const ProjectPicker: React.FC<{ service: Service | null; onClose: () => void }> = ({ service, onClose }) => {
+  const groups = service ? projectsForPlatform(service.metric.platform) : [];
+
+  const openProject = (projectId: string, source: "automation" | "website") => {
+    window.location.hash = source === "automation" ? `flagship-${projectId}` : `case-${projectId}`;
+    onClose();
+  };
+
+  return (
+    <Dialog open={!!service} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="max-w-xl p-0 overflow-hidden bg-background border-border/50">
+        <div className="p-5 border-b border-border/50">
+          <DialogTitle className="text-base font-bold">{service?.title}</DialogTitle>
+          <DialogDescription className="text-xs text-muted-foreground mt-1">
+            {groups.length} real {groups.length === 1 ? "build" : "builds"}
+            {service?.metric.platform === "claude-code" && ", every one built with Claude Code"} — pick one to see it in full.
+          </DialogDescription>
+        </div>
+        <div className="max-h-[70vh] overflow-y-auto p-3 space-y-2">
+          {groups.map(({ projectId, source, category, oneLiner }) => {
+            const project = findProject(projectId, source);
+            if (!project) return null;
+            const thumb = findThumbnail(project);
+            const proof = findProofLine(project);
+            return (
+              <button
+                key={projectId}
+                onClick={() => openProject(projectId, source)}
+                className="w-full flex items-start gap-4 p-3.5 rounded-xl text-left hover:bg-primary/5 border border-border/30 hover:border-primary/30 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+              >
+                <div className="w-28 aspect-[16/10] flex-shrink-0 rounded-lg overflow-hidden bg-muted/20 border border-border/40 flex items-center justify-center">
+                  {thumb ? (
+                    <img src={thumb} alt="" className="w-full h-full object-cover" draggable={false} />
+                  ) : (
+                    <ZoomIn className="h-5 w-5 text-muted-foreground/40" />
+                  )}
+                </div>
+                <div className="min-w-0 flex-grow space-y-1">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span className="font-bold text-sm">{project.title}</span>
+                    <span className="text-[0.62rem] font-semibold uppercase tracking-wide text-primary/80 bg-primary/10 border border-primary/20 rounded px-1.5 py-0.5">
+                      {category}
+                    </span>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-snug">{oneLiner}</p>
+                  {proof && <p className="text-[0.72rem] text-foreground/70 leading-snug italic">{proof}</p>}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 const ServicesSection: React.FC = () => {
   const headerAnimation = useScrollAnimation({
     ...ANIMATION_PRESETS.default,
@@ -125,11 +188,7 @@ const ServicesSection: React.FC = () => {
   });
   const serviceCards = useStaggeredChildren(ANIMATION_PRESETS.stagger.services.count, ANIMATION_PRESETS.stagger.services.delay);
   const [openNote, setOpenNote] = useState<string | null>(null);
-
-  const openBuild = (platform: Parameters<typeof targetProjectFor>[0]) => {
-    const target = targetProjectFor(platform);
-    if (target) window.location.hash = `case-${target}`;
-  };
+  const [pickerService, setPickerService] = useState<Service | null>(null);
 
   return (
     <section id="services" aria-labelledby="services-title" className="pt-6 pb-10 px-6 md:px-8 relative overflow-hidden">
@@ -145,32 +204,17 @@ const ServicesSection: React.FC = () => {
 
         <ul ref={serviceCards.ref as React.RefObject<HTMLUListElement>} role="list" className="grid md:grid-cols-2 lg:grid-cols-4 gap-5 max-w-7xl mx-auto">
           {services.map((service) => {
-            const m = service.metric;
             const noteOpen = openNote === service.title;
-
-            // Foundation card → plain anchor to the automation projects it powers.
-            if (m.kind === "foundation") {
-              return (
-                <li key={service.title} className="list-none group">
-                  <a href="#portfolio" className="block h-full rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50" aria-label={`${service.title} — see the automation projects it powers`}>
-                    <Card className={`${cardShell} hover:scale-[1.01] cursor-pointer`}>
-                      <CardBody service={service} noteOpen={false} />
-                    </Card>
-                  </a>
-                </li>
-              );
-            }
-
-            const count = countByPlatform(m.platform);
+            const count = countByPlatform(service.metric.platform);
             const isLiveNumber = count > 0;
-            const handle = () => (isLiveNumber ? openBuild(m.platform) : setOpenNote(noteOpen ? null : service.title));
+            const handle = () => (isLiveNumber ? setPickerService(service) : setOpenNote(noteOpen ? null : service.title));
 
             return (
               <li key={service.title} className="list-none group">
                 <Card
                   role="button"
                   tabIndex={0}
-                  aria-label={isLiveNumber ? `View the ${service.title} build` : `${service.title} — in development`}
+                  aria-label={isLiveNumber ? `View the ${service.title} builds` : `${service.title} — in development`}
                   aria-expanded={isLiveNumber ? undefined : noteOpen}
                   onClick={handle}
                   onKeyDown={(e) => {
@@ -188,6 +232,8 @@ const ServicesSection: React.FC = () => {
           })}
         </ul>
       </div>
+
+      <ProjectPicker service={pickerService} onClose={() => setPickerService(null)} />
     </section>
   );
 };

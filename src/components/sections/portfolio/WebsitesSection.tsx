@@ -12,6 +12,11 @@ import { webShowcaseProjects } from "@/data/flagshipProjects";
 const shortenUrl = (url: string) => url.replace(/^https?:\/\//, "").replace(/\/$/, "");
 const STACK_PREVIEW_LIMIT = 4;
 
+// Landing here from a Services metric card scrolls to the Websites section first, then the
+// case-study modal opens a beat later — the visitor sees where they arrived, not just an overlay
+// appearing out of nowhere. Chosen over an instant-open (compared both; this one won).
+const SCROLL_TO_OPEN_DELAY_MS = 450;
+
 const WebsitesSection: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
@@ -31,18 +36,26 @@ const WebsitesSection: React.FC = () => {
   // metric cards, or arriving via a shared link). Runs on mount and on every hashchange, so the
   // browser/phone Back button — which clears the hash — closes the modal for free.
   useEffect(() => {
+    let openTimer: ReturnType<typeof setTimeout>;
     const syncFromHash = () => {
       const match = window.location.hash.match(/^#case-(.+)$/);
       if (!match) {
+        clearTimeout(openTimer);
         setDetailIndex((prev) => (prev !== null ? null : prev));
         return;
       }
       const idx = webShowcaseProjects.findIndex((p) => p.id === match[1]);
-      if (idx >= 0) setDetailIndex(idx);
+      if (idx < 0) return;
+
+      sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      openTimer = setTimeout(() => setDetailIndex(idx), SCROLL_TO_OPEN_DELAY_MS);
     };
     syncFromHash();
     window.addEventListener("hashchange", syncFromHash);
-    return () => window.removeEventListener("hashchange", syncFromHash);
+    return () => {
+      clearTimeout(openTimer);
+      window.removeEventListener("hashchange", syncFromHash);
+    };
   }, []);
 
   const closeDetail = () => {
