@@ -27,6 +27,32 @@ const WebsitesSection: React.FC = () => {
     return () => observer.disconnect();
   }, []);
 
+  // Open the matching case study when the URL hash is #case-<projectId> (set by the Services
+  // metric cards, or arriving via a shared link). Runs on mount and on every hashchange, so the
+  // browser/phone Back button — which clears the hash — closes the modal for free.
+  useEffect(() => {
+    const syncFromHash = () => {
+      const match = window.location.hash.match(/^#case-(.+)$/);
+      if (!match) {
+        setDetailIndex((prev) => (prev !== null ? null : prev));
+        return;
+      }
+      const idx = webShowcaseProjects.findIndex((p) => p.id === match[1]);
+      if (idx >= 0) setDetailIndex(idx);
+    };
+    syncFromHash();
+    window.addEventListener("hashchange", syncFromHash);
+    return () => window.removeEventListener("hashchange", syncFromHash);
+  }, []);
+
+  const closeDetail = () => {
+    if (window.location.hash.startsWith("#case-")) {
+      // Drop the hash without adding a history entry, keeping modal state and URL in sync.
+      history.replaceState(null, "", window.location.pathname + window.location.search);
+    }
+    setDetailIndex(null);
+  };
+
   const activeVideoProject = webShowcaseProjects.find((p) => p.id === videoProjectId);
   const detailProject = detailIndex !== null ? webShowcaseProjects[detailIndex] : null;
 
@@ -147,7 +173,7 @@ const WebsitesSection: React.FC = () => {
 
       <WebProjectModal
         isOpen={detailIndex !== null}
-        onClose={() => setDetailIndex(null)}
+        onClose={closeDetail}
         project={detailProject ?? null}
         onPrevious={
           detailIndex !== null
