@@ -1,6 +1,17 @@
 import { createClient } from '@supabase/supabase-js';
 import { isRateLimited, recordFailedAttempt, clearAttempts } from './_rateLimit.js';
 
+const TESTIMONIAL_FIELDS = [
+  'name', 'role', 'company', 'text', 'rating',
+  'platform', 'platform_url', 'avatar_url', 'is_visible', 'display_order',
+] as const;
+
+function pickTestimonialFields(data: any) {
+  const out: Record<string, any> = {};
+  for (const key of TESTIMONIAL_FIELDS) if (key in data) out[key] = data[key];
+  return out;
+}
+
 export default async function handler(req: any, res: any) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -32,7 +43,7 @@ export default async function handler(req: any, res: any) {
       }
 
       case 'create': {
-        const { error } = await supabase.from('testimonials').insert([data]);
+        const { error } = await supabase.from('testimonials').insert([pickTestimonialFields(data)]);
         if (error) throw error;
         result = { success: true };
         break;
@@ -40,7 +51,7 @@ export default async function handler(req: any, res: any) {
 
       case 'update': {
         const { id, ...fields } = data;
-        const { error } = await supabase.from('testimonials').update(fields).eq('id', id);
+        const { error } = await supabase.from('testimonials').update(pickTestimonialFields(fields)).eq('id', id);
         if (error) throw error;
         result = { success: true };
         break;
