@@ -134,7 +134,7 @@ const ProjectPicker: React.FC<{ service: Service | null; onClose: () => void }> 
 
   return (
     <Dialog open={!!service} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-xl p-0 overflow-hidden bg-background border-border/50">
+      <DialogContent data-lenis-prevent className="max-w-xl p-0 overflow-hidden bg-background border-border/50">
         <div className="p-5 border-b border-border/50">
           <DialogTitle className="text-base font-bold">{service?.title}</DialogTitle>
           <DialogDescription className="text-xs text-muted-foreground mt-1">
