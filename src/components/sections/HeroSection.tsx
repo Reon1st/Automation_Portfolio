@@ -26,7 +26,7 @@ const HeroSection: React.FC = () => {
       {/* Secondary decorative ring */}
       <div className="absolute -inset-3 bg-gradient-to-tr from-primary/10 via-transparent to-primary/10 rounded-full opacity-40 group-hover:opacity-60 transition-all duration-500" />
 
-      <Avatar className="relative h-52 w-52 lg:h-64 lg:w-64 ring-[3px] ring-border/60 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] group-hover:shadow-[0_25px_70px_-15px_rgba(0,0,0,0.25)] dark:group-hover:shadow-[0_25px_70px_-15px_rgba(0,0,0,0.6)] transition-all duration-500 ease-out group-hover:ring-primary/30">
+      <Avatar className="relative h-60 w-60 lg:h-72 lg:w-72 ring-[3px] ring-border/60 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] group-hover:shadow-[0_25px_70px_-15px_rgba(0,0,0,0.25)] dark:group-hover:shadow-[0_25px_70px_-15px_rgba(0,0,0,0.6)] transition-all duration-500 ease-out group-hover:ring-primary/30">
         <AvatarImage src={profileImage} alt="Reon - Professional AI Automation Specialist in Philippines, expert in Zapier, Make.com, and GoHighLevel workflow automation" fetchPriority="high" className="object-cover w-full h-full transition-all duration-500 group-hover:scale-[1.02]" loading="eager" />
         <AvatarFallback className="text-4xl lg:text-5xl font-bold bg-gradient-to-br from-secondary to-muted text-secondary-foreground">
           RM
@@ -37,15 +37,15 @@ const HeroSection: React.FC = () => {
     </div>
   );
 
-  return <section ref={heroAnimation.ref as React.RefObject<HTMLElement>} className="pt-20 pb-4 px-6 relative overflow-hidden will-animate">
+  return <section ref={heroAnimation.ref as React.RefObject<HTMLElement>} className="pt-24 pb-8 px-6 relative overflow-hidden will-animate">
 
 
       <div className="container mx-auto max-w-6xl relative z-10">
-        <div className="grid lg:grid-cols-2 gap-10 items-center">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Column - Content */}
           <div ref={heroElements.ref as React.RefObject<HTMLDivElement>} className="space-y-6 will-animate">
             <div className="space-y-4">
-              <h1 className="text-3xl lg:text-4xl font-bold tracking-tight text-foreground text-center lg:text-left will-animate">
+              <h1 className="text-4xl lg:text-5xl font-bold tracking-tight text-foreground text-center lg:text-left will-animate">
                 {SITE_CONFIG.name}
               </h1>
 
@@ -55,7 +55,7 @@ const HeroSection: React.FC = () => {
               </div>
 
               <div className="text-center lg:text-left will-animate">
-                <h2 className="text-lg lg:text-xl text-primary font-semibold">
+                <h2 className="text-xl lg:text-2xl text-primary font-semibold">
                   {SITE_CONFIG.title}
                 </h2>
                 <div className="flex items-center justify-center lg:justify-start gap-2 text-muted-foreground mb-4">
