@@ -326,11 +326,6 @@ const WorkflowEngine: React.FC<WorkflowEngineProps> = ({ flows, onScreenshot }) 
           88% { opacity: 1; }
           100% { left: 100%; opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
         }
-        .wf-scrollbar { scrollbar-width: thin; scrollbar-color: hsl(var(--accent) / 0.4) transparent; }
-        .wf-scrollbar::-webkit-scrollbar { height: 7px; width: 7px; }
-        .wf-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); border-radius: 999px; }
-        .wf-scrollbar::-webkit-scrollbar-thumb { background: hsl(var(--accent) / 0.4); border-radius: 999px; }
-        .wf-scrollbar::-webkit-scrollbar-thumb:hover { background: hsl(var(--accent) / 0.7); }
       `}</style>
 
       {/* Console title bar */}

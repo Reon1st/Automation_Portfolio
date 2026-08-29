@@ -837,3 +837,11 @@ a, button, [role="button"], .cursor-pointer, label[for], summary {
   position: relative;
   height: 24px;
 }
+
+/* Thin accent-colored scrollbar — always-visible thumb instead of the native
+   overlay scrollbar some browsers auto-hide inside modals/scroll panes. */
+.wf-scrollbar { scrollbar-width: thin; scrollbar-color: hsl(var(--accent) / 0.4) transparent; }
+.wf-scrollbar::-webkit-scrollbar { height: 7px; width: 7px; }
+.wf-scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.03); border-radius: 999px; }
+.wf-scrollbar::-webkit-scrollbar-thumb { background: hsl(var(--accent) / 0.4); border-radius: 999px; }
+.wf-scrollbar::-webkit-scrollbar-thumb:hover { background: hsl(var(--accent) / 0.7); }

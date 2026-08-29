@@ -142,7 +142,7 @@ const ProjectPicker: React.FC<{ service: Service | null; onClose: () => void }> 
             {service?.metric.platform === "claude-code" && ", every one built with Claude Code"} — pick one to see it in full.
           </DialogDescription>
         </div>
-        <div className="max-h-[70vh] overflow-y-auto p-3 space-y-2">
+        <div className="wf-scrollbar max-h-[70vh] overflow-y-auto p-3 space-y-2">
           {groups.map(({ projectId, source, category, oneLiner }) => {
             const project = findProject(projectId, source);
             if (!project) return null;
