@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ArrowUpRight, Wrench, ChevronDown, ZoomIn } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import SectionHeader from "@/components/shared/SectionHeader";
 import { useScrollAnimation, useStaggeredChildren } from "@/hooks/useScrollAnimation";
@@ -134,7 +135,7 @@ const ProjectPicker: React.FC<{ service: Service | null; onClose: () => void }> 
 
   return (
     <Dialog open={!!service} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent data-lenis-prevent className="max-w-xl p-0 overflow-hidden bg-background border-border/50">
+      <DialogContent data-lenis-prevent className="max-w-3xl p-0 overflow-hidden bg-background border-border/50">
         <div className="p-5 border-b border-border/50">
           <DialogTitle className="text-base font-bold">{service?.title}</DialogTitle>
           <DialogDescription className="text-xs text-muted-foreground mt-1">
@@ -142,7 +143,7 @@ const ProjectPicker: React.FC<{ service: Service | null; onClose: () => void }> 
             {service?.metric.platform === "claude-code" && ", every one built with Claude Code"} — pick one to see it in full.
           </DialogDescription>
         </div>
-        <div className="wf-scrollbar max-h-[70vh] overflow-y-auto p-3 space-y-2">
+        <div className="wf-scrollbar max-h-[75vh] overflow-y-auto p-4 space-y-3">
           {groups.map(({ projectId, source, category, oneLiner }) => {
             const project = findProject(projectId, source);
             if (!project) return null;
@@ -152,24 +153,45 @@ const ProjectPicker: React.FC<{ service: Service | null; onClose: () => void }> 
               <button
                 key={projectId}
                 onClick={() => openProject(projectId, source)}
-                className="w-full flex items-start gap-4 p-3.5 rounded-xl text-left hover:bg-primary/5 border border-border/30 hover:border-primary/30 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+                className="group w-full flex items-stretch h-44 rounded-xl text-left overflow-hidden border border-border/30 bg-card/40 hover:bg-primary/5 hover:border-primary/30 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
               >
-                <div className="w-28 aspect-[16/10] flex-shrink-0 rounded-lg overflow-hidden bg-muted/20 border border-border/40 flex items-center justify-center">
+                {/* Fixed height, not content-derived — a tall/portrait source screenshot used
+                    to inflate the whole row via flex-stretch. object-cover now always crops
+                    to this exact box, so every thumbnail reads the same size regardless of
+                    its native aspect ratio. */}
+                <div className="relative w-2/5 flex-shrink-0 h-44 bg-muted/20 overflow-hidden">
                   {thumb ? (
-                    <img src={thumb} alt="" className="w-full h-full object-cover" draggable={false} />
+                    <img
+                      src={thumb}
+                      alt=""
+                      className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                      draggable={false}
+                    />
                   ) : (
-                    <ZoomIn className="h-5 w-5 text-muted-foreground/40" />
+                    <div className="w-full h-full flex items-center justify-center">
+                      <ZoomIn className="h-6 w-6 text-muted-foreground/40" />
+                    </div>
                   )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/50 via-transparent to-transparent" />
                 </div>
-                <div className="min-w-0 flex-grow space-y-1">
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="font-bold text-sm">{project.title}</span>
-                    <span className="text-[0.62rem] font-semibold uppercase tracking-wide text-primary/80 bg-primary/10 border border-primary/20 rounded px-1.5 py-0.5">
+                <div className="relative min-w-0 flex-grow p-5 pb-6 flex flex-col justify-center space-y-2 overflow-hidden">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="font-bold text-base leading-tight line-clamp-1">{project.title}</span>
+                    <Badge variant="outline" className="border-primary/30 text-primary bg-primary/10 text-[0.6rem] uppercase tracking-wide px-2 py-0 shrink-0">
                       {category}
-                    </span>
+                    </Badge>
                   </div>
-                  <p className="text-xs text-muted-foreground leading-snug">{oneLiner}</p>
-                  {proof && <p className="text-[0.72rem] text-foreground/70 leading-snug italic">{proof}</p>}
+                  <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">{oneLiner}</p>
+                  {proof && (
+                    <p className="text-xs text-foreground/75 leading-relaxed italic border-l-2 border-primary/30 pl-2.5 line-clamp-1">
+                      {proof}
+                    </p>
+                  )}
+                  {/* Absolutely positioned so it never competes with title/description/proof
+                      for the row's fixed height budget — it only needs to exist on hover. */}
+                  <span className="absolute bottom-2.5 right-5 inline-flex items-center gap-1 text-xs font-semibold text-primary opacity-0 group-hover:opacity-100 transition-opacity">
+                    View project <ArrowUpRight className="h-3.5 w-3.5" />
+                  </span>
                 </div>
               </button>
             );
