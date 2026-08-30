@@ -6,7 +6,7 @@ import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/compone
 import SectionHeader from "@/components/shared/SectionHeader";
 import { useScrollAnimation, useStaggeredChildren } from "@/hooks/useScrollAnimation";
 import { services, Service } from "@/data/services";
-import { countByPlatform, projectsForPlatform } from "@/data/automationsRegistry";
+import { countByPlatform, projectsForPlatform, platformCountsForProject, AutomationPlatform } from "@/data/automationsRegistry";
 import { flagshipProjects, webShowcaseProjects } from "@/data/flagshipProjects";
 import { ANIMATION_PRESETS } from "@/lib/constants";
 
@@ -120,6 +120,16 @@ const findThumbnail = (project: NonNullable<ReturnType<typeof findProject>>) =>
 const findProofLine = (project: NonNullable<ReturnType<typeof findProject>>) =>
   ("highlight" in project && project.highlight) || project.clientGets?.[0];
 
+// Human-readable names for the cross-platform "also runs live automations on X" line below.
+// Deliberately just ghl/n8n — every project on this site is built with Claude Code, so
+// surfacing "1 live Claude Code automation" as a cross-reference on, say, the GHL picker's
+// powerTAG row would just restate the baseline, not signal anything real (unlike a GHL/n8n
+// count, which means this project specifically also runs live automations there).
+const PLATFORM_LABELS: Partial<Record<AutomationPlatform, string>> = {
+  ghl: "GoHighLevel",
+  n8n: "n8n",
+};
+
 // The single click behavior for every live-number card, always — never a direct open, even with
 // one project behind it. That means adding a second project behind any platform later needs zero
 // changes here: the list this dialog scrolls just grows from one row to two. Each row shows the
@@ -135,7 +145,7 @@ const ProjectPicker: React.FC<{ service: Service | null; onClose: () => void }> 
 
   return (
     <Dialog open={!!service} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent data-lenis-prevent className="max-w-3xl p-0 overflow-hidden bg-background border-border/50">
+      <DialogContent data-lenis-prevent className="max-w-5xl p-0 overflow-hidden bg-background border-border/50">
         <div className="p-5 border-b border-border/50">
           <DialogTitle className="text-base font-bold">{service?.title}</DialogTitle>
           <DialogDescription className="text-xs text-muted-foreground mt-1">
@@ -149,6 +159,16 @@ const ProjectPicker: React.FC<{ service: Service | null; onClose: () => void }> 
             if (!project) return null;
             const thumb = findThumbnail(project);
             const proof = findProofLine(project);
+            // A project's own tagline (when it has one) reads the same everywhere, unlike a
+            // registry entry's `oneLiner`, which is written per platform — powerTAG's GHL
+            // entries and its Claude Code entry each phrase it differently, so the row looked
+            // like a different project depending on which card you opened it from.
+            const description = ("tagline" in project && project.tagline) || oneLiner;
+            // Every live-automation platform this project has entries for — not just the
+            // OTHER ones. Browsing the GHL picker itself used to hide the project's own GHL
+            // count, which is exactly the "3 live GoHighLevel automations" line the GHL card
+            // promised; now it shows consistently regardless of which card opened this picker.
+            const liveAutomationCounts = platformCountsForProject(projectId).filter(({ platform }) => PLATFORM_LABELS[platform]);
             return (
               <button
                 key={projectId}
@@ -174,18 +194,28 @@ const ProjectPicker: React.FC<{ service: Service | null; onClose: () => void }> 
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-background/50 via-transparent to-transparent" />
                 </div>
-                <div className="relative min-w-0 flex-grow p-5 pb-6 flex flex-col justify-center space-y-2 overflow-hidden">
+                <div className="relative min-w-0 flex-grow p-5 flex flex-col justify-center space-y-2 overflow-hidden">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="font-bold text-base leading-tight line-clamp-1">{project.title}</span>
                     <Badge variant="outline" className="border-primary/30 text-primary bg-primary/10 text-[0.6rem] uppercase tracking-wide px-2 py-0 shrink-0">
                       {category}
                     </Badge>
                   </div>
-                  <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">{oneLiner}</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">{description}</p>
                   {proof && (
-                    <p className="text-xs text-foreground/75 leading-relaxed italic border-l-2 border-primary/30 pl-2.5 line-clamp-1">
+                    <p className="text-xs text-foreground/75 leading-relaxed italic border-l-2 border-primary/30 pl-2.5 line-clamp-2">
                       {proof}
                     </p>
+                  )}
+                  {liveAutomationCounts.length > 0 && (
+                    <div className="flex items-center gap-3 flex-wrap pt-0.5">
+                      {liveAutomationCounts.map(({ platform, count }) => (
+                        <span key={platform} className="inline-flex items-center gap-1.5 text-[0.68rem] font-semibold text-emerald-400">
+                          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                          {count} live {PLATFORM_LABELS[platform]} automation{count === 1 ? "" : "s"}
+                        </span>
+                      ))}
+                    </div>
                   )}
                   {/* Absolutely positioned so it never competes with title/description/proof
                       for the row's fixed height budget — it only needs to exist on hover. */}

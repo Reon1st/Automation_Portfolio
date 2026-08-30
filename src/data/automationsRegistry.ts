@@ -119,6 +119,28 @@ export const automationsRegistry: AutomationEntry[] = [
 export const countByPlatform = (platform: AutomationPlatform): number =>
   automationsRegistry.filter((e) => e.platform === platform).length;
 
+export interface ProjectPlatformCount {
+  platform: AutomationPlatform;
+  count: number;
+}
+
+/**
+ * Every OTHER platform (and how many entries) a project has in the registry — e.g. powerTAG
+ * shows up under "Claude Code" (it was built with it) but also runs 3 live GoHighLevel
+ * automations under the hood. Lets a project row surface that cross-platform reality without
+ * hand-maintained cross-references: add a GHL/n8n entry for a projectId and it just appears.
+ * `excludePlatform` is normally the platform whose picker is currently open — that one's
+ * already implied by the row being there, so it's left out to avoid restating it.
+ */
+export const platformCountsForProject = (projectId: string, excludePlatform?: AutomationPlatform): ProjectPlatformCount[] => {
+  const counts = new Map<AutomationPlatform, number>();
+  for (const entry of automationsRegistry) {
+    if (entry.projectId !== projectId || entry.platform === excludePlatform) continue;
+    counts.set(entry.platform, (counts.get(entry.platform) ?? 0) + 1);
+  }
+  return [...counts.entries()].map(([platform, count]) => ({ platform, count }));
+};
+
 export interface PlatformProjectGroup {
   projectId: string;
   source: "automation" | "website";
