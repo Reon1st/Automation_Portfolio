@@ -111,11 +111,17 @@
     overscroll-behavior: contain;
   }
 
+  h1, h2, h3 {
+    font-family: theme('fontFamily.display');
+  }
+
   html {
     /* scroll-behavior handled by Lenis smooth scroll engine */
-    /* Shrinks every rem-based size (type, spacing, layout) uniformly, so 100%
-       zoom reads the way 90% browser zoom did — a global density knob. */
-    font-size: 90%;
+    /* Was 90% (a density knob shrinking every rem-based size uniformly).
+       Restored to 100% for readability — clients skimming on a phone or
+       reading with lower vision need type at its designed size, not 10%
+       smaller. */
+    font-size: 100%;
     /* Do NOT put an explicit overflow-x here. html previously had
        overflow-x:hidden (added to clip position:fixed descendants like the
        portaled Dialog, which body's own overflow-x:hidden doesn't clip) — but

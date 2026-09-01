@@ -19,7 +19,8 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				sans: ['Poppins', 'sans-serif'],
+				sans: ['"Atkinson Hyperlegible"', 'sans-serif'],
+				display: ['"Schibsted Grotesk"', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',

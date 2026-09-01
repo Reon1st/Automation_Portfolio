@@ -87,7 +87,7 @@ const MediaPreview: React.FC<{ project: FlagshipProject; onOpen: () => void }> =
           <img
             src={screenshots[0]}
             alt={project.title}
-            className="w-full h-auto max-h-[220px] object-contain transition-all duration-700 ease-out group-hover:scale-[1.02] pointer-events-none"
+            className="w-full h-auto max-h-[220px] object-contain pointer-events-none"
             draggable={false}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out">

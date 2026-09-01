@@ -27,7 +27,7 @@ const HeroSection: React.FC = () => {
       <div className="absolute -inset-3 bg-gradient-to-tr from-primary/10 via-transparent to-primary/10 rounded-full opacity-40 group-hover:opacity-60 transition-all duration-500" />
 
       <Avatar className="relative h-60 w-60 lg:h-72 lg:w-72 ring-[3px] ring-border/60 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] group-hover:shadow-[0_25px_70px_-15px_rgba(0,0,0,0.25)] dark:group-hover:shadow-[0_25px_70px_-15px_rgba(0,0,0,0.6)] transition-all duration-500 ease-out group-hover:ring-primary/30">
-        <AvatarImage src={profileImage} alt="Reon - Professional AI Automation Specialist in Philippines, expert in Zapier, Make.com, and GoHighLevel workflow automation" fetchPriority="high" className="object-cover w-full h-full transition-all duration-500 group-hover:scale-[1.02]" loading="eager" />
+        <AvatarImage src={profileImage} alt="Reon - Professional AI Automation Specialist in Philippines, expert in Zapier, Make.com, and GoHighLevel workflow automation" fetchPriority="high" className="object-cover w-full h-full" loading="eager" />
         <AvatarFallback className="text-4xl lg:text-5xl font-bold bg-gradient-to-br from-secondary to-muted text-secondary-foreground">
           RM
         </AvatarFallback>
@@ -66,12 +66,12 @@ const HeroSection: React.FC = () => {
 
               <div className="space-y-3 will-animate">
                 <p className="text-base leading-relaxed max-w-2xl text-foreground">
-                  I build AI-powered systems that help service businesses capture more leads,
-                  automate operations, and cut repetitive work — without ripping out the tools you already run on.
+                  Service businesses lose leads and burn hours on busywork — I build the AI systems
+                  that close both gaps, without ripping out the tools you already run on.
                 </p>
                 <p className="text-sm leading-relaxed max-w-2xl text-muted-foreground">
-                  I build AI support agents, smart booking systems, CRM automation, live dashboards, and
-                  conversion-focused websites — each one{" "}
+                  Support agents, booking systems, CRM automation, live dashboards, conversion-focused
+                  websites — each one{" "}
                   <span className="text-primary font-medium">scoped to what the business actually needs</span>.
                 </p>
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground/80 pt-1">
