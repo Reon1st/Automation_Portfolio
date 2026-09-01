@@ -9,13 +9,16 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { useSmoothScroll } from "./hooks/useSmoothScroll";
 import Index from "./pages/Index";
+import { prefetchAbout, prefetchPrivacyPolicy, prefetchTestimonials } from "./lib/routePrefetch";
 
 // Only the homepage loads eagerly — everything else is a secondary route,
 // so keeping them out of the main bundle is what actually shrinks mobile LCP.
-const About = lazy(() => import("./pages/About"));
+// About/PrivacyPolicy/Testimonials share their import() with routePrefetch.ts
+// so hovering/focusing their nav links warms the chunk ahead of the click.
+const About = lazy(prefetchAbout);
 const Admin = lazy(() => import("./pages/Admin"));
-const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
-const Testimonials = lazy(() => import("./pages/Testimonials"));
+const PrivacyPolicy = lazy(prefetchPrivacyPolicy);
+const Testimonials = lazy(prefetchTestimonials);
 const Drafts = lazy(() => import("./pages/Drafts"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 

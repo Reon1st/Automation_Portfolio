@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import SectionHeader from "@/components/shared/SectionHeader";
 import { supabase } from "@/integrations/supabase/client";
 import { Testimonial } from "@/data/testimonials";
+import { prefetchTestimonials } from "@/lib/routePrefetch";
 
 const TestimonialsSection: React.FC = () => {
   const [items, setItems] = useState<Testimonial[]>([]);
@@ -55,7 +56,7 @@ const TestimonialsSection: React.FC = () => {
           ))}
         </div>
         <div className="text-center mt-8">
-          <Link to="/testimonials" className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">
+          <Link to="/testimonials" onMouseEnter={prefetchTestimonials} onFocus={prefetchTestimonials} onTouchStart={prefetchTestimonials} className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline">
             Read all testimonials <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

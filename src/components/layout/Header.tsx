@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Menu, X, User, ArrowRight, Settings, Workflow, Mail, Palette, ChevronDown } from "lucide-react";
 import { NAV_ITEMS } from "@/lib/constants";
+import { prefetchAbout } from "@/lib/routePrefetch";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -63,7 +64,7 @@ const Header: React.FC = () => {
 
         {/* About Me Button and Mobile menu */}
         <div className="flex items-center gap-3">
-          <Link to="/about" className="hidden md:block relative group">
+          <Link to="/about" onMouseEnter={prefetchAbout} onFocus={prefetchAbout} onTouchStart={prefetchAbout} className="hidden md:block relative group">
             <button className="relative w-24 h-10 bg-gradient-to-r from-card via-secondary to-card border border-border hover:border-accent/50 rounded-xl transition-all duration-500 ease-out focus:outline-none focus:ring-2 focus:ring-accent/50 focus:ring-offset-2 focus:ring-offset-background overflow-hidden" aria-label="About Me">
               {/* Circuit board pattern background */}
               <div className="absolute inset-0 opacity-20">
@@ -143,7 +144,7 @@ const Header: React.FC = () => {
 
           <nav className="container mx-auto px-6 py-6 space-y-2 relative z-10">
             {/* About Me Link - Special styling */}
-            <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className="group flex items-center gap-3 w-full px-4 py-3.5 rounded-xl bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10 border border-primary/20 hover:border-primary/40 hover:from-primary/15 hover:via-accent/10 hover:to-primary/15 transition-all duration-300 touch-manipulation active:scale-[0.98]">
+            <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} onTouchStart={prefetchAbout} className="group flex items-center gap-3 w-full px-4 py-3.5 rounded-xl bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10 border border-primary/20 hover:border-primary/40 hover:from-primary/15 hover:via-accent/10 hover:to-primary/15 transition-all duration-300 touch-manipulation active:scale-[0.98]">
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                 <User className="w-4 h-4 text-primary" />
               </div>

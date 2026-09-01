@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { MapPin, ArrowUpRight } from "lucide-react";
+import { prefetchPrivacyPolicy } from "@/lib/routePrefetch";
 import { LinkedInIcon } from "@/components/UpdatedSocialIcons";
 import { GmailIcon, CalIcon, NotionIcon, GitHubIcon, XIcon } from "@/components/PlatformIcons";
 import AvailabilityIndicator from "@/components/AvailabilityIndicator";
@@ -167,7 +168,7 @@ const Footer: React.FC = () => {
               <span className="hidden sm:inline">•</span>
               <span>{SITE_CONFIG.copyright}</span>
               <span className="hidden sm:inline">•</span>
-              <Link to="/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</Link>
+              <Link to="/privacy-policy" onMouseEnter={prefetchPrivacyPolicy} onFocus={prefetchPrivacyPolicy} onTouchStart={prefetchPrivacyPolicy} className="hover:text-primary transition-colors">Privacy Policy</Link>
             </div>
           </div>
         </div>
