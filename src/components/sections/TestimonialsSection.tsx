@@ -51,7 +51,7 @@ const TestimonialsSection: React.FC = () => {
               {items.length === 1 && (
                 <div className="absolute -inset-3 bg-gradient-to-br from-primary/20 via-accent/10 to-primary/20 rounded-2xl blur-xl opacity-60" aria-hidden="true" />
               )}
-              <Card className="relative enhanced-card border-border/50">
+              <Card className="relative border-border/50 bg-card/70 backdrop-blur-sm">
                 <CardContent className={items.length === 1 ? "p-8 space-y-4" : "p-5 space-y-3"}>
                   <div className="flex gap-0.5">
                     {Array.from({ length: t.rating }).map((_, i) => (
