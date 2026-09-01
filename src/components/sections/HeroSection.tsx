@@ -8,7 +8,7 @@ import AvailabilityIndicator from "@/components/AvailabilityIndicator";
 import EnhancedAvailabilityIndicator from "@/components/EnhancedAvailabilityIndicator";
 import { useScrollAnimation, useStaggeredChildren } from "@/hooks/useScrollAnimation";
 import { useScrollToElement } from "@/hooks/useScrollToElement";
-import profileImage from "@/assets/profile-4k.jpg";
+import profileImage from "@/assets/profile-4k.webp";
 import iphoneOutline from "@/assets/iphone-outline.png";
 import { SITE_CONFIG, SOCIAL_LINKS, ANIMATION_PRESETS } from "@/lib/constants";
 const HeroSection: React.FC = () => {
@@ -26,7 +26,7 @@ const HeroSection: React.FC = () => {
       {/* Secondary decorative ring */}
       <div className="absolute -inset-3 bg-gradient-to-tr from-primary/10 via-transparent to-primary/10 rounded-full opacity-40 group-hover:opacity-60 transition-all duration-500" />
 
-      <Avatar className="relative h-60 w-60 lg:h-72 lg:w-72 ring-[3px] ring-border/60 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] group-hover:shadow-[0_25px_70px_-15px_rgba(0,0,0,0.25)] dark:group-hover:shadow-[0_25px_70px_-15px_rgba(0,0,0,0.6)] transition-all duration-500 ease-out group-hover:ring-primary/30">
+      <Avatar className="relative h-44 w-44 lg:h-72 lg:w-72 ring-[3px] ring-border/60 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.2)] dark:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.5)] group-hover:shadow-[0_25px_70px_-15px_rgba(0,0,0,0.25)] dark:group-hover:shadow-[0_25px_70px_-15px_rgba(0,0,0,0.6)] transition-all duration-500 ease-out group-hover:ring-primary/30">
         <AvatarImage src={profileImage} alt="Reon - Professional AI Automation Specialist in Philippines, expert in Zapier, Make.com, and GoHighLevel workflow automation" fetchPriority="high" className="object-cover w-full h-full" loading="eager" />
         <AvatarFallback className="text-4xl lg:text-5xl font-bold bg-gradient-to-br from-secondary to-muted text-secondary-foreground">
           RM
@@ -95,11 +95,10 @@ const HeroSection: React.FC = () => {
               <div className="flex flex-nowrap items-center justify-center lg:justify-start gap-2 sm:gap-4 will-animate">
                 <Button
                   onClick={() => scrollToElement("contact")}
-                  className="h-9 px-3 sm:h-10 sm:px-4 text-sm font-semibold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300"
-                >
-                  <span className="sm:hidden">Book a Call</span>
-                  <span className="hidden sm:inline">Book a Free Discovery Call</span>
-                </Button>
+                  aria-label="Book a Free Discovery Call"
+                  className="h-9 px-3 sm:h-10 sm:px-4 text-sm font-semibold shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 before:content-['Book_a_Call'] sm:before:content-['Book_a_Free_Discovery_Call']"
+                />
+
                 <button
                   onClick={() => scrollToElement("portfolio")}
                   className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors duration-300 text-sm font-medium whitespace-nowrap"
