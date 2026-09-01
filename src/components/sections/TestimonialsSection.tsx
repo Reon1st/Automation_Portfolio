@@ -38,34 +38,48 @@ const TestimonialsSection: React.FC = () => {
           titleId="testimonials-title"
           subtitle="Feedback from automation and web builds"
         />
-        <div className="grid md:grid-cols-3 gap-5">
+        {/* One review gets its own centered spotlight with real presence
+            (bigger card, ambient glow) rather than sitting in an empty
+            3-column grid; 2–3 sit side by side and re-center gracefully
+            when they don't fill the row. */}
+        <div className={items.length === 1 ? "flex justify-center" : "flex flex-wrap justify-center gap-5"}>
           {items.slice(0, 3).map((t) => (
-            <Card key={t.name} className="border-border/50 bg-card/70 backdrop-blur-sm">
-              <CardContent className="p-5 space-y-3">
-                <div className="flex gap-0.5">
-                  {Array.from({ length: t.rating }).map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-primary text-primary" />
-                  ))}
-                </div>
-                <p className="text-sm leading-relaxed text-foreground/90">"{t.text}"</p>
-                <div className="flex items-end justify-between gap-2">
-                  <div>
-                    <p className="text-sm font-semibold">{t.name}</p>
-                    <p className="text-xs text-muted-foreground">{t.role}, {t.company}</p>
+            <div
+              key={t.name}
+              className={`relative ${items.length === 1 ? "w-full max-w-xl" : "w-full sm:w-[calc(50%-0.625rem)] lg:w-[calc(33.333%-0.834rem)]"}`}
+            >
+              {items.length === 1 && (
+                <div className="absolute -inset-3 bg-gradient-to-br from-primary/20 via-accent/10 to-primary/20 rounded-2xl blur-xl opacity-60" aria-hidden="true" />
+              )}
+              <Card className="relative enhanced-card border-border/50">
+                <CardContent className={items.length === 1 ? "p-8 space-y-4" : "p-5 space-y-3"}>
+                  <div className="flex gap-0.5">
+                    {Array.from({ length: t.rating }).map((_, i) => (
+                      <Star key={i} className={items.length === 1 ? "h-5 w-5 fill-primary text-primary" : "h-4 w-4 fill-primary text-primary"} />
+                    ))}
                   </div>
-                  <div className="flex items-center gap-1.5 flex-shrink-0">
-                    <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border ${platformColors[t.platform || "manual"]}`}>
-                      {platformLabels[t.platform || "manual"] || "Review"}
-                    </span>
-                    {t.platform_url && (
-                      <a href={t.platform_url} target="_blank" rel="noopener noreferrer" aria-label="View original review" className="text-muted-foreground hover:text-primary transition-colors">
-                        <ExternalLink className="w-3 h-3" />
-                      </a>
-                    )}
+                  <p className={items.length === 1 ? "text-lg leading-relaxed text-foreground/90" : "text-sm leading-relaxed text-foreground/90"}>
+                    "{t.text}"
+                  </p>
+                  <div className="flex items-end justify-between gap-2">
+                    <div>
+                      <p className="text-sm font-semibold">{t.name}</p>
+                      <p className="text-xs text-muted-foreground">{t.role}, {t.company}</p>
+                    </div>
+                    <div className="flex items-center gap-1.5 flex-shrink-0">
+                      <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border ${platformColors[t.platform || "manual"]}`}>
+                        {platformLabels[t.platform || "manual"] || "Review"}
+                      </span>
+                      {t.platform_url && (
+                        <a href={t.platform_url} target="_blank" rel="noopener noreferrer" aria-label="View original review" className="text-muted-foreground hover:text-primary transition-colors">
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </div>
           ))}
         </div>
         <div className="text-center mt-8">

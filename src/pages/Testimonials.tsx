@@ -1,18 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Star, ExternalLink, Quote } from "lucide-react";
+import { ArrowLeft, Star, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import { testimonials as fallbackTestimonials, Testimonial } from "@/data/testimonials";
 import { supabase } from "@/integrations/supabase/client";
 import { platformColors, platformLabels } from "@/lib/testimonialPlatforms";
 import WavesBackground from "@/components/WavesBackground";
 import { GradientBackground } from "@/components/ui/dark-gradient-background";
-
-// Below this count, testimonials show as a static centered row — an
-// infinite marquee needs enough cards to loop smoothly, and with only a
-// few it just reads as one card sliding off-screen for no reason. Raise
-// this if the static row starts looking cramped once more real reviews land.
-const CAROUSEL_MIN_COUNT = 5;
 
 const getProfilePicture = (name: string) => {
   const profileMap: Record<string, string> = {
@@ -80,75 +74,6 @@ const TestimonialCard = ({ t }: { t: Testimonial }) => {
             </a>
           )}
         </div>
-      </div>
-    </div>
-  );
-};
-
-// Featured treatment for the static (below-carousel-threshold) path — an
-// editorial pull-quote rather than a marquee-sized card, since one or two
-// real reviews should read as hand-picked, not like an empty template
-// waiting to be filled. Amber is the "verified human" signal throughout
-// (stars, quote mark, seal) — deliberately warm against the shader's cool
-// cyan, so it never fights the primary/accent cyan that's already the
-// page's ambient color.
-const FeaturedTestimonialCard = ({ t }: { t: Testimonial }) => {
-  const avatar = t.avatar_url || getProfilePicture(t.name);
-  const platform = t.platform || "manual";
-  const sealLabel = platform !== "manual" && t.platform_url
-    ? `Verified on ${platformLabels[platform]}`
-    : platformLabels[platform] || "Client Review";
-
-  return (
-    <div className="relative w-full max-w-xl rounded-2xl border border-border/60 bg-card/60 backdrop-blur-md p-8 sm:p-10 shadow-2xl shadow-black/20">
-      <Quote className="absolute -top-4 -left-1 w-12 h-12 text-amber-400/25" strokeWidth={1.5} aria-hidden="true" />
-
-      <div className="flex gap-1 mb-5">
-        {Array.from({ length: t.rating }).map((_, i) => (
-          <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-        ))}
-      </div>
-
-      <p className="relative text-xl sm:text-2xl leading-snug font-medium text-foreground mb-8">
-        "{t.text}"
-      </p>
-
-      <div className="flex items-center gap-4 pt-6 border-t border-border/40">
-        {avatar ? (
-          <img
-            src={avatar}
-            alt={t.name}
-            className="w-12 h-12 rounded-full object-cover border border-border/60 flex-shrink-0"
-            width="48"
-            height="48"
-            loading="lazy"
-          />
-        ) : (
-          <div className="w-12 h-12 bg-gradient-to-br from-primary/30 to-accent/30 rounded-full flex items-center justify-center flex-shrink-0">
-            <span className="text-primary-foreground font-semibold text-sm">
-              {t.name.split(" ").map((n) => n[0]).join("")}
-            </span>
-          </div>
-        )}
-        <div className="flex-1 min-w-0">
-          <p className="font-semibold text-foreground text-sm">{t.name}</p>
-          <p className="text-muted-foreground text-xs truncate">{t.role} • {t.company}</p>
-        </div>
-        {t.platform_url ? (
-          <a
-            href={t.platform_url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 hover:bg-amber-400/20 transition-colors flex-shrink-0 whitespace-nowrap"
-          >
-            {sealLabel}
-            <ExternalLink className="w-3 h-3" />
-          </a>
-        ) : (
-          <span className="text-xs font-medium px-3 py-1.5 rounded-full border border-amber-400/30 bg-amber-400/10 text-amber-300 flex-shrink-0 whitespace-nowrap">
-            {sealLabel}
-          </span>
-        )}
       </div>
     </div>
   );
@@ -223,44 +148,33 @@ const Testimonials = () => {
           </div>
         </div>
 
-        {/* Fewer than CAROUSEL_MIN_COUNT: static centered row, full premium card treatment,
-            no motion. At or above it: infinite marquee, which needs enough cards to loop
-            smoothly instead of reading as one card sliding off-screen. */}
+        {/* Always the infinite marquee — this page's whole identity is the
+            continuously-moving wall of proof, regardless of count. */}
         {testimonials.length > 0 && (
-          testimonials.length >= CAROUSEL_MIN_COUNT ? (
-            <div
-              className="relative overflow-hidden"
-              onMouseEnter={() => setIsPaused(true)}
-              onMouseLeave={() => setIsPaused(false)}
-            >
-              {/* Left/right fade masks */}
-              <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-              <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+          <div
+            className="relative overflow-hidden"
+            onMouseEnter={() => setIsPaused(true)}
+            onMouseLeave={() => setIsPaused(false)}
+          >
+            {/* Left/right fade masks */}
+            <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+            <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
 
-              <div
-                ref={trackRef}
-                className="flex gap-6 py-4"
-                style={{
-                  animation: `scroll-infinite-smooth ${Math.max(20, testimonials.length * 8)}s linear infinite`,
-                  animationPlayState: isPaused ? "paused" : "running",
-                  width: "max-content",
-                }}
-              >
-                {/* Duplicate list for seamless loop */}
-                {[...testimonials, ...testimonials].map((t, i) => (
-                  <TestimonialCard key={`${t.id || t.name}-${i}`} t={t} />
-                ))}
-              </div>
+            <div
+              ref={trackRef}
+              className="flex gap-6 py-4"
+              style={{
+                animation: `scroll-infinite-smooth ${Math.max(20, testimonials.length * 8)}s linear infinite`,
+                animationPlayState: isPaused ? "paused" : "running",
+                width: "max-content",
+              }}
+            >
+              {/* Duplicate list for seamless loop */}
+              {[...testimonials, ...testimonials].map((t, i) => (
+                <TestimonialCard key={`${t.id || t.name}-${i}`} t={t} />
+              ))}
             </div>
-          ) : (
-            <div className="container mx-auto max-w-5xl px-6">
-              <div className="flex flex-wrap justify-center gap-8 pt-10 pb-4">
-                {testimonials.map((t) => (
-                  <FeaturedTestimonialCard key={t.id || t.name} t={t} />
-                ))}
-              </div>
-            </div>
-          )
+          </div>
         )}
 
         {/* Disclaimer */}
