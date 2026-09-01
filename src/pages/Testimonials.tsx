@@ -8,6 +8,11 @@ import { platformColors, platformLabels } from "@/lib/testimonialPlatforms";
 import WavesBackground from "@/components/WavesBackground";
 import { GradientBackground } from "@/components/ui/dark-gradient-background";
 
+// Below this count, the marquee never has enough cards to loop
+// convincingly — it just reads as a couple of cards drifting off-screen.
+// Show them as a static centered row instead.
+const CAROUSEL_MIN_COUNT = 5;
+
 const getProfilePicture = (name: string) => {
   const profileMap: Record<string, string> = {
     "sarah johnson": "/lovable-uploads/sarah-profile-56.webp",
@@ -128,19 +133,9 @@ const Testimonials = () => {
             <WavesBackground />
             <div className="absolute inset-0 bg-background/40" />
             <div className="relative z-10 text-center px-6 py-16 space-y-4">
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-background/40 backdrop-blur-sm border border-amber-400/30 rounded-full">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-pulse absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-400" />
-                </span>
-                <span className="font-semibold text-amber-300 tracking-wider uppercase text-xs">
-                  Verified Reviews
-                </span>
-              </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground">
                 What Clients Say
               </h1>
-              <div className="w-24 h-1 bg-gradient-to-r from-amber-400/60 via-primary to-amber-400/60 mx-auto rounded-full" />
               <p className="text-foreground/70 text-lg max-w-2xl mx-auto">
                 Hear from businesses who've transformed their operations with automation
               </p>
@@ -148,33 +143,44 @@ const Testimonials = () => {
           </div>
         </div>
 
-        {/* Always the infinite marquee — this page's whole identity is the
-            continuously-moving wall of proof, regardless of count. */}
+        {/* Fewer than CAROUSEL_MIN_COUNT: static centered row, no motion —
+            a couple of duplicated cards drifting left never reads as a loop.
+            At or above it: infinite marquee. */}
         {testimonials.length > 0 && (
-          <div
-            className="relative overflow-hidden"
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-          >
-            {/* Left/right fade masks */}
-            <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-            <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
-
+          testimonials.length >= CAROUSEL_MIN_COUNT ? (
             <div
-              ref={trackRef}
-              className="flex gap-6 py-4"
-              style={{
-                animation: `scroll-infinite-smooth ${Math.max(20, testimonials.length * 8)}s linear infinite`,
-                animationPlayState: isPaused ? "paused" : "running",
-                width: "max-content",
-              }}
+              className="relative overflow-hidden"
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
             >
-              {/* Duplicate list for seamless loop */}
-              {[...testimonials, ...testimonials].map((t, i) => (
-                <TestimonialCard key={`${t.id || t.name}-${i}`} t={t} />
-              ))}
+              {/* Left/right fade masks */}
+              <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+              <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+
+              <div
+                ref={trackRef}
+                className="flex gap-6 py-4"
+                style={{
+                  animation: `scroll-infinite-smooth ${Math.max(20, testimonials.length * 8)}s linear infinite`,
+                  animationPlayState: isPaused ? "paused" : "running",
+                  width: "max-content",
+                }}
+              >
+                {/* Duplicate list for seamless loop */}
+                {[...testimonials, ...testimonials].map((t, i) => (
+                  <TestimonialCard key={`${t.id || t.name}-${i}`} t={t} />
+                ))}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="container mx-auto max-w-5xl px-6">
+              <div className="flex flex-wrap justify-center gap-6 py-4">
+                {testimonials.map((t) => (
+                  <TestimonialCard key={t.id || t.name} t={t} />
+                ))}
+              </div>
+            </div>
+          )
         )}
 
         {/* Disclaimer */}
