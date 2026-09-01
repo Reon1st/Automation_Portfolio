@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { testimonials as fallbackTestimonials, Testimonial } from "@/data/testimonials";
 import { supabase } from "@/integrations/supabase/client";
 import { platformColors, platformLabels } from "@/lib/testimonialPlatforms";
+import WavesBackground from "@/components/WavesBackground";
 
 // Below this count, testimonials show as a static centered row — an
 // infinite marquee needs enough cards to loop smoothly, and with only a
@@ -127,15 +128,19 @@ const Testimonials = () => {
 
       <main className="pt-32 pb-24">
         <div className="container mx-auto max-w-5xl px-6">
-          {/* Header */}
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-primary">
-              What Clients Say
-            </h1>
-            <div className="w-24 h-1 bg-gradient-to-r from-accent via-primary to-accent mx-auto rounded-full mb-6" />
-            <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-              Hear from businesses who've transformed their operations with automation
-            </p>
+          {/* Header — same shader-panel treatment as the About page intro */}
+          <div className="relative rounded-2xl overflow-hidden border border-primary/20 min-h-[320px] flex items-center justify-center mb-16">
+            <WavesBackground />
+            <div className="absolute inset-0 bg-background/35" />
+            <div className="relative z-10 text-center px-6 py-16 space-y-4">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-primary">
+                What Clients Say
+              </h1>
+              <div className="w-24 h-1 bg-gradient-to-r from-accent via-primary to-accent mx-auto rounded-full" />
+              <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                Hear from businesses who've transformed their operations with automation
+              </p>
+            </div>
           </div>
         </div>
 
