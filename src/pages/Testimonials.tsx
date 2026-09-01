@@ -2,34 +2,15 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Star, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
-import { testimonials as fallbackTestimonials } from "@/data/testimonials";
+import { testimonials as fallbackTestimonials, Testimonial } from "@/data/testimonials";
 import { supabase } from "@/integrations/supabase/client";
+import { platformColors, platformLabels } from "@/lib/testimonialPlatforms";
 
-interface Testimonial {
-  id?: string;
-  name: string;
-  role: string;
-  company: string;
-  text: string;
-  rating: number;
-  platform?: string;
-  platform_url?: string;
-  avatar_url?: string;
-}
-
-const platformColors: Record<string, string> = {
-  upwork: "bg-emerald-500/20 text-emerald-400 border-emerald-500/30",
-  onlinejobsph: "bg-blue-500/20 text-blue-400 border-blue-500/30",
-  linkedin: "bg-sky-500/20 text-sky-400 border-sky-500/30",
-  manual: "bg-muted text-muted-foreground border-border",
-};
-
-const platformLabels: Record<string, string> = {
-  upwork: "Upwork",
-  onlinejobsph: "OnlineJobs.ph",
-  linkedin: "LinkedIn",
-  manual: "Client Review",
-};
+// Below this count, testimonials show as a static centered row — an
+// infinite marquee needs enough cards to loop smoothly, and with only a
+// few it just reads as one card sliding off-screen for no reason. Raise
+// this if the static row starts looking cramped once more real reviews land.
+const CAROUSEL_MIN_COUNT = 5;
 
 const getProfilePicture = (name: string) => {
   const profileMap: Record<string, string> = {
@@ -158,39 +139,51 @@ const Testimonials = () => {
           </div>
         </div>
 
-        {/* Marquee carousel — full width */}
+        {/* Fewer than CAROUSEL_MIN_COUNT: static centered row, full premium card treatment,
+            no motion. At or above it: infinite marquee, which needs enough cards to loop
+            smoothly instead of reading as one card sliding off-screen. */}
         {testimonials.length > 0 && (
-          <div
-            className="relative overflow-hidden"
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-          >
-            {/* Left/right fade masks */}
-            <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
-            <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
-
+          testimonials.length >= CAROUSEL_MIN_COUNT ? (
             <div
-              ref={trackRef}
-              className="flex gap-6 py-4"
-              style={{
-                animation: `scroll-infinite-smooth ${Math.max(20, testimonials.length * 8)}s linear infinite`,
-                animationPlayState: isPaused ? "paused" : "running",
-                width: "max-content",
-              }}
+              className="relative overflow-hidden"
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
             >
-              {/* Duplicate list for seamless loop */}
-              {[...testimonials, ...testimonials].map((t, i) => (
-                <TestimonialCard key={`${t.id || t.name}-${i}`} t={t} />
-              ))}
+              {/* Left/right fade masks */}
+              <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
+              <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
+
+              <div
+                ref={trackRef}
+                className="flex gap-6 py-4"
+                style={{
+                  animation: `scroll-infinite-smooth ${Math.max(20, testimonials.length * 8)}s linear infinite`,
+                  animationPlayState: isPaused ? "paused" : "running",
+                  width: "max-content",
+                }}
+              >
+                {/* Duplicate list for seamless loop */}
+                {[...testimonials, ...testimonials].map((t, i) => (
+                  <TestimonialCard key={`${t.id || t.name}-${i}`} t={t} />
+                ))}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="container mx-auto max-w-5xl px-6">
+              <div className="flex flex-wrap justify-center gap-6 py-4">
+                {testimonials.map((t) => (
+                  <TestimonialCard key={t.id || t.name} t={t} />
+                ))}
+              </div>
+            </div>
+          )
         )}
 
         {/* Disclaimer */}
         <div className="container mx-auto max-w-5xl px-6">
           <div className="text-center mt-16">
             <p className="text-sm text-muted-foreground/60 max-w-lg mx-auto">
-              These testimonials represent the type of results achieved for clients. Real testimonials will be added as projects are completed.
+              Real feedback from clients I've worked with, in their own words.
             </p>
           </div>
         </div>

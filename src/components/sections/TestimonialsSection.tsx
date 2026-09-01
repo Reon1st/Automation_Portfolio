@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Star, ArrowRight } from "lucide-react";
+import { Star, ArrowRight, ExternalLink } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import SectionHeader from "@/components/shared/SectionHeader";
 import { supabase } from "@/integrations/supabase/client";
 import { Testimonial } from "@/data/testimonials";
 import { prefetchTestimonials } from "@/lib/routePrefetch";
+import { platformColors, platformLabels } from "@/lib/testimonialPlatforms";
 
 const TestimonialsSection: React.FC = () => {
   const [items, setItems] = useState<Testimonial[]>([]);
@@ -47,9 +48,21 @@ const TestimonialsSection: React.FC = () => {
                   ))}
                 </div>
                 <p className="text-sm leading-relaxed text-foreground/90">"{t.text}"</p>
-                <div>
-                  <p className="text-sm font-semibold">{t.name}</p>
-                  <p className="text-xs text-muted-foreground">{t.role}, {t.company}</p>
+                <div className="flex items-end justify-between gap-2">
+                  <div>
+                    <p className="text-sm font-semibold">{t.name}</p>
+                    <p className="text-xs text-muted-foreground">{t.role}, {t.company}</p>
+                  </div>
+                  <div className="flex items-center gap-1.5 flex-shrink-0">
+                    <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full border ${platformColors[t.platform || "manual"]}`}>
+                      {platformLabels[t.platform || "manual"] || "Review"}
+                    </span>
+                    {t.platform_url && (
+                      <a href={t.platform_url} target="_blank" rel="noopener noreferrer" aria-label="View original review" className="text-muted-foreground hover:text-primary transition-colors">
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                    )}
+                  </div>
                 </div>
               </CardContent>
             </Card>

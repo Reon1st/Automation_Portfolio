@@ -1,10 +1,13 @@
 export interface Testimonial {
+  id?: string;
   name: string;
   role: string;
   company: string;
   text: string;
   rating: number;
   platform?: string;
+  platform_url?: string;
+  avatar_url?: string;
 }
 
 export const testimonials: Testimonial[] = [
