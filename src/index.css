@@ -522,14 +522,6 @@ a, button, [role="button"], .cursor-pointer, label[for], summary {
    COMPONENT STYLES
    ============================================ */
 
-/* Gradient Background */
-.gradient-bg {
-  background: linear-gradient(-45deg, hsl(var(--background)), hsl(var(--card)), hsl(var(--muted)), hsl(var(--background)));
-  background-size: 400% 400%;
-  animation: gradient-shift 15s ease infinite;
-}
-
-
 /* Glass Effect */
 .glass-effect {
   background: hsl(var(--card) / 0.8);
