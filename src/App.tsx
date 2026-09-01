@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Toaster } from "@/components/ui/toaster";
@@ -8,12 +9,15 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { useSmoothScroll } from "./hooks/useSmoothScroll";
 import Index from "./pages/Index";
-import About from "./pages/About";
-import Admin from "./pages/Admin";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import Testimonials from "./pages/Testimonials";
-import Drafts from "./pages/Drafts";
-import NotFound from "./pages/NotFound";
+
+// Only the homepage loads eagerly — everything else is a secondary route,
+// so keeping them out of the main bundle is what actually shrinks mobile LCP.
+const About = lazy(() => import("./pages/About"));
+const Admin = lazy(() => import("./pages/Admin"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const Testimonials = lazy(() => import("./pages/Testimonials"));
+const Drafts = lazy(() => import("./pages/Drafts"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 
@@ -33,16 +37,18 @@ const App = () => {
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/testimonials" element={<Testimonials />} />
-            <Route path="/drafts" element={<Drafts />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <Suspense fallback={null}>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/admin" element={<Admin />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/testimonials" element={<Testimonials />} />
+              <Route path="/drafts" element={<Drafts />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </Suspense>
           <SpeedInsightsRoute />
         </BrowserRouter>
         <Analytics />

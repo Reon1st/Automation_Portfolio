@@ -14,8 +14,27 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
+# AI crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
 # Sitemap
-Sitemap: https://yoursite.lovable.app/sitemap.xml
+Sitemap: https://automation-portfolio-lilac.vercel.app/sitemap.xml
 
 # Crawl-delay
 Crawl-delay: 1

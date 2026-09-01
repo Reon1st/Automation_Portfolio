@@ -2,12 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
-    <loc>https://yoursite.lovable.app/</loc>
-    <lastmod>2024-09-04</lastmod>
+    <loc>https://automation-portfolio-lilac.vercel.app/</loc>
+    <lastmod>2026-09-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://yoursite.lovable.app/lovable-uploads/fc7631c5-optimized-320.webp</image:loc>
+      <image:loc>https://automation-portfolio-lilac.vercel.app/lovable-uploads/fc7631c5-optimized-320.webp</image:loc>
       <image:title>Reon AI Automation Specialist Philippines</image:title>
       <image:caption>Professional AI Automation Specialist specializing in Zapier, Make.com, and GoHighLevel workflow automation</image:caption>
     </image:image>

@@ -11,24 +11,30 @@ import { GradientBackground } from "@/components/ui/dark-gradient-background";
 import SectionDivider from "@/components/shared/SectionDivider";
 const Index = () => {
   return <GradientBackground className="min-h-screen dark">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md">
+        Skip to main content
+      </a>
+
       <Header />
 
       {/* Spacer for fixed header */}
       <div className="h-16" />
 
-      <HeroSection />
-      <SectionDivider />
-      <ServicesSection />
-      <SectionDivider />
-      <ClaudeProjectsSection />
-      <SectionDivider />
-      <WebsitesSection />
-      <TestimonialsSection />
-      <SectionDivider />
-      <FAQSection />
-      <SectionDivider />
-      <ContactSection />
-      <SectionDivider />
+      <main id="main-content">
+        <HeroSection />
+        <SectionDivider />
+        <ServicesSection />
+        <SectionDivider />
+        <ClaudeProjectsSection />
+        <SectionDivider />
+        <WebsitesSection />
+        <TestimonialsSection />
+        <SectionDivider />
+        <FAQSection />
+        <SectionDivider />
+        <ContactSection />
+        <SectionDivider />
+      </main>
       <Footer />
     </GradientBackground>;
 };

@@ -6,7 +6,7 @@
 
 export const SITE_CONFIG = {
   name: "Reon Martin",
-  title: "AI Specialist | Consultant",
+  title: "AI Systems That Turn Leads Into Booked Clients",
   tagline: "I build AI-powered systems that help service businesses capture more leads, automate operations, and cut repetitive work.",
   email: "reonfirst@gmail.com",
   location: "Manila, Philippines",

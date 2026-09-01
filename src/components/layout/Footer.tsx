@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { MapPin, ArrowUpRight } from "lucide-react";
 import { LinkedInIcon } from "@/components/UpdatedSocialIcons";
 import { GmailIcon, CalIcon, NotionIcon, GitHubIcon, XIcon } from "@/components/PlatformIcons";
@@ -165,6 +166,8 @@ const Footer: React.FC = () => {
               </div>
               <span className="hidden sm:inline">•</span>
               <span>{SITE_CONFIG.copyright}</span>
+              <span className="hidden sm:inline">•</span>
+              <Link to="/privacy-policy" className="hover:text-primary transition-colors">Privacy Policy</Link>
             </div>
           </div>
         </div>
