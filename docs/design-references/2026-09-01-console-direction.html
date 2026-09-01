@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Design Reference — The Console</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@700;800&display=swap');
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #0B0E14; font-family: system-ui, sans-serif; }
+  .doc-head { padding: 1.5rem 2.5rem; border-bottom: 1px solid #212836; color: #8b93a3; font-size: .85rem; line-height: 1.6; }
+  .doc-head h1 { color: #EDEAE0; font-size: 1.1rem; margin: 0 0 .4rem; }
+  .doc-head code { color: #3FCFB0; }
+
+  /* ================= CONSOLE ================= */
+  .console { background: #0B0E14; padding: 4rem 3rem; display: grid; grid-template-columns: 1.1fr 1px .9fr; gap: 3rem; align-items: center; font-family: 'Segoe UI', system-ui, sans-serif; max-width: 1100px; margin: 0 auto; }
+  .console-rule { background: linear-gradient(#0B0E14, #212836 15%, #212836 85%, #0B0E14); align-self: stretch; }
+  .console-eyebrow { font: 600 11px/1 'Consolas', monospace; letter-spacing: .1em; color: #3FCFB0; margin-bottom: 1.1rem; }
+  .console-h1 { font-family: 'Georgia', serif; font-size: 2.4rem; font-weight: 400; color: #EDEAE0; line-height: 1.22; max-width: 15ch; margin-bottom: 1rem; }
+  .console-h1 b { font-weight: 700; color: #3FCFB0; }
+  .console-sub { color: #8b93a3; font-size: .95rem; max-width: 40ch; line-height: 1.65; margin-bottom: 1.6rem; font-family: system-ui,sans-serif; }
+  .console-cta { display: inline-block; font: 700 12px/1 'Consolas', monospace; letter-spacing: .04em; color: #0B0E14; background: #E8A33D; padding: 12px 18px; border-radius: 3px; margin-bottom: .9rem; }
+  .console-meta { font: 500 11px/1 'Consolas', monospace; color: #4b5568; display: flex; gap: 1rem; }
+  .panel { background: #131824; border: 1px solid #212836; border-radius: 8px; }
+  .panel-head { display: flex; align-items: center; justify-content: space-between; padding: .8rem 1rem; border-bottom: 1px solid #212836; font: 700 10px/1 'Consolas', monospace; letter-spacing: .08em; color: #6b7383; }
+  .panel-head .live { color: #3FCFB0; display: flex; align-items: center; gap: 5px; }
+  .panel-head .live::before { content:''; width:6px; height:6px; border-radius:50%; background:#3FCFB0; box-shadow:0 0 6px #3FCFB0; animation: blink 1.8s ease-in-out infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+  .panel-row { display: flex; align-items: center; justify-content: space-between; padding: .65rem 1rem; border-bottom: 1px solid #1a202c; font: 600 11.5px/1 'Consolas', monospace; }
+  .panel-row:last-child { border-bottom: none; }
+  .panel-row .pname { color: #c7cbd6; }
+  .panel-row .pstat { color: #3FCFB0; font-size: 10px; display:flex; align-items:center; gap:5px; }
+  .panel-row .pstat.idle { color: #6b7383; }
+  .panel-row .pstat::before { content:''; width:5px; height:5px; border-radius:50%; background: currentColor; }
+  .panel-row .pcount { color: #EDEAE0; font-weight: 700; }
+  .panel-foot { padding: .55rem 1rem; font: 500 9.5px/1.4 'Consolas', monospace; color: #4b5568; }
+
+  .tokens { max-width: 1100px; margin: 0 auto; padding: 2rem 3rem 4rem; color: #8b93a3; font-family: system-ui, sans-serif; font-size: .85rem; }
+  .tokens h2 { color: #EDEAE0; font-size: .95rem; margin: 1.5rem 0 .6rem; }
+  .swatches { display: flex; flex-wrap: wrap; gap: .75rem; }
+  .swatch { display: flex; align-items: center; gap: .5rem; background: #131824; border: 1px solid #212836; border-radius: 6px; padding: .5rem .75rem; font: 600 11px/1 'Consolas', monospace; }
+  .swatch i { width: 16px; height: 16px; border-radius: 4px; display: inline-block; border: 1px solid rgba(255,255,255,.15); }
+</style>
+</head>
+<body>
+
+<div class="doc-head">
+  <h1>Design Reference — "The Console"</h1>
+  Shelved homepage-redesign direction for <code>portfolio-Portfolio1</code>, saved 2026-09-01 for reuse on future projects.
+  Concept doc: <code>docs/superpowers/specs/2026-09-01-homepage-redesign-directions.md</code>.
+</div>
+
+<div class="console">
+  <div>
+    <div class="console-eyebrow">● AVAILABLE — RESPONDS IN 1HR</div>
+    <div class="console-h1">I build the <b>systems</b> that run your business.</div>
+    <div class="console-sub">AI-powered automation for service businesses &mdash; more leads captured, operations running themselves, repetitive work gone. Built on the tools you already run on.</div>
+    <div class="console-cta">BOOK A DISCOVERY CALL</div>
+    <div class="console-meta"><span>MANILA, PH</span><span>GMT+8</span></div>
+  </div>
+  <div class="console-rule"></div>
+  <div class="panel">
+    <div class="panel-head"><span>LIVE SYSTEMS</span><span class="live">ALL OPERATIONAL</span></div>
+    <div class="panel-row"><span class="pname">CLAUDE CODE</span><span class="pstat">RUNNING</span><span class="pcount">8</span></div>
+    <div class="panel-row"><span class="pname">GOHIGHLEVEL</span><span class="pstat">RUNNING</span><span class="pcount">3</span></div>
+    <div class="panel-row"><span class="pname">N8N</span><span class="pstat idle">AVAILABLE</span><span class="pcount">&mdash;</span></div>
+    <div class="panel-foot">real counts, pulled from shipped work &mdash; not a projection</div>
+  </div>
+</div>
+
+<div class="tokens">
+  <h2>Color</h2>
+  <div class="swatches">
+    <div class="swatch"><i style="background:#0B0E14"></i>ink #0B0E14</div>
+    <div class="swatch"><i style="background:#131824"></i>panel #131824</div>
+    <div class="swatch"><i style="background:#EDEAE0"></i>paper #EDEAE0</div>
+    <div class="swatch"><i style="background:#3FCFB0"></i>signal-teal #3FCFB0</div>
+    <div class="swatch"><i style="background:#E8A33D"></i>signal-amber #E8A33D</div>
+    <div class="swatch"><i style="background:#212836"></i>line #212836</div>
+  </div>
+  <h2>Type</h2>
+  <div>Display (human moments): Georgia / serif, restrained, large — headline &amp; name only.<br>
+  Body: system sans, neutral, does the reading work.<br>
+  Utility/data: Consolas / monospace — every status label, count, timestamp, platform tag.</div>
+  <h2>Layout</h2>
+  <div>Split hero: left pane = the human (photo, serif headline, CTA). Right pane = the machine — a live status table pulling real per-platform automation counts. A single hairline vertical rule separates them.</div>
+  <h2>Signature</h2>
+  <div>The status panel is not decoration — it's the actual proof, sourced from real data, shown before any scroll. Literalizes "you get a dashboard, not a black box" as the first thing a visitor sees.</div>
+</div>
+
+</body>
+</html>

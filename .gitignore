@@ -19,6 +19,9 @@ dist-ssr
 
 supabase/.temp
 
+# Brainstorming visual companion sessions
+.superpowers/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

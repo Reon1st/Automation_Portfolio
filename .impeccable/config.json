@@ -20,6 +20,33 @@
         ],
         "createdAt": "2026-08-29T05:15:23.272Z",
         "reason": "8-way categorical node-kind legend (rose/sky/amber/fuchsia/cyan/emerald/indigo/slate), each hue is a required distinct category not a decorative gradient; pre-existing design, not touched by this session's bugfix"
+      },
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          ".superpowers/brainstorm/1949-1788276735/content/visual-style.html"
+        ],
+        "createdAt": "2026-09-01T15:34:17.933Z",
+        "reason": "throwaway visual-companion mockup comparing style directions; gradient text is the deliberate subject of the 'Pulse' option, not production UI"
+      },
+      {
+        "rule": "codex-grid-background",
+        "value": "*",
+        "files": [
+          ".superpowers/brainstorm/1949-1788276735/content/visual-style.html"
+        ],
+        "createdAt": "2026-09-01T15:34:39.381Z",
+        "reason": "throwaway visual-companion mockup; the technical grid backdrop is the deliberate subject of the 'Signal' AI-lab direction option, not production UI"
+      },
+      {
+        "rule": "dark-glow",
+        "value": "*",
+        "files": [
+          "docs/design-references/2026-09-01-console-direction.html"
+        ],
+        "createdAt": "2026-09-01T15:44:40.573Z",
+        "reason": "single 6px status-light glow on the live-indicator dot, mirroring real ops-dashboard conventions (Vercel/GitHub status pages) -- functional signal, not decorative page glow; design reference file, not shipped UI"
       }
     ]
   }

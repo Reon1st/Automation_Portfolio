@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Design Reference — The Draft</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@700;800&display=swap');
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #F1EEE5; font-family: system-ui, sans-serif; }
+  .doc-head { padding: 1.5rem 2.5rem; border-bottom: 1px solid #D8D4C7; color: #6B6A63; font-size: .85rem; line-height: 1.6; }
+  .doc-head h1 { color: #1B1B18; font-size: 1.1rem; margin: 0 0 .4rem; }
+  .doc-head code { color: #2A4258; }
+
+  /* ================= DRAFT ================= */
+  .draft { background: #F1EEE5; padding: 4rem 3rem; font-family: system-ui, sans-serif; max-width: 900px; margin: 0 auto; }
+  .draft-stamp { display: grid; grid-template-columns: repeat(4, auto); gap: 0 2rem; border-top: 1px solid #1B1B18; border-bottom: 1px solid #1B1B18; padding: .6rem 0; margin-bottom: 2rem; }
+  .draft-stamp div { font: 700 9px/1.5 'Consolas', monospace; letter-spacing: .06em; color: #6B6A63; text-transform: uppercase; }
+  .draft-stamp div b { display: block; font-size: 11px; color: #1B1B18; margin-top: 2px; font-weight: 700; }
+  .draft-h1 { font-family: 'Archivo Expanded', system-ui, sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: -.01em; font-size: 2.6rem; line-height: 1.1; color: #1B1B18; max-width: 15ch; margin-bottom: 1.1rem; }
+  .draft-h1 span { color: #2A4258; }
+  .draft-sub { color: #4b4a44; font-size: .98rem; max-width: 46ch; line-height: 1.65; margin-bottom: 1.75rem; }
+  .draft-cta { display: inline-block; font: 700 11px/1 'Consolas', monospace; letter-spacing: .05em; text-transform: uppercase; color: #F1EEE5; background: #2A4258; padding: 12px 20px; margin-bottom: 2.2rem; }
+  .draft-trace { position: relative; height: 70px; margin: 0 0 1rem; }
+  .draft-trace svg { width: 100%; height: 100%; overflow: visible; }
+  .draft-trace path { fill: none; stroke: #B8B4A6; stroke-width: 1.5; }
+  .draft-trace circle { fill: #2A4258; }
+  .draft-nodes { display: flex; justify-content: space-between; }
+  .draft-node { font: 700 9.5px/1 'Consolas', monospace; letter-spacing: .04em; color: #1B1B18; text-align: center; }
+  .draft-node span { display: block; font-size: 8px; color: #8a8778; font-weight: 500; margin-top: 3px; text-transform: uppercase; }
+
+  .tokens { max-width: 900px; margin: 0 auto; padding: 1rem 3rem 4rem; color: #6B6A63; font-family: system-ui, sans-serif; font-size: .85rem; }
+  .tokens h2 { color: #1B1B18; font-size: .95rem; margin: 1.5rem 0 .6rem; }
+  .swatches { display: flex; flex-wrap: wrap; gap: .75rem; }
+  .swatch { display: flex; align-items: center; gap: .5rem; background: #fff; border: 1px solid #D8D4C7; border-radius: 6px; padding: .5rem .75rem; font: 600 11px/1 'Consolas', monospace; color: #1B1B18; }
+  .swatch i { width: 16px; height: 16px; border-radius: 4px; display: inline-block; border: 1px solid rgba(0,0,0,.1); }
+</style>
+</head>
+<body>
+
+<div class="doc-head">
+  <h1>Design Reference — "The Draft"</h1>
+  Shelved homepage-redesign direction for <code>portfolio-Portfolio1</code>, saved 2026-09-01 for reuse on future projects.
+  Concept doc: <code>docs/superpowers/specs/2026-09-01-homepage-redesign-directions.md</code>.
+</div>
+
+<div class="draft">
+  <div class="draft-stamp">
+    <div>Name<b>Reon Martin</b></div>
+    <div>Role<b>AI Systems / Consultant</b></div>
+    <div>Base<b>Manila, PH</b></div>
+    <div>Status<b>Available now</b></div>
+  </div>
+  <div class="draft-h1">Systems that run your business <span>while you sleep</span></div>
+  <div class="draft-sub">I build AI-powered automation for service businesses &mdash; more leads captured, operations automated, repetitive work cut. Each system scoped to what the business actually needs.</div>
+  <div class="draft-cta">Book a discovery call</div>
+  <div class="draft-trace">
+    <svg viewBox="0 0 600 70" preserveAspectRatio="none">
+      <path d="M 60 8 L 60 35 L 300 35 L 300 8" />
+      <path d="M 300 35 L 300 8" />
+      <path d="M 300 35 L 540 35 L 540 8" />
+      <circle cx="60" cy="8" r="3"/>
+      <circle cx="300" cy="8" r="3"/>
+      <circle cx="540" cy="8" r="3"/>
+    </svg>
+  </div>
+  <div class="draft-nodes">
+    <div class="draft-node">CLAUDE<span>8 shipped</span></div>
+    <div class="draft-node">GOHIGHLEVEL<span>3 shipped</span></div>
+    <div class="draft-node">N8N<span>available</span></div>
+  </div>
+</div>
+
+<div class="tokens">
+  <h2>Color</h2>
+  <div class="swatches">
+    <div class="swatch"><i style="background:#F1EEE5"></i>paper #F1EEE5</div>
+    <div class="swatch"><i style="background:#1B1B18"></i>ink #1B1B18</div>
+    <div class="swatch"><i style="background:#6B6A63"></i>graphite #6B6A63</div>
+    <div class="swatch"><i style="background:#2A4258"></i>draft-blue #2A4258</div>
+    <div class="swatch"><i style="background:#D8D4C7"></i>line #D8D4C7</div>
+  </div>
+  <h2>Type</h2>
+  <div>Display: Archivo Expanded, bold uppercase, condensed/industrial feel — headline only.<br>
+  Body: system sans, neutral.<br>
+  Utility/data: Consolas / monospace — title-block stamp, node labels.</div>
+  <h2>Layout</h2>
+  <div>Single column. Opens with a technical title-block stamp (name/role/base/status as a 4-column mono grid) instead of a bio line. Section transitions are routed circuit traces with right-angle bends and solder-point dots, not decorative hairlines.</div>
+  <h2>Signature</h2>
+  <div>Breaks the one convention nearly every AI-consultant portfolio shares — it isn't dark mode. Warm paper background, technical drafting register, traces that literally connect the named systems (echoes the site's real WorkflowEngine diagrams).</div>
+</div>
+
+</body>
+</html>
