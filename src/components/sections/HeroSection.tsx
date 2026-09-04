@@ -72,7 +72,7 @@ const HeroSection: React.FC = () => {
                 <p className="text-sm leading-relaxed max-w-2xl text-muted-foreground">
                   Support agents, booking systems, CRM automation, live dashboards, conversion-focused
                   websites — each one{" "}
-                  <span className="text-primary font-medium">scoped to what the business actually needs</span>.
+                  <span className="text-primary font-medium">scoped to what the business needs</span>.
                 </p>
                 <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-muted-foreground/80 pt-1">
                   {["AI Systems", "CRM Automation", "Websites", "AI Agents", "Business Automation"].map((tag, i, arr) => (

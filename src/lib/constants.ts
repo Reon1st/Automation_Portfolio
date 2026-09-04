@@ -6,11 +6,11 @@
 
 export const SITE_CONFIG = {
   name: "Reon Martin",
-  title: "AI Systems That Turn Leads Into Booked Clients",
+  title: "I Build AI Systems That Turn Your Busywork Into Time Back",
   tagline: "I build AI-powered systems that help service businesses capture more leads, automate operations, and cut repetitive work.",
   email: "reonfirst@gmail.com",
   location: "Manila, Philippines",
-  timezone: "GMT+8 — overlaps US business hours",
+  timezone: "GMT+8 — overlaps US, UK & Australia business hours",
   copyright: `© ${new Date().getFullYear()} Reon Martin. All rights reserved.`,
   responseTime: "Usually responds in 1 hour",
 };
@@ -45,10 +45,14 @@ export const NAV_ITEMS = [
   { href: "#contact", label: "Contact" },
 ] as const;
 
+// Each row overlaps business hours in a different client market while
+// staying outside CLASS_SCHEDULE (below) — collectively spans weekdays
+// and weekends across the three regions.
 export const AVAILABILITY = {
   schedule: [
-    { day: "Sunday", hours: "9 – 11 AM" },
-    { day: "Tue & Thu", hours: "9 – 11:59 PM" },
+    { day: "🇦🇺 Sun & Tue", hours: "9 – 11 AM" },
+    { day: "🇬🇧 Mon – Fri", hours: "5 – 7 PM" },
+    { day: "🇺🇸 Tue, Thu & Sat", hours: "9 – 11:59 PM" },
   ],
 };
 

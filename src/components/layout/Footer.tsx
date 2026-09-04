@@ -145,9 +145,6 @@ const Footer: React.FC = () => {
                     <span>{item.hours}</span>
                   </div>)}
               </div>
-              <p className="text-xs text-muted-foreground/70 mt-2 pt-2 border-t border-border/30">
-                Outside these? I'm still usually responding within the hour — this is just when I'm live for a call.
-              </p>
             </div>
           </div>
         </div>
