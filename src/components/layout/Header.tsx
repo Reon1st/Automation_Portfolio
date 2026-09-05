@@ -64,62 +64,19 @@ const Header: React.FC = () => {
 
         {/* About Me Button and Mobile menu */}
         <div className="flex items-center gap-3">
-          <Link to="/about" onMouseEnter={prefetchAbout} onFocus={prefetchAbout} onTouchStart={prefetchAbout} className="hidden md:block relative group">
-            <button className="relative w-24 h-10 bg-gradient-to-r from-card via-secondary to-card border border-border hover:border-accent/50 rounded-xl transition-all duration-500 ease-out focus:outline-none focus:ring-2 focus:ring-accent/50 focus:ring-offset-2 focus:ring-offset-background overflow-hidden" aria-label="About Me">
-              {/* Circuit board pattern background */}
-              <div className="absolute inset-0 opacity-20">
-                <div className="absolute top-2 left-3 w-8 h-0.5 bg-accent/30 rounded-full" />
-                <div className="absolute top-4 left-2 w-6 h-0.5 bg-primary/20 rounded-full" />
-                <div className="absolute bottom-2 right-3 w-8 h-0.5 bg-accent/30 rounded-full" />
-                <div className="absolute bottom-4 right-2 w-6 h-0.5 bg-primary/20 rounded-full" />
-                <div className="absolute top-3 left-1 w-0.5 h-4 bg-accent/20 rounded-full" />
-                <div className="absolute top-2 right-1 w-0.5 h-5 bg-primary/15 rounded-full" />
-              </div>
-
-              {/* Scanning line effect */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-accent/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out" />
-
-              {/* Main indicator with user icon */}
-              <div className="absolute left-2 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-gradient-to-br from-accent via-primary to-accent rounded-lg shadow-lg transition-all duration-300 group-hover:scale-110 group-hover:rotate-12">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <User className="w-3 h-3 text-background" />
-                </div>
-                <div className="absolute inset-0 bg-accent/30 rounded-lg animate-pulse opacity-50" />
-              </div>
-
-              {/* About Me Text */}
-              <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
-                <span className="font-semibold tracking-wide text-xs transition-colors duration-300 text-[#1da5d3]">
-                  About
-                </span>
-              </div>
-
-              {/* Data flow animation */}
-              <div className="absolute left-9 top-1/2 transform -translate-y-1/2 flex space-x-1">
-                {[...Array(3)].map((_, i) => <div key={i} className="w-0.5 h-0.5 bg-accent rounded-full opacity-60" style={{
-                animation: `pulse 1.5s ease-in-out infinite`,
-                animationDelay: `${i * 0.2}s`
-              }} />)}
-              </div>
-
-              {/* Corner accent lights */}
-              <div className="absolute top-1 left-1 w-1 h-1 bg-accent/60 rounded-full" />
-              <div className="absolute bottom-1 right-1 w-1 h-1 bg-primary/60 rounded-full" />
+          <Link to="/about" onMouseEnter={prefetchAbout} onFocus={prefetchAbout} onTouchStart={prefetchAbout} className="hidden md:block group">
+            <button
+              className="flex items-center gap-2 pl-2 pr-4 h-10 rounded-full border border-primary/20 bg-card/60 backdrop-blur-sm shadow-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background group-hover:border-primary/50 group-hover:bg-primary/5 group-hover:shadow-md group-hover:shadow-primary/15"
+              aria-label="About Me"
+            >
+              <span className="relative flex items-center justify-center w-6 h-6 rounded-full bg-gradient-to-br from-primary to-accent overflow-hidden transition-transform duration-300 group-hover:scale-110">
+                <User className="absolute w-3.5 h-3.5 text-primary-foreground transition-all duration-300 ease-out group-hover:-translate-y-4 group-hover:opacity-0" />
+                <ArrowRight className="absolute w-3.5 h-3.5 text-primary-foreground translate-y-4 opacity-0 transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100" />
+              </span>
+              <span className="text-sm font-semibold text-foreground transition-colors duration-300 group-hover:text-primary">
+                About
+              </span>
             </button>
-
-            {/* Status display */}
-            <div className="absolute -bottom-7 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
-              <div className="flex items-center space-x-1">
-                <div className="w-1 h-1 bg-accent rounded-full animate-pulse" />
-                <span className="text-xs text-muted-foreground/70 font-mono tracking-wider">
-                  PROFILE
-                </span>
-                <div className="w-1 h-1 bg-accent rounded-full animate-pulse" />
-              </div>
-            </div>
-
-            {/* Hover glow effect */}
-            <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-accent/10 via-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none blur-sm" />
           </Link>
 
           <button className="md:hidden p-2 text-foreground hover:text-accent transition-colors" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label="Toggle mobile menu">
