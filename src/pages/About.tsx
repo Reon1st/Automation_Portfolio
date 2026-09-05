@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, BookOpen, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, BookOpen, ArrowUpRight, Search, Compass, Cog, Rocket, ShieldCheck } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
@@ -9,22 +9,31 @@ import Footer from "@/components/layout/Footer";
 import WavesBackground from "@/components/WavesBackground";
 import { SOCIAL_LINKS } from "@/lib/constants";
 
-const STORY_STEPS = [
+const WORK_STEPS = [
   {
-    title: "Kid on a screen",
-    body: "Before I could walk, I was already glued to one.",
+    icon: Search,
+    title: "Discovery Call",
+    body: "We map your current workflow and find the highest-impact automation opportunities in your business.",
   },
   {
-    title: "Years of gaming",
-    body: "Video games ate the rest of my childhood.",
+    icon: Compass,
+    title: "Scope & Plan",
+    body: "I plan the build around how your business actually works — no templates, no rip-and-replace.",
   },
   {
-    title: "Sick of \"normal\"",
-    body: "Got tired of living a plain, cookie-cutter life.",
+    icon: Cog,
+    title: "Build & Test",
+    body: "I build and test every workflow against your real data before it ever touches your business.",
   },
   {
-    title: "All in on AI",
-    body: "Got interested in AI, and just went all in.",
+    icon: Rocket,
+    title: "Launch & Handoff",
+    body: "I deploy it live and walk you through running it — you own the system, not a black box.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Ongoing Support",
+    body: "I stick around after launch to fix what breaks and tune what's slow as your business grows.",
   },
 ];
 
@@ -128,7 +137,7 @@ const About = () => {
                   Reon Martin
                 </h1>
                 <p className="text-lg sm:text-xl font-semibold text-primary tracking-tight">
-                  College Student Who's Into AI
+                  AI Systems Consultant for Service Businesses
                 </p>
               </div>
             </div>
@@ -146,27 +155,53 @@ const About = () => {
             </div>
           </div>
 
-          {/* My Story */}
+          {/* How I Work */}
           <div ref={storyAnimation.ref as any}>
             <div className="mb-12 text-center">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-4">
                 <span className="font-semibold text-primary tracking-wider uppercase text-xs">
-                  My Story
+                  How I Work
                 </span>
               </div>
               <h2 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient-shift max-w-xl mx-auto">
-                "Screen-obsessed before I could even walk."
+                My 5-Step Process
               </h2>
             </div>
 
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-10 max-w-5xl mx-auto">
-              {STORY_STEPS.map((step, i) => (
-                <div key={step.title} className="text-left">
-                  <span className="pointer-events-none select-none block text-6xl sm:text-7xl font-extrabold text-primary/10 leading-none mb-2">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <h3 className="font-bold text-foreground mb-1">{step.title}</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{step.body}</p>
+            {/* Desktop: horizontal timeline */}
+            <div className="hidden lg:block relative max-w-5xl mx-auto">
+              <div className="absolute top-8 left-[10%] right-[10%] h-px bg-primary/20" />
+              <div className="relative flex justify-between">
+                {WORK_STEPS.map((step, i) => (
+                  <div key={step.title} className="flex flex-col items-center text-center w-1/5 px-2">
+                    <div className="relative z-10 w-16 h-16 rounded-full border border-primary/20 bg-card flex items-center justify-center mb-4">
+                      <step.icon className="w-6 h-6 text-primary" />
+                      <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center">
+                        {i + 1}
+                      </span>
+                    </div>
+                    <h3 className="font-bold text-foreground mb-1 text-sm">{step.title}</h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{step.body}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Mobile/tablet: vertical timeline */}
+            <div className="lg:hidden relative max-w-md mx-auto space-y-8">
+              <div className="absolute left-8 top-8 bottom-8 w-px bg-primary/20" />
+              {WORK_STEPS.map((step, i) => (
+                <div key={step.title} className="relative flex gap-4 items-start">
+                  <div className="relative z-10 shrink-0 w-16 h-16 rounded-full border border-primary/20 bg-card flex items-center justify-center">
+                    <step.icon className="w-6 h-6 text-primary" />
+                    <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center justify-center">
+                      {i + 1}
+                    </span>
+                  </div>
+                  <div className="pt-3">
+                    <h3 className="font-bold text-foreground mb-1 text-sm">{step.title}</h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{step.body}</p>
+                  </div>
                 </div>
               ))}
             </div>
