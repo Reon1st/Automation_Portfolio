@@ -66,8 +66,7 @@ const HeroSection: React.FC = () => {
 
               <div className="space-y-3 will-animate">
                 <p className="text-base leading-relaxed max-w-2xl text-foreground">
-                  Service businesses lose leads and burn hours on busywork — I build the AI systems
-                  that close both gaps, without ripping out the tools you already run on.
+                  {SITE_CONFIG.tagline}
                 </p>
                 <p className="text-sm leading-relaxed max-w-2xl text-muted-foreground">
                   Support agents, booking systems, CRM automation, live dashboards, conversion-focused

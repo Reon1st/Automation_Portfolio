@@ -5,7 +5,8 @@ import { prefetchPrivacyPolicy } from "@/lib/routePrefetch";
 import { LinkedInIcon } from "@/components/UpdatedSocialIcons";
 import { GmailIcon, CalIcon, NotionIcon, GitHubIcon, XIcon } from "@/components/PlatformIcons";
 import AvailabilityIndicator from "@/components/AvailabilityIndicator";
-import { SITE_CONFIG, SOCIAL_LINKS, AVAILABILITY } from "@/lib/constants";
+import WorldClock from "@/components/WorldClock";
+import { SITE_CONFIG, SOCIAL_LINKS } from "@/lib/constants";
 
 // Single trigger, once the footer scrolls into view — every element's timing
 // is declared as its own CSS transition-delay off the shared .is-revealed
@@ -135,17 +136,7 @@ const Footer: React.FC = () => {
 
             <AvailabilityIndicator />
 
-            <div className="p-3 rounded-xl bg-card/40 border border-border/30">
-              <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">
-                Live hours ({SITE_CONFIG.timezone})
-              </p>
-              <div className="space-y-1 text-xs">
-                {AVAILABILITY.schedule.map(item => <div key={item.day} className="flex justify-between text-muted-foreground">
-                    <span className="text-foreground/80">{item.day}</span>
-                    <span>{item.hours}</span>
-                  </div>)}
-              </div>
-            </div>
+            <WorldClock />
           </div>
         </div>
 

@@ -7,10 +7,9 @@
 export const SITE_CONFIG = {
   name: "Reon Martin",
   title: "I Build AI Systems That Turn Your Busywork Into Time Back",
-  tagline: "I build AI-powered systems that help service businesses capture more leads, automate operations, and cut repetitive work.",
+  tagline: "I build AI-powered systems that help businesses capture more leads, streamline manual workflows, and cut repetitive work.",
   email: "reonfirst@gmail.com",
   location: "Manila, Philippines",
-  timezone: "GMT+8 — overlaps US, UK & Australia business hours",
   copyright: `© ${new Date().getFullYear()} Reon Martin. All rights reserved.`,
   responseTime: "Usually responds in 1 hour",
 };
@@ -45,16 +44,17 @@ export const NAV_ITEMS = [
   { href: "#contact", label: "Contact" },
 ] as const;
 
-// Each row overlaps business hours in a different client market while
-// staying outside CLASS_SCHEDULE (below) — collectively spans weekdays
-// and weekends across the three regions.
-export const AVAILABILITY = {
-  schedule: [
-    { day: "🇦🇺 Sun & Tue", hours: "9 – 11 AM" },
-    { day: "🇬🇧 Mon – Fri", hours: "5 – 7 PM" },
-    { day: "🇺🇸 Tue, Thu & Sat", hours: "9 – 11:59 PM" },
-  ],
-};
+// Live footer clock: Manila (home) plus one representative IANA zone per
+// client region, matched against the visitor's browser locale (country
+// subtag of navigator.language) so only their own region + Manila show.
+// `country` is the ISO code that match runs against. Intl.DateTimeFormat
+// resolves DST for these automatically — nothing here to update yearly.
+export const WORLD_CLOCKS = [
+  { flag: "🇵🇭", label: "Manila", tz: "Asia/Manila", isHome: true },
+  { flag: "🇺🇸", label: "US", tz: "America/New_York", country: "US" },
+  { flag: "🇬🇧", label: "UK", tz: "Europe/London", country: "GB" },
+  { flag: "🇦🇺", label: "Australia", tz: "Australia/Sydney", country: "AU" },
+] as const;
 
 // Weekly class blocks (Asia/Manila time, minutes-since-midnight), 0=Sun..6=Sat.
 // Drives the live "in class" status chip — update each semester when the
