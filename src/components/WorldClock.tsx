@@ -24,7 +24,7 @@ const WorldClock: React.FC = () => {
   return (
     <div className="p-3 rounded-xl bg-card/40 border border-border/30">
       <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">
-        Live — your time, converted
+        Live Time Conversion
       </p>
       <div className="space-y-1">
         {!sameAsHome && (
