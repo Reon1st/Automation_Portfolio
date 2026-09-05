@@ -1,12 +1,18 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Shield, Lock, Eye, Database, MapPin, ArrowUp, ArrowLeft } from "lucide-react";
-import { useState, useEffect } from "react";
+import { ArrowUp, ArrowLeft } from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { SITE_CONFIG } from "@/lib/constants";
+
+// Char codes instead of a literal string so the address isn't a plain,
+// grep-able token for bots scanning the built page/bundle for emails.
+const EMAIL_CODES = [114, 101, 111, 110, 102, 105, 114, 115, 116, 64, 103, 109, 97, 105, 108, 46, 99, 111, 109];
 
 const PrivacyPolicy = () => {
   const navigate = useNavigate();
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const contactEmail = useMemo(() => String.fromCharCode(...EMAIL_CODES), []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,11 +67,6 @@ const PrivacyPolicy = () => {
       <div className="bg-gradient-to-br from-primary/10 via-accent/5 to-background border-b border-border/50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
           <div className="text-center space-y-4 sm:space-y-6">
-            <div className="flex items-center justify-center">
-              <div className="p-3 sm:p-4 bg-primary/10 rounded-2xl">
-                <Shield className="h-8 w-8 sm:h-12 sm:w-12 text-primary" />
-              </div>
-            </div>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground px-2">
               Privacy Policy
             </h2>
@@ -85,10 +86,7 @@ const PrivacyPolicy = () => {
         {/* Overview Card */}
         <Card className="border-primary/20 bg-primary/5">
           <CardHeader>
-            <CardTitle className="flex items-center gap-3">
-              <Lock className="h-6 w-6 text-primary" />
-              My Commitment to Your Privacy
-            </CardTitle>
+            <CardTitle>My Commitment to Your Privacy</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground leading-relaxed">
@@ -103,55 +101,15 @@ const PrivacyPolicy = () => {
         {/* Data Collection */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-3">
-              <Database className="h-6 w-6 text-accent" />
-              Information I Collect
-            </CardTitle>
+            <CardTitle>Information I Collect</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="p-4 rounded-lg">
-              <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-                <div className="w-2 h-2 bg-accent rounded-full"></div>
-                Contact Form Information:
-              </h4>
-              <ul className="space-y-3 text-muted-foreground ml-4">
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0"></div>
-                  <span><strong>Name:</strong> To personalize our communication and address you properly in all correspondence</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0"></div>
-                  <span><strong>Email Address:</strong> To respond to your inquiries and follow up on our automation consulting discussions</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-accent rounded-full mt-2 flex-shrink-0"></div>
-                  <span><strong>Subject & Message:</strong> To understand your specific automation needs and provide relevant, tailored assistance</span>
-                </li>
-              </ul>
-            </div>
-            
-            <div className="p-4 rounded-lg">
-              <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-                <div className="w-2 h-2 bg-primary rounded-full"></div>
-                Technical Information (Collected Automatically for Security):
-              </h4>
-              <ul className="space-y-3 text-muted-foreground ml-4">
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span><strong>IP Address:</strong> Used solely for spam prevention and security monitoring - never tracked, stored long-term, or used for profiling</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span><strong>Browser Information:</strong> Helps me ensure compatibility and provide technical support if needed during our collaboration</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span><strong>Platform & Device Type:</strong> Used only for compatibility testing and optimizing your experience on my website</span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                  <span><strong>Timestamp:</strong> For organizing communications chronologically and implementing spam prevention measures</span>
-                </li>
+              <h4 className="font-semibold text-foreground mb-3">Contact Form Information:</h4>
+              <ul className="space-y-3 text-muted-foreground list-disc pl-5">
+                <li><strong>Name:</strong> To personalize our communication and address you properly in all correspondence</li>
+                <li><strong>Email Address:</strong> To respond to your inquiries and follow up on our automation consulting discussions</li>
+                <li><strong>Subject & Message:</strong> To understand your specific automation needs and provide relevant, tailored assistance</li>
               </ul>
             </div>
           </CardContent>
@@ -160,28 +118,19 @@ const PrivacyPolicy = () => {
         {/* Data Security */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-3">
-              <Shield className="h-6 w-6 text-emerald-500" />
-              How I Protect Your Data
-            </CardTitle>
+            <CardTitle>How I Protect Your Data</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="bg-emerald-50 dark:bg-emerald-900/10 p-4 rounded-lg border border-emerald-200 dark:border-emerald-800/30">
-                <h5 className="font-semibold text-emerald-700 dark:text-emerald-300 mb-2 flex items-center gap-2">
-                  <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                  Secure Infrastructure
-                </h5>
+                <h5 className="font-semibold text-emerald-700 dark:text-emerald-300 mb-2">Secure Infrastructure</h5>
                 <p className="text-sm text-emerald-600 dark:text-emerald-400">
-                  Your data is stored securely using Supabase's enterprise-grade infrastructure with bank-level encryption, 
+                  Your data is stored securely using Supabase's enterprise-grade infrastructure with bank-level encryption,
                   automatic backups, and 99.9% uptime guarantees. All data transmission is encrypted using TLS 1.3.
                 </p>
               </div>
               <div className="bg-blue-50 dark:bg-blue-900/10 p-4 rounded-lg border border-blue-200 dark:border-blue-800/30">
-                <h5 className="font-semibold text-blue-700 dark:text-blue-300 mb-2 flex items-center gap-2">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                  Data Access Control
-                </h5>
+                <h5 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">Data Access Control</h5>
                 <p className="text-sm text-blue-600 dark:text-blue-400">
                   Access to your information is strictly limited to me personally and only for the purpose 
                   of responding to your inquiries and providing the automation consulting services you've requested.
@@ -200,46 +149,25 @@ const PrivacyPolicy = () => {
         {/* Data Usage */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-3">
-              <Eye className="h-6 w-6 text-blue-500" />
-              How I Use Your Information
-            </CardTitle>
+            <CardTitle>How I Use Your Information</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div className="bg-blue-50 dark:bg-blue-900/10 p-4 rounded-lg border border-blue-200 dark:border-blue-800/30">
-                <h5 className="font-semibold text-blue-700 dark:text-blue-300 mb-2 flex items-center gap-2">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                  Primary Purpose
-                </h5>
+                <h5 className="font-semibold text-blue-700 dark:text-blue-300 mb-2">Primary Purpose</h5>
                 <p className="text-blue-600 dark:text-blue-400 text-sm">
-                  Your information is used exclusively to communicate with you about your automation project inquiries, 
+                  Your information is used exclusively to communicate with you about your automation project inquiries,
                   provide consultation services, schedule meetings, and deliver the custom automation solutions you've requested.
                 </p>
               </div>
-              
+
               <div className="bg-red-50 dark:bg-red-900/10 p-4 rounded-lg border border-red-200 dark:border-red-800/30">
-                <h5 className="font-semibold text-red-700 dark:text-red-300 mb-2 flex items-center gap-2">
-                  <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                  What I DON'T Do With Your Data
-                </h5>
-                <ul className="text-red-600 dark:text-red-400 text-sm space-y-2 ml-4">
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Sell, rent, or share your information with any third parties for marketing purposes</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Use your data for unsolicited marketing campaigns or newsletters without explicit consent</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Track your browsing behavior across other websites or build user profiles</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 bg-red-500 rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Store payment information (all payments are handled by secure, PCI-compliant processors)</span>
-                  </li>
+                <h5 className="font-semibold text-red-700 dark:text-red-300 mb-2">What I DON'T Do With Your Data</h5>
+                <ul className="text-red-600 dark:text-red-400 text-sm space-y-2 list-disc pl-5">
+                  <li>Sell, rent, or share your information with any third parties for marketing purposes</li>
+                  <li>Use your data for unsolicited marketing campaigns or newsletters without explicit consent</li>
+                  <li>Track your browsing behavior across other websites or build user profiles</li>
+                  <li>Store payment information (all payments are handled by secure, PCI-compliant processors)</li>
                 </ul>
               </div>
             </div>
@@ -249,17 +177,11 @@ const PrivacyPolicy = () => {
         {/* Third-Party Services */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-3">
-              <MapPin className="h-6 w-6 text-purple-500" />
-              Third-Party Services I Use
-            </CardTitle>
+            <CardTitle>Third-Party Services I Use</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="p-4 rounded-lg">
-              <h5 className="font-semibold text-foreground mb-2 flex items-center gap-2">
-                <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                Cal.com (Scheduling Service)
-              </h5>
+              <h5 className="font-semibold text-foreground mb-2">Cal.com (Scheduling Service)</h5>
               <p className="text-muted-foreground text-sm mb-2">
                 When you schedule a consultation through my embedded calendar, your booking information 
                 is processed by Cal.com under their privacy policy. I chose Cal.com specifically for their commitment to data privacy.
@@ -275,10 +197,7 @@ const PrivacyPolicy = () => {
             </div>
             
             <div className="p-4 rounded-lg">
-              <h5 className="font-semibold text-foreground mb-2 flex items-center gap-2">
-                <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                Supabase (Database & Security)
-              </h5>
+              <h5 className="font-semibold text-foreground mb-2">Supabase (Database & Security)</h5>
               <p className="text-muted-foreground text-sm mb-2">
                 Contact form submissions are securely stored using Supabase's infrastructure, 
                 which complies with GDPR, SOC 2, and other international data protection regulations. 
@@ -299,59 +218,25 @@ const PrivacyPolicy = () => {
         {/* Your Rights */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-3">
-              <Shield className="h-6 w-6 text-accent" />
-              Your Rights & Control Over Your Data
-            </CardTitle>
+            <CardTitle>Your Rights & Control Over Your Data</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-3 p-4 rounded-lg">
-                <h5 className="font-semibold text-foreground flex items-center gap-2">
-                  <div className="w-2 h-2 bg-accent rounded-full"></div>
-                  You Have the Right To:
-                </h5>
-                <ul className="space-y-2 text-muted-foreground text-sm">
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Request access to all your personal data I have collected</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Correct or update your information at any time</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Request complete deletion of your data (right to be forgotten)</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Withdraw consent at any time for future communications</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 bg-accent rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Request data portability in a machine-readable format</span>
-                  </li>
+                <h5 className="font-semibold text-foreground">You Have the Right To:</h5>
+                <ul className="space-y-2 text-muted-foreground text-sm list-disc pl-5">
+                  <li>Request access to all your personal data I have collected</li>
+                  <li>Correct or update your information at any time</li>
+                  <li>Request complete deletion of your data (right to be forgotten)</li>
+                  <li>Withdraw consent at any time for future communications</li>
+                  <li>Request data portability in a machine-readable format</li>
                 </ul>
               </div>
               <div className="space-y-3 p-4 rounded-lg">
-                <h5 className="font-semibold text-foreground flex items-center gap-2">
-                  <div className="w-2 h-2 bg-primary rounded-full"></div>
-                  Data Retention Policy:
-                </h5>
-                <ul className="space-y-2 text-muted-foreground text-sm">
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Contact submissions: Kept for 2 years for business continuity and project follow-ups</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Technical security logs: Automatically deleted after 30 days</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                    <span>Data deleted immediately upon verified request or end of retention period</span>
-                  </li>
+                <h5 className="font-semibold text-foreground">Data Retention Policy:</h5>
+                <ul className="space-y-2 text-muted-foreground text-sm list-disc pl-5">
+                  <li>Contact submissions: Kept for 2 years for business continuity and project follow-ups</li>
+                  <li>Data deleted immediately upon verified request or end of retention period</li>
                 </ul>
               </div>
             </div>
@@ -361,10 +246,7 @@ const PrivacyPolicy = () => {
         {/* Contact */}
         <Card className="border-accent/20 bg-accent/5">
           <CardHeader>
-            <CardTitle className="text-accent flex items-center gap-2">
-              <div className="w-2 h-2 bg-accent rounded-full"></div>
-              Questions About Your Privacy?
-            </CardTitle>
+            <CardTitle className="text-accent">Questions About Your Privacy?</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground mb-4">
@@ -372,14 +254,10 @@ const PrivacyPolicy = () => {
               or have concerns about how I handle your information, please don't hesitate to contact me personally:
             </p>
             <div className="bg-background/50 p-4 rounded-lg">
-              <p className="text-foreground font-medium flex items-center gap-2">
-                <div className="w-2 h-2 bg-accent rounded-full"></div>
-                Privacy & Data Protection Inquiries
-              </p>
+              <p className="text-foreground font-medium">Privacy & Data Protection Inquiries</p>
               <p className="text-muted-foreground text-sm mt-2">
-                Email: <a href="mailto:reonfirst@gmail.com" className="text-primary underline">reonfirst@gmail.com</a><br/>
-                Response time: Within 24 hours (usually much faster)<br/>
-                Available: Monday - Friday, 9AM - 6PM EST
+                Email: <a href={`mailto:${contactEmail}`} className="text-primary underline">{contactEmail}</a><br/>
+                {SITE_CONFIG.responseTime}
               </p>
             </div>
           </CardContent>
@@ -388,18 +266,13 @@ const PrivacyPolicy = () => {
         {/* Updates */}
         <Card className="bg-muted/20">
           <CardContent className="pt-6">
-            <div className="flex items-start gap-3">
-              <div className="w-2 h-2 bg-muted-foreground rounded-full mt-2 flex-shrink-0"></div>
-              <div>
-                <h4 className="font-semibold text-foreground mb-2">Policy Updates & Transparency</h4>
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  I may update this privacy policy occasionally to reflect changes in my practices, new features, or legal requirements. 
-                  Any significant changes will be communicated directly via email to users who have provided contact information, 
-                  with at least 30 days notice for major changes. The "Last Updated" date at the top of this page indicates when 
-                  the policy was most recently revised. I believe in complete transparency about how your data is handled.
-                </p>
-              </div>
-            </div>
+            <h4 className="font-semibold text-foreground mb-2">Policy Updates & Transparency</h4>
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              I may update this privacy policy occasionally to reflect changes in my practices, new features, or legal requirements.
+              Any significant changes will be communicated directly via email to users who have provided contact information,
+              with at least 30 days notice for major changes. The "Last Updated" date at the top of this page indicates when
+              the policy was most recently revised. I believe in complete transparency about how your data is handled.
+            </p>
           </CardContent>
         </Card>
       </div>
